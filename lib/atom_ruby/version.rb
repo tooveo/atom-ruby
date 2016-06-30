@@ -1,3 +1,3 @@
-module AtomRuby
-  VERSION = "0.1.0"
+class AtomRuby
+  VERSION = "1.0.0"
 end
