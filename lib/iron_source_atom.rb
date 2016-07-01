@@ -10,10 +10,10 @@ class IronSourceAtom
 
   def put_event(stream, data)
     event ={
-        "table" => stream,
-        "data" => data.to_json,
-        "bulk" => false,
-        "auth" => Utils.auth(@auth, data.to_json)
+        table: stream,
+        data: data,
+        bulk: false,
+        auth: Utils.auth(@auth, data.to_json)
     }.to_json;
     http_client=HttpClient.new
     http_client.post(@url, event)
@@ -22,10 +22,10 @@ class IronSourceAtom
 
   def put_events(stream, data)
     event ={
-        "table" => stream,
-        "data" => data.to_json,
-        "bulk" => true,
-        "auth" => Utils.auth(@auth, data.to_json)
+        table: stream,
+        data: data,
+        bulk: true,
+        auth: Utils.auth(@auth, data.to_json)
     }.to_json;
     http_client=HttpClient.new
     http_client.post(@url, event)
