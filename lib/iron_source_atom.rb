@@ -1,7 +1,7 @@
 require "atom_ruby/version"
 require "atom_ruby/http_client"
 
-class AtomRuby
+class IronSourceAtom
   def initialize(url, auth)
     @url =url
     @auth=auth

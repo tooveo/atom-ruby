@@ -4,8 +4,8 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'atom_ruby/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "atom_ruby"
-  spec.version       = AtomRuby::VERSION
+  spec.name          = "iron_source_atom"
+  spec.version       = IronSourceAtom::VERSION
   spec.authors       = ["Kirill Bokhanov"]
   spec.email         = ["kirill.bokhanov@ironsrc.com"]
 
