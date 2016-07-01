@@ -10,7 +10,9 @@ class TestExample < Test::Unit::TestCase
         id: 7,
         message: "hello_from_ruby"
     };
-    atom.put_event("sdkdev_sdkdev.public.atomtestkeyone", data)
+    response = atom.put_event("sdkdev_sdkdev.public.atomtestkeyone", data)
+    puts "Response #{response.code} #{response.message}:
+          #{response.body}"
 
     data1={
         id: 8,
@@ -26,8 +28,11 @@ class TestExample < Test::Unit::TestCase
     }
     arraydata=[data1, data2, data3]
 
-    atom.put_events("sdkdev_sdkdev.public.atomtestkeyone", arraydata)
+    response =  atom.put_events("sdkdev_sdkdev.public.atomtestkeyone", arraydata)
+    puts "Response #{response.code} #{response.message}:
+          #{response.body}"
 
   end
     do_test_job
+
 end
