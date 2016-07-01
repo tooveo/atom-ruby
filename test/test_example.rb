@@ -5,7 +5,7 @@ class TestExample < Test::Unit::TestCase
   def self.do_test_job
     url = "http://track.atom-data.io/"
     auth = "I40iwPPOsG3dfWX30labriCg9HqMfL"
-    atom = IronSourceAtom.new(url, auth)
+    atom = IronSourceAtom.new(auth)
     data ={
         id: 7,
         message: "hello_from_ruby"
