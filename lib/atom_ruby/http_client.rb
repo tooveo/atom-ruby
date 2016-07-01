@@ -1,5 +1,4 @@
 require 'net/http'
-require 'json'
 require 'uri'
 class HttpClient
 

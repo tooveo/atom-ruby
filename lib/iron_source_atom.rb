@@ -27,7 +27,7 @@ class IronSourceAtom
         table: stream,
         data: data,
         bulk: false,
-        auth: Utils.auth(@auth, data.to_json)
+        auth: Utils.auth(@auth, data)
     }.to_json;
     http_client=HttpClient.new
     return http_client.post(@url, event)
@@ -46,7 +46,7 @@ class IronSourceAtom
         table: stream,
         data: data,
         bulk: true,
-        auth: Utils.auth(@auth, data.to_json)
+        auth: Utils.auth(@auth, data)
     }.to_json;
     http_client=HttpClient.new
     return http_client.post(@url, event)
