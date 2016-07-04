@@ -10,6 +10,9 @@ class IronSourceAtom
   # * +auth+ is the pre shared auth key for your Atom. Required.
   # * +url+ atom traker endpoint url.
   def initialize(auth, url="http://track.atom-data.io/")
+    if auth==nil
+      raise ArgumentError.new("Param 'auth' must not be nil!")
+    end
     @url =url
     @auth=auth
   end
@@ -23,6 +26,9 @@ class IronSourceAtom
   # returns an HTTPResponse object.
   #
   def put_event(stream, data)
+    if stream==nil || stream.empty?
+      raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
+    end
     event ={
         table: stream,
         data: data,
@@ -42,6 +48,9 @@ class IronSourceAtom
   # returns an HTTPResponse object.
   #
   def put_events(stream, data)
+    if stream==nil || stream.empty?
+      raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
+    end
     event ={
         table: stream,
         data: data,

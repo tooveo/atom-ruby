@@ -11,7 +11,6 @@ $ gem install iron_source_atom-1.0.0.gem
 ```
 ## Using low level API methods
 ```ruby
-require "test/unit"
 require 'json'
 require 'iron_source_atom'
 class TestExample 
