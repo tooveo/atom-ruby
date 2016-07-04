@@ -1,4 +1,4 @@
-require "test/unit"
+require 'test/unit'
 require 'json'
 require 'iron_source_atom'
 class TestExample < Test::Unit::TestCase
@@ -34,6 +34,9 @@ class TestExample < Test::Unit::TestCase
           #{response.body}"
 
   end
-    do_test_job
+
+  def test_job
+    assert(TestExample.do_test_job.nil?)
+  end
 
 end
