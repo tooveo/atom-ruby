@@ -1,6 +1,6 @@
-require "atom_ruby/version"
-require "atom_ruby/http_client"
-require "atom_ruby/utils"
+require 'atom_ruby/version'
+require 'atom_ruby/http_client'
+require 'atom_ruby/utils'
 
 # This class is the entry point into this client API
 class IronSourceAtom

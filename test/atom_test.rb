@@ -1,6 +1,6 @@
-require "test/unit"
+require 'test/unit'
 require 'iron_source_atom'
-require 'json'
+
 class AtomTest < Test::Unit::TestCase
   def test_new_atom_nil_auth
     assert_raise( ArgumentError ) { IronSourceAtom.new(nil) }
