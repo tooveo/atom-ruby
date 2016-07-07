@@ -14,16 +14,16 @@ class IronSourceAtomTracker
     @url =url
     @auth=""
     @streams = Hash.new
-    @atom = IronSourceAtom.new(@auth)
+    @atom = IronSourceAtom.new
     @flush_now = false
     @worker_runing = true
     @event_worker_thread=Thread.start{event_worker}
-    # @event_worker_thread.run
+
   end
 
   def finalize
     @worker_runing = false
-    @event_worker_thread.join 10000
+    @event_worker_thread.join 100
     puts "I am finalizing"
   end
 
@@ -37,7 +37,7 @@ class IronSourceAtomTracker
   #
   # * +data+ info for sending
   # * +stream+ is the Name of the stream
-  def track(data, stream, auth=@auth)
+  def track(data, stream)
     if @streams.has_key? stream
       @streams[stream].push Event.new(stream, data)
     else
@@ -51,7 +51,7 @@ class IronSourceAtomTracker
   def event_worker
     events_size = Hash.new
     events_buffer = Hash.new
-    flush_event=lambda do |stream, auth, buffer|
+    flush_event = lambda do |stream, auth, buffer|
       buffer_to_flush = Array.new(buffer).to_json
       buffer.clear;
       events_size[stream] = 0;
@@ -98,6 +98,7 @@ class IronSourceAtomTracker
   end
 
   def flush_data(stream, data)
+    @atom.auth = @auth
     @atom.put_events(stream, data)
   end
 

@@ -4,9 +4,8 @@ require 'iron_source_atom_tracker'
 class TestTracker
   def self.do_test_job
     url = "http://track.atom-data.io/"
-    auth = "I40iwPPOsG3dfWX30labriCg9HqMfL"
     atom_tracker = IronSourceAtomTracker.new
-    atom_tracker.auth = auth
+    atom_tracker.auth="I40iwPPOsG3dfWX30labriCg9HqMfL"
 
     data1={
         id: 11,

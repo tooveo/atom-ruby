@@ -9,11 +9,15 @@ class IronSourceAtom
   # Creates a new instance of IronSourceAtom.
   # * +auth+ is the pre shared auth key for your Atom. Required.
   # * +url+ atom traker endpoint url.
-  def initialize(auth, url="http://track.atom-data.io/")
+  def initialize(auth="", url="http://track.atom-data.io/")
     if auth==nil
       raise ArgumentError.new("Param 'auth' must not be nil!")
     end
     @url =url
+    @auth=auth
+  end
+
+  def auth=(auth)
     @auth=auth
   end
 
