@@ -58,7 +58,10 @@ class IronSourceAtom
         auth: Utils.auth(@auth, data)
     }.to_json;
     http_client=HttpClient.new
-    return http_client.post(@url, event)
+    response = http_client.post(@url, event)
+    puts "Response #{response.code} #{response.message}:
+          #{response.body}"
+    return response
   end
 
 end
