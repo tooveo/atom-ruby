@@ -62,7 +62,7 @@ class IronSourceAtomTracker
       for stream in @streams.keys
         value = @streams[stream].pop
         if value==nil
-          Thread.sleep(1)
+          sleep(0.01)
           next
         end
 

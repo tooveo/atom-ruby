@@ -1,4 +1,4 @@
-
+require 'thread'
 require 'json'
 require 'iron_source_atom_tracker'
 class TestTracker
@@ -21,19 +21,26 @@ class TestTracker
     }.to_json
 
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
+    sleep(1)
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
     atom_tracker.track(data2, "sdkdev_sdkdev.public.atomtestkeyone")
+    sleep(4)
     atom_tracker.track(data2, "sdkdev_sdkdev.public.atomtestkeyone")
     atom_tracker.track(data3, "sdkdev_sdkdev.public.atomtestkeyone")
+    sleep(3)
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
+    sleep(5)
+    atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
+    sleep(1)
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
-    atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
+    sleep(1)
     atom_tracker.track(data3, "sdkdev_sdkdev.public.atomtestkeyone")
     atom_tracker.track(data1, "sdkdev_sdkdev.public.atomtestkeyone")
-    atom_tracker.finalize
+    sleep(6)
+    #atom_tracker.finalize
 
 
   end
