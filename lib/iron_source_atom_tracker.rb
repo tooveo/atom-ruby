@@ -1,6 +1,7 @@
 require 'thread'
 require 'iron_source_atom'
 require 'json'
+require 'atom_ruby/back_off'
 class IronSourceAtomTracker
 
   Event = Struct.new(:stream, :data)
@@ -101,8 +102,8 @@ class IronSourceAtomTracker
     back_off=BackOff.new
     while true
       response=@atom.put_events(stream, data)
-      if response.code < 500
-        break
+      if Integer(response.code) < 500
+        return
       end
       sleep back_off.retry_time
     end
