@@ -4,4 +4,5 @@ class Utils
       digest = OpenSSL::Digest.new('sha256')
       return OpenSSL::HMAC.hexdigest(digest,key, data)
     end
+
 end

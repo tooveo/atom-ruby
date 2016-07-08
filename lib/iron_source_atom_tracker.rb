@@ -44,7 +44,6 @@ class IronSourceAtomTracker
       events_queue = Queue.new
       events_queue.push Event.new(stream, data)
       @streams.store(stream, events_queue)
-
     end
   end
 
@@ -62,7 +61,7 @@ class IronSourceAtomTracker
       for stream in @streams.keys
         value = @streams[stream].pop
         if value==nil
-          sleep(0.01)
+          sleep(0.1)
           next
         end
 
@@ -99,7 +98,14 @@ class IronSourceAtomTracker
 
   def flush_data(stream, data)
     @atom.auth = @auth
-    @atom.put_events(stream, data)
+    back_off=BackOff.new
+    while true
+      response=@atom.put_events(stream, data)
+      if response.code < 500
+        break
+      end
+      sleep back_off.retry_time
+    end
   end
 
 
