@@ -2,11 +2,13 @@ require 'thread'
 require 'iron_source_atom'
 require 'json'
 require 'atom_ruby/back_off'
+require 'atom_ruby/event_task_pool'
 class IronSourceAtomTracker
 
   Event = Struct.new(:stream, :data)
   BULK_BYTES_SIZE = 1024
   BULK_SIZE = 3
+  TASK_WORKERS_COUNT = 24;
 
   # Creates a new instance of IronSourceAtomTracker.
   # * +auth+ is the pre shared auth key for your Atom. Required.
@@ -17,13 +19,14 @@ class IronSourceAtomTracker
     @streams = Hash.new
     @atom = IronSourceAtom.new
     @flush_now = false
-    @worker_runing = true
+    @worker_running = true
     @event_worker_thread=Thread.start{event_worker}
+    @event_pool = EventTaskPool.new(TASK_WORKERS_COUNT)
 
   end
 
   def finalize
-    @worker_runing = false
+    @worker_running = false
     @event_worker_thread.join 100
     puts "I am finalizing"
   end
@@ -55,7 +58,7 @@ class IronSourceAtomTracker
       buffer_to_flush = Array.new(buffer).to_json
       buffer.clear;
       events_size[stream] = 0;
-      flush_data(stream, buffer_to_flush);
+      @event_pool.work_task{flush_data(stream, buffer_to_flush)}
     end
 
     while true
