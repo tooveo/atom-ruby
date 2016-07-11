@@ -8,7 +8,8 @@ class IronSourceAtomTracker
   Event = Struct.new(:stream, :data)
   BULK_BYTES_SIZE = 1024
   BULK_SIZE = 3
-  TASK_WORKERS_COUNT = 24;
+  TASK_WORKERS_COUNT = 1;
+  TASK_POOL_SIZE = 10000;
 
   # Creates a new instance of IronSourceAtomTracker.
   # * +auth+ is the pre shared auth key for your Atom. Required.
@@ -21,7 +22,7 @@ class IronSourceAtomTracker
     @flush_now = false
     @worker_running = true
     @event_worker_thread=Thread.start{event_worker}
-    @event_pool = EventTaskPool.new(TASK_WORKERS_COUNT)
+    @event_pool = EventTaskPool.new(TASK_WORKERS_COUNT, TASK_POOL_SIZE)
 
   end
 
@@ -58,7 +59,7 @@ class IronSourceAtomTracker
       buffer_to_flush = Array.new(buffer).to_json
       buffer.clear;
       events_size[stream] = 0;
-      @event_pool.work_task{flush_data(stream, buffer_to_flush)}
+      @event_pool.add_task(Proc.new {flush_data(stream, buffer_to_flush)})
     end
 
     while true
@@ -79,6 +80,7 @@ class IronSourceAtomTracker
 
         events_size[stream] += value[:data].bytesize
         events_buffer[stream].push value[:data]
+        puts "Data pushed to the buffer #{value[:data]}"
 
          if events_size[stream] >= BULK_BYTES_SIZE
           flush_event.call(stream, @auth, events_buffer[stream])
