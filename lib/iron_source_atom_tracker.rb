@@ -8,8 +8,9 @@ class IronSourceAtomTracker
   Event = Struct.new(:stream, :data)
   BULK_BYTES_SIZE = 1024
   BULK_SIZE = 3
-  TASK_WORKERS_COUNT = 1;
-  TASK_POOL_SIZE = 10000;
+  TASK_WORKERS_COUNT = 20
+  TASK_POOL_SIZE = 10000
+  FLUSH_INTERVAL = 20
 
   # Creates a new instance of IronSourceAtomTracker.
   # * +auth+ is the pre shared auth key for your Atom. Required.
@@ -53,17 +54,22 @@ class IronSourceAtomTracker
   end
 
   def event_worker
+    timer_start_time = Time.now
+    timer_delta_time = 0
     events_size = Hash.new
     events_buffer = Hash.new
     flush_event = lambda do |stream, auth, buffer|
-      buffer_to_flush = Array.new(buffer).to_json
-      buffer.clear;
-      events_size[stream] = 0;
-      @event_pool.add_task(Proc.new {flush_data(stream, buffer_to_flush)})
-    end
+        buffer_to_flush = Array.new(buffer).to_json
+        buffer.clear
+        events_size[stream] = 0
+        timer_delta_time = 0;
+        @event_pool.add_task(Proc.new {flush_data(stream, buffer_to_flush)})
+      end
 
     while true
       for stream in @streams.keys
+        timer_delta_time += Time.now - timer_start_time
+        timer_start_time = Time.now
         value = @streams[stream].pop
         if value==nil
           sleep(0.1)
@@ -93,6 +99,14 @@ class IronSourceAtomTracker
         if @flush_now
           flush_event.call(stream, @auth, events_buffer[stream])
         end
+
+
+        if timer_delta_time >= FLUSH_INTERVAL
+            timer_delta_time = 0
+        Puts "Timer"
+            flush_event.call(stream, @auth, events_buffer[stream])
+        end
+
       end
 
       if @flush_now
