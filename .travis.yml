@@ -1,0 +1,6 @@
+language: ruby
+rbevn: -2.3.1
+sudo: false
+env:
+  global:
+    - CI_NAME=travis-ci
