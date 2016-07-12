@@ -8,4 +8,4 @@ env:
   global:
     - CI_NAME=travis-ci
 script:
-- "bundle exec rake --trace"
+- "gem build iron_source_atom.gemspec --trace"
