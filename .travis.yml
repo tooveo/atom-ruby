@@ -1,5 +1,6 @@
 language: ruby
-rbevn: -2.3.1
+rbevn: - 2.3.1
+bundler: 1.13.a
 sudo: false
 env:
   global:
