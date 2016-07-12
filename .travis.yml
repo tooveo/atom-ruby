@@ -7,3 +7,5 @@ before_install:
 env:
   global:
     - CI_NAME=travis-ci
+script:
+- "bundle exec rake --trace"
