@@ -17,7 +17,7 @@ class EventTaskPool
 
   def work_task
     while true
-      if !task = @event_queue.pop
+      unless task = @event_queue.pop
         sleep 0.025
         next
       end

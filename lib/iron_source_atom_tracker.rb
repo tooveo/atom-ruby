@@ -76,11 +76,11 @@ class IronSourceAtomTracker
           next
         end
 
-        if !events_size.key? stream
+        unless events_size.key? stream
           events_size.store(stream, 0)
         end
 
-        if !events_buffer.key? stream
+        unless events_buffer.key? stream
           events_buffer.store(stream, Array.new)
         end
 
