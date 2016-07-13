@@ -1,5 +1,5 @@
-require 'atom_ruby/back_off'
 require_relative 'helper'
+require 'atom_ruby/back_off'
 class BackOffTest
   def self.test_back_off
     backoff=BackOff.new

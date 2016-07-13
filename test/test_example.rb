@@ -1,6 +1,6 @@
 require 'json'
-require 'iron_source_atom'
 require_relative 'helper'
+require 'iron_source_atom'
 class TestExample
   def self.do_test_job
     url = "http://track.atom-data.io/"
