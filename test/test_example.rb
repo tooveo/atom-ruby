@@ -1,7 +1,6 @@
-require 'test/unit'
 require 'json'
 require 'iron_source_atom'
-class TestExample < Test::Unit::TestCase
+class TestExample
 
   def self.do_test_job
     url = "http://track.atom-data.io/"
