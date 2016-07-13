@@ -1,5 +1,4 @@
 require 'json'
-require_relative 'helper'
 require 'iron_source_atom'
 class TestExample
   def self.do_test_job
@@ -34,8 +33,6 @@ class TestExample
 
   end
 
-  def test_job
-    assert(TestExample.do_test_job.nil?)
-  end
+do_test_job
 
 end

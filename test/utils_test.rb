@@ -1,5 +1,5 @@
-require 'test/unit'
 require_relative 'helper'
+require 'test/unit'
 require 'atom_ruby/utils'
 class UtilsTest < Test::Unit::TestCase
   def test_auth

@@ -1,6 +1,5 @@
 require 'thread'
 require 'json'
-require_relative 'helper'
 require 'iron_source_atom_tracker'
 class TestTracker
   def self.do_test_job

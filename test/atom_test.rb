@@ -1,5 +1,5 @@
-require 'test/unit'
 require_relative 'helper'
+require 'test/unit'
 require 'iron_source_atom'
 require 'iron_source_atom_tracker'
 class AtomTest < Test::Unit::TestCase
