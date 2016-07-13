@@ -1,6 +1,7 @@
 require 'thread'
 require 'json'
 require 'iron_source_atom_tracker'
+require_relative 'helper'
 class TestTracker
   def self.do_test_job
     url = "http://track.atom-data.io/"

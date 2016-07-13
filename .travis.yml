@@ -9,5 +9,4 @@ env:
     - CI_NAME=travis-ci
 script:
 - "rake test"
-- "rake coveralls:push"
 - "gem build iron_source_atom.gemspec"
