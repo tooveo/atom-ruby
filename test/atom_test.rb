@@ -1,6 +1,7 @@
 require 'test/unit'
 require_relative 'helper'
 require 'iron_source_atom'
+require 'iron_source_atom_tracker'
 class AtomTest < Test::Unit::TestCase
   def test_new_atom_nil_auth
     assert_raise( ArgumentError ) { IronSourceAtom.new(nil) }
