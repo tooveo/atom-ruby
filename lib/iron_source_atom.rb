@@ -17,9 +17,11 @@ class IronSourceAtom
     @auth=auth
   end
 
+  # :nocov:
   def auth=(auth)
     @auth=auth
   end
+  # :nocov:
 
   # writes a single data event into ironSource.atom delivery stream.
   # to write multiple data records into a delivery stream, use put_events.
@@ -64,7 +66,8 @@ class IronSourceAtom
     http_client=HttpClient.new
     response = http_client.post(@url, event)
     puts "Response #{response.code} #{response.message}:
-          #{response.body}"
+        #{response.body}"
+
     return response
   end
 

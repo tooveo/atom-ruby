@@ -1,5 +1,6 @@
 require 'net/http'
 require 'uri'
+ResponseMock = Struct.new(:code, :message, :body)
 class HttpClient
 
   def post(url, data)
@@ -12,7 +13,8 @@ class HttpClient
     response = Net::HTTP.new(uri.host, uri.port).start {|http| http.request(req) }
     puts "Request #{req.body}"
     return response
-
+  rescue Errno::ECONNRESET, Errno::ECONNREFUSED
+    ResponseMock.new(400, 'connection error', "No internet connection")
   end
 
 end

@@ -1,5 +1,5 @@
 class BackOff
-  def initialize (min_period=0.2, max_period=30)
+  def initialize (min_period=0.2, max_period=600)
     @retry_count = 0
     @retry_time = min_period
     @min_period = min_period
