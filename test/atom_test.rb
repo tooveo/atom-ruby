@@ -1,5 +1,7 @@
 require 'test/unit'
 require 'iron_source_atom'
+require 'coveralls'
+Coveralls.wear!
 
 class AtomTest < Test::Unit::TestCase
   def test_new_atom_nil_auth
