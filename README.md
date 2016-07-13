@@ -1,6 +1,7 @@
 # ironSource.atom SDK for Ruby
 [![License][license-image]][license-url]
 [![Build status][travis-image]][travis-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
 
 Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.
 
@@ -58,4 +59,6 @@ MIT
 [license-url]: LICENSE.txt
 [travis-image]: https://travis-ci.org/ironSource/atom-ruby.svg?branch=feature%2FISA-359
 [travis-url]: https://travis-ci.org/ironSource/atom-ruby
+[coveralls-image]: https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=feature%2FISA-359
+[coveralls-url]: https://coveralls.io/github/ironSource/atom-ruby?branch=feature%2FISA-359
 
