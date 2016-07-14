@@ -1,8 +1,10 @@
 require 'openssl'
-class Utils
+module IronSourceAtom
+  class Utils
     def self.auth(key, data)
       digest = OpenSSL::Digest.new('sha256')
-      return OpenSSL::HMAC.hexdigest(digest,key, data)
+      return OpenSSL::HMAC.hexdigest(digest, key, data)
     end
 
+  end
 end

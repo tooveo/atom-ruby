@@ -1,11 +1,12 @@
 require 'thread'
 require 'json'
-require 'iron_source_atom_tracker'
+require 'iron_source_atom'
 class TestTracker
   def self.do_test_job
     url = "http://track.atom-data.io/"
-    atom_tracker = IronSourceAtomTracker.new
+    atom_tracker = IronSourceAtom::Tracker.new
     atom_tracker.auth="I40iwPPOsG3dfWX30labriCg9HqMfL"
+
 
     data1={
         id: 11,
@@ -46,7 +47,7 @@ class TestTracker
   end
 def self.test_multitread
   url = "http://track.atom-data.io/"
-  atom_tracker = IronSourceAtomTracker.new
+  atom_tracker = IronSourceAtom::Tracker.new
   atom_tracker.auth="I40iwPPOsG3dfWX30labriCg9HqMfL"
   a=0
   run_example = true
