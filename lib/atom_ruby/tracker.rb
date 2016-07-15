@@ -6,11 +6,11 @@ require_relative 'event_task_pool'
 module IronSourceAtom
   class Tracker
     Event = Struct.new(:stream, :data)
-    BULK_BYTES_SIZE = 1024
-    BULK_SIZE = 3
+    BULK_BYTES_SIZE = 64*1024
+    BULK_SIZE = 4
     TASK_WORKERS_COUNT = 20
     TASK_POOL_SIZE = 10000
-    FLUSH_INTERVAL = 20
+    FLUSH_INTERVAL = 10
 
     # Creates a new instance of Tracker.
     # * +auth+ is the pre shared auth key for your Atom. Required.
