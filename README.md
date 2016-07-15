@@ -2,6 +2,7 @@
 [![License][license-image]][license-url]
 [![Build status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
+[![Docs][docs-image]][docs-url]
 
 Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.
 
@@ -121,7 +122,6 @@ end
 
 You can use our [example][example-url] for sending data to Atom:
 
-![alt text][example]
 
 [example-url]: https://github.com/ironSource/atom-ruby/tree/feature/ISA-359/example
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
@@ -130,3 +130,5 @@ You can use our [example][example-url] for sending data to Atom:
 [travis-url]: https://travis-ci.org/ironSource/atom-ruby
 [coveralls-image]: https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=feature%2FISA-359
 [coveralls-url]: https://coveralls.io/github/ironSource/atom-ruby?branch=feature%2FISA-359
+[docs-image]: https://img.shields.io/badge/docs-latest-blue.svg
+[docs-url]: https://ironsource.github.io/atom-ruby/
