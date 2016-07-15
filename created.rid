@@ -1,7 +1,7 @@
-Fri, 15 Jul 2016 17:05:03 +0300
+Fri, 15 Jul 2016 17:19:24 +0300
 ./bin/console	Fri, 01 Jul 2016 08:17:14 +0300
 ./bin/setup	Thu, 30 Jun 2016 15:56:56 +0300
-./copydocs.sh	Fri, 15 Jul 2016 16:55:35 +0300
+./copydocs.sh	Fri, 15 Jul 2016 17:10:48 +0300
 ./coverage/assets/0.10.0/application.css	Thu, 14 Jul 2016 14:08:01 +0300
 ./coverage/assets/0.10.0/application.js	Thu, 14 Jul 2016 14:08:01 +0300
 ./coverage/assets/0.10.0/colorbox/border.png	Thu, 14 Jul 2016 14:08:01 +0300
@@ -43,7 +43,7 @@ Fri, 15 Jul 2016 17:05:03 +0300
 ./lib/iron_source_atom.rb	Thu, 14 Jul 2016 11:50:17 +0300
 ./LICENSE.txt	Fri, 01 Jul 2016 12:33:07 +0300
 ./Rakefile	Wed, 13 Jul 2016 16:44:21 +0300
-./README.md	Fri, 15 Jul 2016 16:26:12 +0300
+./README.md	Fri, 15 Jul 2016 17:15:20 +0300
 ./test/atom_test.rb	Thu, 14 Jul 2016 13:07:03 +0300
 ./test/back_off_test.rb	Thu, 14 Jul 2016 13:19:25 +0300
 ./test/helper.rb	Thu, 14 Jul 2016 14:07:56 +0300
