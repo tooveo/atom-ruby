@@ -6,6 +6,9 @@
 Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.
 
 - [Signup](https://atom.ironsrc.com/#/signup)
+- [Documentation][docs-url]
+- [Installation](#Installation)
+- [Sending an event](#Tracker-usage)
 
 ## Installation
 ```gem
@@ -121,7 +124,6 @@ You can use our [example][example-url] for sending data to Atom:
 ![alt text][example]
 
 [example-url]: https://github.com/ironSource/atom-ruby/tree/feature/ISA-359/example
-[example]: https://cloud.githubusercontent.com/assets/7361100/16713929/212a5496-46be-11e6-9ff7-0f5ed2c29844.png "example"
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE.txt
 [travis-image]: https://travis-ci.org/ironSource/atom-ruby.svg?branch=feature%2FISA-359
