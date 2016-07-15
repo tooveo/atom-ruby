@@ -6,23 +6,23 @@ require_relative 'event_task_pool'
 module IronSourceAtom
   class Tracker
     Event = Struct.new(:stream, :data)
-    @bulk_size_byte = 64*1024
-    @bulk_size = 4
-    @task_workers_count = 20
-    @task_pool_size = 10000
-    @flush_interval = 10
 
     # Creates a new instance of Tracker.
     # * +auth+ is the pre shared auth key for your Atom. Required.
     # * +url+ atom traker endpoint url.
     def initialize(url="http://track.atom-data.io/")
+      @bulk_size_byte = 64*1024
+      @bulk_size = 4
+      @task_workers_count = 20
+      @task_pool_size = 10000
+      @flush_interval = 10
       @url =url
       @auth=""
       @streams = Hash.new
       @atom = Atom.new
       @flush_now = false
       @event_worker_thread=Thread.start { event_worker }
-      @event_pool = EventTaskPool.new(TASK_WORKERS_COUNT, TASK_POOL_SIZE)
+      @event_pool = EventTaskPool.new(@task_workers_count, @task_pool_size)
 
     end
 
@@ -106,11 +106,11 @@ module IronSourceAtom
           events_size[stream] += value[:data].bytesize
           events_buffer[stream].push value[:data]
 
-          if events_size[stream] >= BULK_BYTES_SIZE
+          if events_size[stream] >= @bulk_size_byte
             flush_event.call(stream, @auth, events_buffer[stream])
           end
 
-          if events_buffer[stream].length >= BULK_SIZE
+          if events_buffer[stream].length >= @bulk_size
             flush_event.call(stream, @auth, events_buffer[stream])
           end
 
@@ -119,7 +119,7 @@ module IronSourceAtom
           end
 
 
-          if timer_delta_time >= FLUSH_INTERVAL
+          if timer_delta_time >= @flush_interval
             timer_delta_time = 0
             flush_event.call(stream, @auth, events_buffer[stream])
           end

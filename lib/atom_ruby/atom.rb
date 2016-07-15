@@ -17,7 +17,6 @@ module IronSourceAtom
     def auth=(auth)
       @auth=auth
     end
-
     # :nocov:
 
     # writes a single data event into ironSource.atom delivery stream.
@@ -62,7 +61,6 @@ module IronSourceAtom
       }.to_json;
       http_client=HttpClient.new
       response = http_client.post(@url, event)
-
       return response
     end
   end
