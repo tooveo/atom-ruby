@@ -15,7 +15,7 @@ Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.
 $ gem install iron_source_atom-1.0.0.gem
 ```
 
-The SDK is divided into 2 separate services:
+You may use SDK in two different ways:
 
 1. High level Tracker - contains in-memory storage and tracks events based on certain parameters.
 2. Low level - contains 2 methods: putEvent() and putEvents() to send 1 event or a batch respectively.

@@ -12,7 +12,6 @@ module IronSourceAtom
       req = Net::HTTP::Post.new(uri.path, initheader)
       req.body = data
       response = Net::HTTP.new(uri.host, uri.port).start { |http| http.request(req) }
-      puts "Request #{req.body}"
       return response
     rescue Errno::ECONNRESET, Errno::ECONNREFUSED
       ResponseMock.new(400, 'connection error', "No internet connection")

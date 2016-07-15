@@ -6,11 +6,11 @@ require_relative 'event_task_pool'
 module IronSourceAtom
   class Tracker
     Event = Struct.new(:stream, :data)
-    BULK_BYTES_SIZE = 64*1024
-    BULK_SIZE = 4
-    TASK_WORKERS_COUNT = 20
-    TASK_POOL_SIZE = 10000
-    FLUSH_INTERVAL = 10
+    @bulk_size_byte = 64*1024
+    @bulk_size = 4
+    @task_workers_count = 20
+    @task_pool_size = 10000
+    @flush_interval = 10
 
     # Creates a new instance of Tracker.
     # * +auth+ is the pre shared auth key for your Atom. Required.
@@ -21,20 +21,40 @@ module IronSourceAtom
       @streams = Hash.new
       @atom = Atom.new
       @flush_now = false
-      @worker_running = true
       @event_worker_thread=Thread.start { event_worker }
       @event_pool = EventTaskPool.new(TASK_WORKERS_COUNT, TASK_POOL_SIZE)
 
     end
 
-    def finalize
-      @worker_running = false
-      @event_worker_thread.join 100
-      puts "I am finalizing"
+    # Sets pre shared auth key for Atom stream
+    # * +auth+ String pre shared auth key
+    def auth=(auth)
+      @auth = auth
     end
 
-    def auth=(auth)
-      @auth=auth
+    # Sets bulk size of events in bytes
+    def bulk_size_byte=(bulk_size_byte)
+      @bulk_size_byte = bulk_size_byte
+    end
+
+    # Sets number of events in bulk
+    def bulk_size=(bulk_size)
+      @bulk_size = bulk_size
+    end
+
+    # Sets the quantity of workers sending data to Atom
+    def task_workers_count=(task_workers_count)
+      @task_workers_count = task_workers_count
+    end
+
+    # Sets the capacity of task queue
+    def task_pool_size=(task_pool_size)
+      @task_pool_size = task_pool_size
+    end
+
+    # Sets the time in seconds for flushing data to Atom
+    def flush_interval=(flush_interval)
+      @flush_interval = flush_interval
     end
 
 
@@ -85,7 +105,6 @@ module IronSourceAtom
 
           events_size[stream] += value[:data].bytesize
           events_buffer[stream].push value[:data]
-          puts "Data pushed to the buffer #{value[:data]}"
 
           if events_size[stream] >= BULK_BYTES_SIZE
             flush_event.call(stream, @auth, events_buffer[stream])
@@ -102,7 +121,6 @@ module IronSourceAtom
 
           if timer_delta_time >= FLUSH_INTERVAL
             timer_delta_time = 0
-            Puts "Timer"
             flush_event.call(stream, @auth, events_buffer[stream])
           end
 
@@ -114,6 +132,7 @@ module IronSourceAtom
       end
 
     end
+
 
     def flush_data(stream, data)
       @atom.auth = @auth
@@ -127,7 +146,7 @@ module IronSourceAtom
       end
     end
 
-
+    # Flush all data buffer to server immediately
     def flush
       @flush_now = true
     end

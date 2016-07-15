@@ -2,7 +2,7 @@ require_relative 'utils'
 require_relative 'http_client'
 module IronSourceAtom
   class Atom
-    # Creates a new instance of IronSourceAtom.
+    # Creates a new instance of Atom.
     # * +auth+ is the pre shared auth key for your Atom. Required.
     # * +url+ atom traker endpoint url.
     def initialize(auth="", url="http://track.atom-data.io/")
@@ -62,8 +62,6 @@ module IronSourceAtom
       }.to_json;
       http_client=HttpClient.new
       response = http_client.post(@url, event)
-      puts "Response #{response.code} #{response.message}:
-        #{response.body}"
 
       return response
     end
