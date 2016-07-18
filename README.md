@@ -27,7 +27,9 @@ You may use SDK in two different ways:
 require 'thread'
 require 'json'
 require 'iron_source_atom'
+
 class TestTracker
+
 def self.test_multitread
     url = "http://track.atom-data.io/"
     atom_tracker = IronSourceAtom::Tracker.new
@@ -54,7 +56,9 @@ def self.test_multitread
     end
     sleep 30
   end
+  
   test_multitread
+  
 end
 `
 ```
@@ -78,6 +82,7 @@ require 'json'
 require 'iron_source_atom'
 
 class TestExample
+
   def self.do_test_job
     url = "http://track.atom-data.io/"
     auth = ""

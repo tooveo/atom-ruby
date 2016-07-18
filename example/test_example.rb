@@ -4,7 +4,7 @@ require 'iron_source_atom'
 class TestExample
   def self.do_test_job
     url = "http://track.atom-data.io/"
-    auth = "I40iwPPOsG3dfWX30labriCg9HqMfL"
+    auth = ""
     atom = IronSourceAtom::Atom.new(auth)
 
     data_string = {
@@ -31,7 +31,7 @@ class TestExample
 
     array_data_string = [data1, data2, data3].to_json
 
-    response = atom.put_events("sdkdev_sdkdev.public.atomtestkeyone", array_data_string)
+    response = atom.put_events("ibtest", array_data_string)
     puts "Response #{response.code} #{response.message}:
           #{response.body}"
 
