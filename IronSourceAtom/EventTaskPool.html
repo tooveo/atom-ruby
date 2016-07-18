@@ -166,30 +166,6 @@
 </li>
 
       
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#work_task-instance_method" title="#work_task (instance method)">#<strong>work_task</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Executes all tasks from events task queue.</p>
-</div></span>
-  
-</li>
-
-      
     </ul>
   
 
@@ -297,15 +273,15 @@ reaches its maximum</p>
       <pre class="lines">
 
 
+34
 35
 36
 37
 38
-39
-40</pre>
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/event_task_pool.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/event_task_pool.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_task'>add_task</span><span class='lparen'>(</span><span class='id identifier rubyid_task'>task</span><span class='rparen'>)</span>
   <span class='kw'>if</span> <span class='ivar'>@event_queue</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='ivar'>@events_max_num</span>
@@ -318,67 +294,12 @@ reaches its maximum</p>
 </table>
 </div>
     
-      <div class="method_details ">
-  <h3 class="signature " id="work_task-instance_method">
-  
-    #<strong>work_task</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Executes all tasks from events task queue</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/event_task_pool.rb', line 23</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_work_task'>work_task</span>
-  <span class='kw'>while</span> <span class='kw'>true</span>
-    <span class='kw'>unless</span> <span class='id identifier rubyid_task'>task</span> <span class='op'>=</span> <span class='ivar'>@event_queue</span><span class='period'>.</span><span class='id identifier rubyid_pop'>pop</span>
-      <span class='id identifier rubyid_sleep'>sleep</span> <span class='float'>0.025</span>
-      <span class='kw'>next</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_task'>task</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span>
-  <span class='kw'>end</span>
-
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
   </div>
 
 </div>
 
       <div id="footer">
-  Generated on Mon Jul 18 16:32:03 2016 by
+  Generated on Mon Jul 18 16:51:42 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.0 (ruby-2.0.0).
 </div>
