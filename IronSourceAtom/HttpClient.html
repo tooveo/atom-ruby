@@ -133,7 +133,11 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Sends http post to atom url with data in body *
+<code>threads_max_num</code> url of ironSourceAtom host * <code>data</code>
+body of http post request.</p>
+</div></span>
   
 </li>
 
@@ -156,15 +160,28 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sends http post to atom url with data in body</p>
+<ul><li>
+<p><code>threads_max_num</code> url of ironSourceAtom host</p>
+</li><li>
+<p><code>data</code> body of http post request</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-7
-8
-9
 10
 11
 12
@@ -173,10 +190,13 @@
 15
 16
 17
-18</pre>
+18
+19
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/http_client.rb', line 7</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/http_client.rb', line 10</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_post'>post</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_uri'>uri</span> <span class='op'>=</span> <span class='const'>URI</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='rparen'>)</span>
@@ -200,7 +220,7 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Jul 18 16:27:38 2016 by
+  Generated on Mon Jul 18 16:32:03 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.0 (ruby-2.0.0).
 </div>
