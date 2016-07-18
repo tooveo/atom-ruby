@@ -60,7 +60,6 @@ def self.test_multitread
   test_multitread
   
 end
-`
 ```
 
 The Tracker process:
