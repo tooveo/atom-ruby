@@ -136,7 +136,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>A new instance of BackOff.</p>
+<p>Creates a new instance of BackOff.</p>
 </div></span>
   
 </li>
@@ -159,7 +159,9 @@
   
 
   
-    <span class="summary_desc"><div class='inline'></div></span>
+    <span class="summary_desc"><div class='inline'>
+<p>Returns back off time.</p>
+</div></span>
   
 </li>
 
@@ -182,7 +184,14 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Returns a new instance of BackOff</p>
+<p>Creates a new instance of BackOff.</p>
+<ul><li>
+<p><code>min_period</code> is the minimum back off time in seconds. The start
+value for exponential increasing.</p>
+</li><li>
+<p><code>max_period</code> is the minimum back off time in seconds. The
+ceiling value for exponential increasing.</p>
+</li></ul>
 
 
   </div>
@@ -196,16 +205,16 @@
       <pre class="lines">
 
 
-3
-4
-5
 6
 7
 8
-9</pre>
+9
+10
+11
+12</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 3</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 6</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='lparen'>(</span><span class='id identifier rubyid_min_period'>min_period</span><span class='op'>=</span><span class='float'>0.2</span><span class='comma'>,</span> <span class='id identifier rubyid_max_period'>max_period</span><span class='op'>=</span><span class='int'>600</span><span class='rparen'>)</span>
   <span class='ivar'>@retry_count</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -235,26 +244,38 @@
   
 
   
-</h3><table class="source_code">
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns back off time. Each call doubles time value with jitter starting
+from min_period up to max_period</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-11
-12
-13
-14
-15
 16
 17
 18
 19
 20
-21</pre>
+21
+22
+23
+24
+25
+26</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 16</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_retry_time'>retry_time</span>
   <span class='kw'>if</span> <span class='ivar'>@retry_time</span> <span class='op'>&lt;</span> <span class='ivar'>@max_period</span>
@@ -277,7 +298,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Jul 15 17:36:52 2016 by
+  Generated on Mon Jul 18 16:19:50 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.0 (ruby-2.0.0).
 </div>
