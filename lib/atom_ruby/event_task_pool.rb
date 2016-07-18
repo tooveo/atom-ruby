@@ -2,6 +2,9 @@ require 'thread'
 module IronSourceAtom
   class EventTaskPool
 
+    # Creates a new instance of EventTaskPool.
+    # * +threads_max_num,+ is the maximum quantity of threads in pool
+    # * +events_max_num+ is is the maximum quantity of event tasks in queue.
     def initialize(threads_max_num, events_max_num)
       @threads_max_num = threads_max_num
       @events_max_num = events_max_num
@@ -16,6 +19,7 @@ module IronSourceAtom
       end
     end
 
+    # Executes all tasks from events task queue
     def work_task
       while true
         unless task = @event_queue.pop
@@ -27,9 +31,10 @@ module IronSourceAtom
 
     end
 
+    # Adds task into task queue. Raises RuntimeError if @event_queue length reaches its maximum
     def add_task(task)
       if @event_queue.length > @events_max_num
-        return
+        raise "Events task queue is reached maximum length"
       end
       @event_queue.push task
     end

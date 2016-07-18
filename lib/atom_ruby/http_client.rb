@@ -4,6 +4,9 @@ module IronSourceAtom
   ResponseMock = Struct.new(:code, :message, :body)
   class HttpClient
 
+    # Sends http post to atom url with data in body
+    # * +threads_max_num+ url of ironSourceAtom host
+    # * +data+ body of http post request
     def post(url, data)
       uri = URI(url)
       initheader = {'Content-Type' => 'application/json',
