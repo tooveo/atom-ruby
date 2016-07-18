@@ -77,7 +77,7 @@ module IronSourceAtom
       timer_delta_time = 0
       events_size = Hash.new
       events_buffer = Hash.new
-      flush_event = lambda do |stream, auth, buffer|
+      flush_event = lambda do |stream, buffer|
         buffer_to_flush = Array.new(buffer).to_json
         buffer.clear
         events_size[stream] = 0
@@ -107,21 +107,21 @@ module IronSourceAtom
           events_buffer[stream].push value[:data]
 
           if events_size[stream] >= @bulk_size_byte
-            flush_event.call(stream, @auth, events_buffer[stream])
+            flush_event.call(stream, events_buffer[stream])
           end
 
           if events_buffer[stream].length >= @bulk_size
-            flush_event.call(stream, @auth, events_buffer[stream])
+            flush_event.call(stream, events_buffer[stream])
           end
 
           if @flush_now
-            flush_event.call(stream, @auth, events_buffer[stream])
+            flush_event.call(stream, events_buffer[stream])
           end
 
 
           if timer_delta_time >= @flush_interval
             timer_delta_time = 0
-            flush_event.call(stream, @auth, events_buffer[stream])
+            flush_event.call(stream, events_buffer[stream])
           end
 
         end
