@@ -19,8 +19,7 @@ module IronSourceAtom
       end
     end
 
-    # Executes all tasks from events task queue
-    def work_task
+   private def work_task
       while true
         unless task = @event_queue.pop
           sleep 0.025

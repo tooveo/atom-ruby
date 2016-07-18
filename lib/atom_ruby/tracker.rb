@@ -72,7 +72,7 @@ module IronSourceAtom
       end
     end
 
-    def event_worker
+    private def event_worker
       timer_start_time = Time.now
       timer_delta_time = 0
       events_size = Hash.new
@@ -134,7 +134,7 @@ module IronSourceAtom
     end
 
 
-    def flush_data(stream, data)
+    private def flush_data(stream, data)
       @atom.auth = @auth
       back_off=BackOff.new
       while true
@@ -151,4 +151,5 @@ module IronSourceAtom
       @flush_now = true
     end
   end
+
 end
