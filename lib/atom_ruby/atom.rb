@@ -1,5 +1,6 @@
 require_relative 'utils'
 require_relative 'http_client'
+require 'json'
 module IronSourceAtom
   class Atom
     # Creates a new instance of Atom.
@@ -53,6 +54,14 @@ module IronSourceAtom
       if stream==nil || stream.empty?
         raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
       end
+
+      begin
+        json_data = JSON.parse(data)
+        raise ArgumentError.new("Param 'data' must be JSON of Array!") unless json_data.is_a?(Array)
+      rescue JSON::ParserError => e
+        raise ArgumentError.new("Param 'data' must be JSON of Array!")
+      end
+
       event ={
           table: stream,
           data: data,
