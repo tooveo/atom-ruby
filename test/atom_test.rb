@@ -23,11 +23,15 @@ class AtomTest < Test::Unit::TestCase
   end
 
   def test_put_event
-    assert_equal(400, IronSourceAtom::Atom.new("SomeString", "SomeString").put_event('"SomeString"', "AnotherString").code )
+    assert_equal(400, IronSourceAtom::Atom.new("SomeString", "SomeString").put_event("SomeString", "AnotherString").code )
   end
 
   def test_put_events
-    assert_equal(400, IronSourceAtom::Atom.new("SomeString", "SomeString").put_events('"SomeString"', "AnotherString").code )
+    assert_equal(400, IronSourceAtom::Atom.new("SomeString", "SomeString").put_events('"SomeString"', '[{"id":11,"message":"first_array_data"},{"id":12,"message":"second_array_data"},{"id":13,"message":"third_array_data"}]').code )
+  end
+
+  def test_put_events_no_array
+    assert_raise( ArgumentError ){ IronSourceAtom::Atom.new("SomeString", "SomeString").put_events("SomeString", "AnotherString") }
   end
 
 
