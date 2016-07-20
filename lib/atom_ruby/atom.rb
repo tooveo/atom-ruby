@@ -32,6 +32,18 @@ module IronSourceAtom
       if stream==nil || stream.empty?
         raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
       end
+
+      begin
+        json_data = JSON.parse(data)
+        raise ArgumentError.new("Param 'data' must be JSON of Object!") unless json_data.is_a?(Object)
+
+      rescue TypeError
+        raise ArgumentError.new("Param 'data' must be not nil!")
+
+      rescue JSON::ParserError
+        raise ArgumentError.new("Param 'data' must be JSON of Object!")
+      end
+
       event ={
           table: stream,
           data: data,
@@ -58,7 +70,11 @@ module IronSourceAtom
       begin
         json_data = JSON.parse(data)
         raise ArgumentError.new("Param 'data' must be JSON of Array!") unless json_data.is_a?(Array)
-      rescue JSON::ParserError => e
+
+      rescue TypeError
+        raise ArgumentError.new("Param 'data' must be not nil!")
+
+      rescue JSON::ParserError
         raise ArgumentError.new("Param 'data' must be JSON of Array!")
       end
 

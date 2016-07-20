@@ -8,5 +8,5 @@ env:
   global:
     - CI_NAME=travis-ci
 script:
-- "rake test"
+- "rspec spec"
 - "gem build iron_source_atom.gemspec"

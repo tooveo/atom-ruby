@@ -1,4 +1,4 @@
-require_relative 'helper'
+require_relative 'spec_helper'
 require 'test/unit'
 require 'atom_ruby/back_off'
 

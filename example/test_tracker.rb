@@ -5,7 +5,7 @@ class TestTracker
 def self.test_multitread
     url = "http://track.atom-data.io/"
     atom_tracker = IronSourceAtom::Tracker.new
-    atom_tracker.auth = ""
+    atom_tracker.auth = "I40iwPPOsG3dfWX30labriCg9HqMfL"
     a=0
     run_example = true
     (0..5).each do |int|
@@ -16,7 +16,7 @@ def self.test_multitread
                 id: a += 1,
                 message: "#{int}Thread_array_data"
             }.to_json
-            atom_tracker.track(data, "ibtest")
+            atom_tracker.track(data, "sdkdev_sdkdev.public.atomtestkeyone")
             puts "send data #{data}"
             sleep(0.05)
             if a > 1000
