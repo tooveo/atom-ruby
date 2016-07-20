@@ -30,7 +30,6 @@ class TestExample
     }
 
     array_data_string = [data1, data2, data3].to_json
-    puts array_data_string
 
     response = atom.put_events("ibtest", array_data_string)
     puts "Response #{response.code} #{response.message}:
