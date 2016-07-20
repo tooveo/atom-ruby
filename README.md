@@ -130,9 +130,9 @@ You can use our [example][example-url] for sending data to Atom:
 [example-url]: https://github.com/ironSource/atom-ruby/tree/feature/ISA-359/example
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
 [license-url]: LICENSE.txt
-[travis-image]: https://travis-ci.org/ironSource/atom-ruby.svg?branch=feature%2FISA-359
+[travis-image]: https://travis-ci.org/ironSource/atom-ruby.svg?branch=master
 [travis-url]: https://travis-ci.org/ironSource/atom-ruby
-[coveralls-image]: https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=feature%2FISA-359
-[coveralls-url]: https://coveralls.io/github/ironSource/atom-ruby?branch=feature%2FISA-359
+[coveralls-image]: https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=master
+[coveralls-url]: https://coveralls.io/github/ironSource/atom-ruby?branch=master
 [docs-image]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-url]: https://ironsource.github.io/atom-ruby/
