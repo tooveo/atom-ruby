@@ -34,9 +34,7 @@ module IronSourceAtom
       end
 
       begin
-        json_data = JSON.parse(data)
-        raise ArgumentError.new("Param 'data' must be JSON of Object!") unless json_data.is_a?(Object)
-
+        JSON.parse(data)
       rescue TypeError
         raise ArgumentError.new("Param 'data' must be not nil!")
 
