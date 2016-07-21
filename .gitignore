@@ -1,9 +1,8 @@
-/.bundle/
-/.yardoc
-/Gemfile.lock
-/_yardoc/
-/coverage/
-/doc/
-/pkg/
-/spec/reports/
-/tmp/
+.idea
+iron_source_atom-1.0.0.gem
+projectFilesBackup
+copydocs.sh
+.yardoc
+Gemfile.lock
+coverage
+doc
