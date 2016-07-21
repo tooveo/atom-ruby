@@ -10,16 +10,11 @@ module IronSourceAtom
       @events_max_num = events_max_num
       @event_queue = Queue.new
       (0...@threads_max_num).map do
-        Thread.new do
-          begin
-            work_task
-          rescue ThreadError
-          end
-        end
+        Thread.new { work_task }
       end
     end
 
-   private def work_task
+    private def work_task
       while true
         unless task = @event_queue.pop
           sleep 0.025
