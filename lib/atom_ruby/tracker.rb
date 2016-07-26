@@ -73,22 +73,44 @@ module IronSourceAtom
     end
 
     private def event_worker
-      timer_start_time = Time.now
-      timer_delta_time = 0
+
+      timer_start_time = Hash.new
+      timer_delta_time = Hash.new
       events_size = Hash.new
       events_buffer = Hash.new
+
       flush_event = lambda do |stream, buffer|
         buffer_to_flush = Array.new(buffer).to_json
         buffer.clear
         events_size[stream] = 0
-        timer_delta_time = 0;
+        timer_delta_time[stream] = 0;
         @event_pool.add_task(Proc.new { flush_data(stream, buffer_to_flush) })
       end
 
       while true
         for stream in @streams.keys
-          timer_delta_time += Time.now - timer_start_time
-          timer_start_time = Time.now
+
+          unless timer_start_time.key? stream
+            timer_start_time.store(stream, Time.now)
+          end
+
+          unless timer_delta_time.key? stream
+            timer_delta_time.store(stream, 0)
+          end
+
+          timer_delta_time[stream] += Time.now - timer_start_time[stream]
+          timer_start_time[stream] = Time.now
+
+          if timer_delta_time[stream] >= @flush_interval
+            timer_delta_time[stream] = 0
+
+            if events_buffer[stream].length > 0
+              puts "flushing event by timer #{events_buffer[stream]}"
+              flush_event.call(stream, events_buffer[stream])
+            end
+
+          end
+
           value = @streams[stream].pop
           if value==nil
             sleep(0.1)
@@ -115,12 +137,6 @@ module IronSourceAtom
           end
 
           if @flush_now
-            flush_event.call(stream, events_buffer[stream])
-          end
-
-
-          if timer_delta_time >= @flush_interval
-            timer_delta_time = 0
             flush_event.call(stream, events_buffer[stream])
           end
 
