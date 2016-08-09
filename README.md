@@ -13,7 +13,7 @@ Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.
 
 ## Installation
 ```gem
-$ gem install iron_source_atom-1.1.0.gem
+$ gem install iron_source_atom-1.5.0.gem
 ```
 
 You may use SDK in two different ways:
