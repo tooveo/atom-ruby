@@ -1,10 +1,13 @@
 require 'thread'
+require 'celluloid/current'
 require 'json'
 require_relative 'atom'
 require_relative 'back_off'
 require_relative 'event_task_pool'
+require_relative 'atom_debug_logger'
 module IronSourceAtom
   class Tracker
+    include Celluloid
     Event = Struct.new(:stream, :data)
 
     # Creates a new instance of Tracker.
@@ -21,9 +24,16 @@ module IronSourceAtom
       @streams = Hash.new
       @atom = Atom.new
       @flush_now = false
-      @event_worker_thread=Thread.start { event_worker }
+      #@event_worker_thread=Thread.start { event_worker }
+      async.event_worker
       @event_pool = EventTaskPool.new(@task_workers_count, @task_pool_size)
 
+    end
+
+    # Sets pre shared auth key for Atom stream
+    # * +auth+ String pre shared auth key
+    def is_debug_mode=(id_debug_mode)
+      @is_debug_mode = id_debug_mode
     end
 
     # Sets pre shared auth key for Atom stream
@@ -105,7 +115,7 @@ module IronSourceAtom
             timer_delta_time[stream] = 0
 
             if events_buffer[stream].length > 0
-              puts "flushing event by timer #{events_buffer[stream]}"
+              AtomDebugLogger.log("flushing event by timer #{events_buffer[stream]}" , @is_debug_mode)
               flush_event.call(stream, events_buffer[stream])
             end
 
@@ -129,14 +139,17 @@ module IronSourceAtom
           events_buffer[stream].push value[:data]
 
           if events_size[stream] >= @bulk_size_byte
+            AtomDebugLogger.log("flushing event by exceeding  bulk_size_byte #{events_buffer[stream]}" , @is_debug_mode)
             flush_event.call(stream, events_buffer[stream])
           end
 
           if events_buffer[stream].length >= @bulk_size
+            AtomDebugLogger.log("flushing event by exceeding bulk_size #{events_buffer[stream]}" , @is_debug_mode)
             flush_event.call(stream, events_buffer[stream])
           end
 
           if @flush_now
+            AtomDebugLogger.log("flushing event by client demand #{events_buffer[stream]}" , @is_debug_mode)
             flush_event.call(stream, events_buffer[stream])
           end
 
@@ -155,6 +168,8 @@ module IronSourceAtom
       back_off=BackOff.new
       while true
         response=@atom.put_events(stream, data)
+        AtomDebugLogger.log("Responce code from server is: #{response.code}"+"\n" , @is_debug_mode)
+
         if Integer(response.code) < 500
           return
         end
