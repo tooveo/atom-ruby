@@ -20,7 +20,6 @@ module IronSourceAtom
       @task_pool_size = 10000
       @flush_interval = 10
       @url =url
-      @auth=""
       @streams = Hash.new
       @atom = Atom.new
       @flush_now = false
@@ -39,7 +38,7 @@ module IronSourceAtom
     # Sets pre shared auth key for Atom stream
     # * +auth+ String pre shared auth key
     def auth=(auth)
-      @auth = auth
+      @atom.auth = auth
     end
 
     # Sets bulk size of events in bytes
@@ -72,7 +71,12 @@ module IronSourceAtom
     #
     # * +data+ info for sending
     # * +stream+ is the Name of the stream
-    def track(data, stream)
+    def track(stream: stream, data: data, auth: '')
+
+      if auth==nil || auth.empty?
+        auth = @atom.auth
+      end
+
       if @streams.has_key? stream
         @streams[stream].push Event.new(stream, data)
       else

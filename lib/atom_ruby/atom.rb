@@ -20,6 +20,11 @@ module IronSourceAtom
     end
     # :nocov:
 
+    # :nocov:
+    def auth
+      @auth
+    end
+    # :nocov:
     # writes a single data event into ironSource.atom delivery stream.
     # to write multiple data records into a delivery stream, use put_events.
     #
@@ -28,7 +33,12 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_event(stream, data)
+    def put_event(stream: stream, data: data, auth: '')
+
+      if auth==nil || auth.empty?
+        auth = @auth
+      end
+
       if stream==nil || stream.empty?
         raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
       end
@@ -46,7 +56,7 @@ module IronSourceAtom
           table: stream,
           data: data,
           bulk: false,
-          auth: Utils.auth(@auth, data)
+          auth: Utils.auth(auth, data)
       }.to_json;
       http_client=HttpClient.new
       return http_client.post(@url, event)
@@ -60,7 +70,11 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_events(stream, data)
+    def put_events(stream: stream, data: data, auth: '')
+      if auth==nil || auth.empty?
+        auth = @auth
+      end
+
       if stream==nil || stream.empty?
         raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
       end
@@ -80,7 +94,7 @@ module IronSourceAtom
           table: stream,
           data: data,
           bulk: true,
-          auth: Utils.auth(@auth, data)
+          auth: Utils.auth(auth, data)
       }.to_json;
       http_client=HttpClient.new
       response = http_client.post(@url, event)
