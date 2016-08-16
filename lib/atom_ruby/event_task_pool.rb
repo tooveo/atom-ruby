@@ -1,6 +1,9 @@
+#require 'celluloid'
 require 'thread'
+
 module IronSourceAtom
   class EventTaskPool
+    #include Celluloid
 
     # Creates a new instance of EventTaskPool.
     # * +threads_max_num,+ is the maximum quantity of threads in pool
@@ -12,6 +15,7 @@ module IronSourceAtom
       (0...@threads_max_num).map do
         Thread.new { work_task }
       end
+
     end
 
     private def work_task

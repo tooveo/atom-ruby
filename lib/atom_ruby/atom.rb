@@ -33,7 +33,7 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_event(stream: stream, data: data, auth: '')
+    def put_event(stream, data, auth = '')
 
       if auth==nil || auth.empty?
         auth = @auth
@@ -70,7 +70,7 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_events(stream: stream, data: data, auth: '')
+    def put_events(stream, data, auth = '')
       if auth==nil || auth.empty?
         auth = @auth
       end
