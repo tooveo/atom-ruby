@@ -1,13 +1,12 @@
-require 'thread'
-#require 'celluloid/current'
+require 'celluloid/current'
 require 'json'
 require_relative 'atom'
 require_relative 'back_off'
-require_relative 'event_task_pool'
+require_relative 'event_task_worker'
 require_relative 'atom_debug_logger'
 module IronSourceAtom
   class Tracker
-    #include Celluloid
+    include Celluloid
     Event = Struct.new(:stream, :data)
 
     # Creates a new instance of Tracker.
@@ -16,17 +15,17 @@ module IronSourceAtom
     def initialize(url="http://track.atom-data.io/")
       @bulk_size_byte = 64*1024
       @bulk_size = 4
-      @task_workers_count = 20
       @task_pool_size = 10000
       @flush_interval = 10
+      @event_queue = Queue.new
       @url = url
       @streams = Hash.new
       @streams_data = Hash.new
       @atom = Atom.new
       @flush_now = false
-      @event_worker_thread=Thread.start { event_worker }
-      #async.event_worker
-      @event_pool = EventTaskPool.new(@task_workers_count, @task_pool_size)
+      async.event_worker
+      task_pool = EventTaskWorker.pool(size: 10)
+      task_pool.work_task(@event_queue)
 
     end
 
@@ -67,6 +66,10 @@ module IronSourceAtom
       @flush_interval = flush_interval
     end
 
+    def self.event_queue
+      @@event_queue
+    end
+
 
     # Track data to server
     #
@@ -104,10 +107,10 @@ module IronSourceAtom
         buffer.clear
         events_size[stream] = 0
         timer_delta_time[stream] = 0
-        @event_pool.add_task(Proc.new { flush_data(stream, buffer_to_flush, auth) })
+        add_task(Proc.new { flush_data(stream, buffer_to_flush, auth) })
       end
 
-      while true
+      every (0.01) do
         for stream in @streams_data.keys
 
           unless timer_start_time.key? stream
@@ -131,9 +134,11 @@ module IronSourceAtom
 
           end
 
-          value = @streams[stream].pop
-          if value==nil
-            sleep(0.1)
+
+          begin
+            value = @streams[stream].pop(true)
+          rescue Exception => e
+            sleep 0.1
             next
           end
 
@@ -149,17 +154,17 @@ module IronSourceAtom
           events_buffer[stream].push value[:data]
 
           if events_size[stream] >= @bulk_size_byte
-            AtomDebugLogger.log("flushing event by exceeding  bulk_size_byte #{events_buffer[stream]}", @is_debug_mode)
+            AtomDebugLogger.log("Flushing event by exceeding  bulk_size_byte #{events_buffer[stream]}", @is_debug_mode)
             flush_event.call(stream, @streams_data[stream], events_buffer[stream])
           end
 
           if events_buffer[stream].length >= @bulk_size
-            AtomDebugLogger.log("flushing event by exceeding bulk_size #{events_buffer[stream]}", @is_debug_mode)
+            AtomDebugLogger.log("Flushing event by exceeding bulk_size #{events_buffer[stream]}", @is_debug_mode)
             flush_event.call(stream, @streams_data[stream], events_buffer[stream])
           end
 
           if @flush_now
-            AtomDebugLogger.log("flushing event by client demand #{events_buffer[stream]}", @is_debug_mode)
+            AtomDebugLogger.log("Flushing event by client demand #{events_buffer[stream]}", @is_debug_mode)
             flush_event.call(stream, @streams_data[stream], events_buffer[stream])
           end
 
@@ -176,6 +181,8 @@ module IronSourceAtom
     private def flush_data(stream, data, auth)
       back_off=BackOff.new
       while true
+        sleep 0.01
+        AtomDebugLogger.log("Request data: #{data}"+"\n", @is_debug_mode)
         response=@atom.put_events(stream, data, auth)
         AtomDebugLogger.log("Responce code from server is: #{response.code}"+"\n", @is_debug_mode)
 
@@ -190,6 +197,13 @@ module IronSourceAtom
     def flush
       @flush_now = true
     end
-  end
 
+    # Adds task into task queue. Raises RuntimeError if @event_queue length reaches its maximum
+    def add_task(task)
+      if @event_queue.length > @task_pool_size
+        raise "Events task queue is reached maximum length"
+      end
+      @event_queue.push task
+    end
+  end
 end
