@@ -17,6 +17,7 @@ module IronSourceAtom
       @bulk_size = 4
       @task_pool_size = 10000
       @flush_interval = 10
+      @task_workers_count = 10
       @event_queue = Queue.new
       @url = url
       @streams = Hash.new
@@ -24,7 +25,7 @@ module IronSourceAtom
       @atom = Atom.new
       @flush_now = false
       async.event_worker
-      task_pool = EventTaskWorker.pool(size: 10)
+      task_pool = EventTaskWorker.pool(size: @task_workers_count)
       task_pool.work_task(@event_queue)
 
     end
