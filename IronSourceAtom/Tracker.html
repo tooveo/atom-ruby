@@ -6,7 +6,7 @@
 <title>
   Class: IronSourceAtom::Tracker
   
-    &mdash; Documentation by YARD 0.9.0
+    &mdash; Documentation by YARD 0.9.5
   
 </title>
 
@@ -88,6 +88,11 @@
   
   
   
+  
+  <dl>
+      <dt>Includes:</dt>
+      <dd>Celluloid</dd>
+  </dl>
   
   
 
@@ -276,6 +281,31 @@ shared auth key.</p>
         <li class="public ">
   <span class="summary_signature">
     
+      <a href="#is_debug_mode%3D-instance_method" title="#is_debug_mode= (instance method)">#<strong>is_debug_mode=</strong>(id_debug_mode)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Sets pre shared auth key for Atom stream * <code>auth</code> String pre
+shared auth key.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
       <a href="#task_pool_size%3D-instance_method" title="#task_pool_size= (instance method)">#<strong>task_pool_size=</strong>(task_pool_size)  &#x21d2; Object </a>
     
 
@@ -300,31 +330,7 @@ shared auth key.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#task_workers_count%3D-instance_method" title="#task_workers_count= (instance method)">#<strong>task_workers_count=</strong>(task_workers_count)  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Sets the quantity of workers sending data to Atom.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#track-instance_method" title="#track (instance method)">#<strong>track</strong>(data, stream)  &#x21d2; Object </a>
+      <a href="#track-instance_method" title="#track (instance method)">#<strong>track</strong>(data, stream, auth = &#39;&#39;)  &#x21d2; Object </a>
     
 
     
@@ -348,7 +354,8 @@ shared auth key.</p>
     </ul>
   
 
-<div id="constructor_details" class="method_details_list">
+
+  <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
@@ -365,9 +372,8 @@ shared auth key.</p>
     
 <p>Creates a new instance of Tracker.</p>
 <ul><li>
-<p><code>auth</code> is the pre shared auth key for your Atom. Required.</p>
-</li><li>
-<p><code>url</code> atom traker endpoint url.</p>
+<p><code>url</code> atom traker endpoint url. Default is <a
+href="http://track.atom-data.io">track.atom-data.io</a>/</p>
 </li></ul>
 
 
@@ -382,7 +388,6 @@ shared auth key.</p>
       <pre class="lines">
 
 
-13
 14
 15
 16
@@ -396,24 +401,29 @@ shared auth key.</p>
 24
 25
 26
-27</pre>
+27
+28
+29
+30</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 13</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 14</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='op'>=</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://track.atom-data.io/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='ivar'>@bulk_size_byte</span> <span class='op'>=</span> <span class='int'>64</span><span class='op'>*</span><span class='int'>1024</span>
   <span class='ivar'>@bulk_size</span> <span class='op'>=</span> <span class='int'>4</span>
-  <span class='ivar'>@task_workers_count</span> <span class='op'>=</span> <span class='int'>20</span>
   <span class='ivar'>@task_pool_size</span> <span class='op'>=</span> <span class='int'>10000</span>
   <span class='ivar'>@flush_interval</span> <span class='op'>=</span> <span class='int'>10</span>
-  <span class='ivar'>@url</span> <span class='op'>=</span><span class='id identifier rubyid_url'>url</span>
-  <span class='ivar'>@auth</span><span class='op'>=</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='ivar'>@task_workers_count</span> <span class='op'>=</span> <span class='int'>10</span>
+  <span class='ivar'>@event_queue</span> <span class='op'>=</span> <span class='const'>Queue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@url</span> <span class='op'>=</span> <span class='id identifier rubyid_url'>url</span>
   <span class='ivar'>@streams</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@streams_data</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@atom</span> <span class='op'>=</span> <span class='const'>Atom</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@flush_now</span> <span class='op'>=</span> <span class='kw'>false</span>
-  <span class='ivar'>@event_worker_thread</span><span class='op'>=</span><span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_start'>start</span> <span class='lbrace'>{</span> <span class='id identifier rubyid_event_worker'>event_worker</span> <span class='rbrace'>}</span>
-  <span class='ivar'>@event_pool</span> <span class='op'>=</span> <span class='const'>EventTaskPool</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='ivar'>@task_workers_count</span><span class='comma'>,</span> <span class='ivar'>@task_pool_size</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_async'>async</span><span class='period'>.</span><span class='id identifier rubyid_event_worker'>event_worker</span>
+  <span class='id identifier rubyid_task_pool'>task_pool</span> <span class='op'>=</span> <span class='const'>EventTaskWorker</span><span class='period'>.</span><span class='id identifier rubyid_pool'>pool</span><span class='lparen'>(</span><span class='label'>size:</span> <span class='ivar'>@task_workers_count</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_task_pool'>task_pool</span><span class='period'>.</span><span class='id identifier rubyid_work_task'>work_task</span><span class='lparen'>(</span><span class='ivar'>@event_queue</span><span class='rparen'>)</span>
 
 <span class='kw'>end</span></pre>
     </td>
@@ -457,15 +467,15 @@ shared auth key.</p>
       <pre class="lines">
 
 
-31
-32
-33</pre>
+40
+41
+42</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 31</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 40</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_auth='>auth=</span><span class='lparen'>(</span><span class='id identifier rubyid_auth'>auth</span><span class='rparen'>)</span>
-  <span class='ivar'>@auth</span> <span class='op'>=</span> <span class='id identifier rubyid_auth'>auth</span>
+  <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='id identifier rubyid_auth'>auth</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -498,12 +508,12 @@ shared auth key.</p>
       <pre class="lines">
 
 
-41
-42
-43</pre>
+50
+51
+52</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 41</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bulk_size='>bulk_size=</span><span class='lparen'>(</span><span class='id identifier rubyid_bulk_size'>bulk_size</span><span class='rparen'>)</span>
   <span class='ivar'>@bulk_size</span> <span class='op'>=</span> <span class='id identifier rubyid_bulk_size'>bulk_size</span>
@@ -539,12 +549,12 @@ shared auth key.</p>
       <pre class="lines">
 
 
-36
-37
-38</pre>
+45
+46
+47</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 36</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 45</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bulk_size_byte='>bulk_size_byte=</span><span class='lparen'>(</span><span class='id identifier rubyid_bulk_size_byte'>bulk_size_byte</span><span class='rparen'>)</span>
   <span class='ivar'>@bulk_size_byte</span> <span class='op'>=</span> <span class='id identifier rubyid_bulk_size_byte'>bulk_size_byte</span>
@@ -580,12 +590,12 @@ shared auth key.</p>
       <pre class="lines">
 
 
-150
-151
-152</pre>
+190
+191
+192</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 150</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 190</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flush'>flush</span>
   <span class='ivar'>@flush_now</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -621,15 +631,59 @@ shared auth key.</p>
       <pre class="lines">
 
 
-56
-57
-58</pre>
+61
+62
+63</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 56</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 61</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flush_interval='>flush_interval=</span><span class='lparen'>(</span><span class='id identifier rubyid_flush_interval'>flush_interval</span><span class='rparen'>)</span>
   <span class='ivar'>@flush_interval</span> <span class='op'>=</span> <span class='id identifier rubyid_flush_interval'>flush_interval</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="is_debug_mode=-instance_method">
+  
+    #<strong>is_debug_mode=</strong>(id_debug_mode)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Sets pre shared auth key for Atom stream</p>
+<ul><li>
+<p><code>auth</code> String pre shared auth key</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+34
+35
+36</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 34</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_is_debug_mode='>is_debug_mode=</span><span class='lparen'>(</span><span class='id identifier rubyid_id_debug_mode'>id_debug_mode</span><span class='rparen'>)</span>
+  <span class='ivar'>@is_debug_mode</span> <span class='op'>=</span> <span class='id identifier rubyid_id_debug_mode'>id_debug_mode</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -662,12 +716,12 @@ shared auth key.</p>
       <pre class="lines">
 
 
-51
-52
-53</pre>
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 56</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_task_pool_size='>task_pool_size=</span><span class='lparen'>(</span><span class='id identifier rubyid_task_pool_size'>task_pool_size</span><span class='rparen'>)</span>
   <span class='ivar'>@task_pool_size</span> <span class='op'>=</span> <span class='id identifier rubyid_task_pool_size'>task_pool_size</span>
@@ -678,50 +732,9 @@ shared auth key.</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="task_workers_count=-instance_method">
-  
-    #<strong>task_workers_count=</strong>(task_workers_count)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Sets the quantity of workers sending data to Atom</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-46
-47
-48</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 46</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_task_workers_count='>task_workers_count=</span><span class='lparen'>(</span><span class='id identifier rubyid_task_workers_count'>task_workers_count</span><span class='rparen'>)</span>
-  <span class='ivar'>@task_workers_count</span> <span class='op'>=</span> <span class='id identifier rubyid_task_workers_count'>task_workers_count</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="track-instance_method">
   
-    #<strong>track</strong>(data, stream)  &#x21d2; <tt>Object</tt> 
+    #<strong>track</strong>(data, stream, auth = &#39;&#39;)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -735,6 +748,9 @@ shared auth key.</p>
 <p><code>data</code> info for sending</p>
 </li><li>
 <p><code>stream</code> is the Name of the stream</p>
+</li><li>
+<p><code>auth</code> is the pre shared auth key for your Atom. Required. By
+default uses authKey set to Tracker instance</p>
 </li></ul>
 
 
@@ -749,20 +765,39 @@ shared auth key.</p>
       <pre class="lines">
 
 
-65
-66
-67
-68
-69
-70
 71
 72
-73</pre>
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 65</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 71</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_track'>track</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_stream'>stream</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_track'>track</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='id identifier rubyid_auth'>auth</span><span class='op'>==</span><span class='kw'>nil</span> <span class='op'>||</span> <span class='id identifier rubyid_auth'>auth</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
+    <span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_auth'>auth</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>unless</span> <span class='ivar'>@streams_data</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span> <span class='id identifier rubyid_stream'>stream</span>
+    <span class='ivar'>@streams_data</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_auth'>auth</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+
   <span class='kw'>if</span> <span class='ivar'>@streams</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span> <span class='id identifier rubyid_stream'>stream</span>
     <span class='ivar'>@streams</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span> <span class='const'>Event</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='kw'>else</span>
@@ -770,6 +805,7 @@ shared auth key.</p>
     <span class='id identifier rubyid_events_queue'>events_queue</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span> <span class='const'>Event</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
     <span class='ivar'>@streams</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_events_queue'>events_queue</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
+
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -781,9 +817,9 @@ shared auth key.</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Jul 18 16:51:42 2016 by
+  Generated on Thu Aug 18 11:04:56 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.0 (ruby-2.0.0).
+  0.9.5 (ruby-2.3.1).
 </div>
 
     </div>
