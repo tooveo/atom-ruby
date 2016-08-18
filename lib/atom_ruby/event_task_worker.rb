@@ -4,9 +4,7 @@ module IronSourceAtom
   class EventTaskWorker
     include Celluloid
 
-    # Creates a new instance of EventTaskPool.
-    # * +threads_max_num,+ is the maximum quantity of threads in pool
-    # * +events_max_num+ is is the maximum quantity of event tasks in queue.
+    # Creates a new instance of EventTaskWorker.
     def initialize
       @threads_max_num = 10
       @events_max_num = 1000

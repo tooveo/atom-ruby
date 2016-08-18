@@ -4,9 +4,9 @@ require 'json'
 module IronSourceAtom
   class Atom
     # Creates a new instance of Atom.
-    # * +auth+ is the pre shared auth key for your Atom. Required.
+    # * +auth+ is the pre shared auth key for your Atom.
     # * +url+ atom traker endpoint url.
-    def initialize(auth="", url="http://track.atom-data.io/")
+    def initialize(auth='', url="http://track.atom-data.io/")
       if auth==nil
         raise ArgumentError.new("Param 'auth' must not be nil!")
       end
@@ -30,6 +30,7 @@ module IronSourceAtom
     #
     # * +stream+ the name of your Atom stream.
     # * +data+ your data in JSON format.
+    # * +auth+ is the pre shared auth key for your Atom. Required. By default uses authKey set in Atom constructor
     #
     # returns an HTTPResponse object.
     #
@@ -57,7 +58,7 @@ module IronSourceAtom
           data: data,
           bulk: false,
           auth: Utils.auth(auth, data)
-      }.to_json;
+      }.to_json
       http_client=HttpClient.new
       return http_client.post(@url, event)
     end
@@ -67,6 +68,7 @@ module IronSourceAtom
     #
     # * +stream+ the name of your Atom stream.
     # * +data+ your data in JSON format.
+    # * +auth+ is the pre shared auth key for your Atom. Required. By default uses authKey set in Atom constructor
     #
     # returns an HTTPResponse object.
     #
@@ -95,7 +97,7 @@ module IronSourceAtom
           data: data,
           bulk: true,
           auth: Utils.auth(auth, data)
-      }.to_json;
+      }.to_json
       http_client=HttpClient.new
       response = http_client.post(@url, event)
       return response

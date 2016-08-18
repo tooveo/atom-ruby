@@ -10,8 +10,7 @@ module IronSourceAtom
     Event = Struct.new(:stream, :data)
 
     # Creates a new instance of Tracker.
-    # * +auth+ is the pre shared auth key for your Atom. Required.
-    # * +url+ atom traker endpoint url.
+    # * +url+ atom traker endpoint url. Default is http://track.atom-data.io/
     def initialize(url="http://track.atom-data.io/")
       @bulk_size_byte = 64*1024
       @bulk_size = 4
@@ -52,10 +51,6 @@ module IronSourceAtom
       @bulk_size = bulk_size
     end
 
-    # Sets the quantity of workers sending data to Atom
-    def task_workers_count=(task_workers_count)
-      @task_workers_count = task_workers_count
-    end
 
     # Sets the capacity of task queue
     def task_pool_size=(task_pool_size)
@@ -67,15 +62,12 @@ module IronSourceAtom
       @flush_interval = flush_interval
     end
 
-    def self.event_queue
-      @@event_queue
-    end
-
 
     # Track data to server
     #
     # * +data+ info for sending
     # * +stream+ is the Name of the stream
+    # * +auth+ is the pre shared auth key for your Atom. Required. By default uses authKey set to Tracker instance
     def track(data, stream, auth = '')
 
       if auth==nil || auth.empty?
@@ -200,7 +192,7 @@ module IronSourceAtom
     end
 
     # Adds task into task queue. Raises RuntimeError if @event_queue length reaches its maximum
-    def add_task(task)
+    private def add_task(task)
       if @event_queue.length > @task_pool_size
         raise "Events task queue is reached maximum length"
       end
