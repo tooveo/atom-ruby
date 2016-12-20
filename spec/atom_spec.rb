@@ -15,6 +15,7 @@ RSpec.describe 'atom' do
 
 describe ".put_event(stream, data)" do
   it "raises ArgumentError if param stream is nil" do
+    atom.is_debug_mode = true
     expect{ atom.put_event(nil, "AnotherString") }.to raise_error ArgumentError
   end
 

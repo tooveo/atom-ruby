@@ -1,17 +1,22 @@
 require_relative 'utils'
 require_relative 'http_client'
+require_relative 'atom_debug_logger'
+
 require 'json'
 
 module IronSourceAtom
   class Atom
     attr_accessor :auth
     attr_accessor :url
+    attr_accessor :is_debug_mode
 
     # Creates a new instance of Atom.
     # * +auth+ is the pre shared auth key for your Atom.
     # * +url+ atom tracker endpoint url.
     def initialize(auth = '', url= 'http://track.atom-data.io/')
       raise ArgumentError.new("Param 'auth' must not be nil!") if auth == nil
+
+      @is_debug_mode = false
 
       @url = url
       @auth = auth
@@ -64,9 +69,11 @@ module IronSourceAtom
       raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
 
       event = _get_event_data(stream, data, auth, false)
-
+      AtomDebugLogger.log("Put event with stream: #{stream} data: #{data}", @is_debug_mode)
+      # :nocov:
       http_client = HttpClient.new(@url, event, callback)
       http_client.post
+      # :nocov:
     end
 
     # writes a multiple data events into ironSource.atom delivery stream.
@@ -84,8 +91,11 @@ module IronSourceAtom
 
       event = _get_event_data(stream, data, auth, true)
 
+      AtomDebugLogger.log("Put events with stream: #{stream} data: #{data}", @is_debug_mode)
+      # :nocov:
       http_client = HttpClient.new(@url, event, callback)
       http_client.post
+      # :nocov:
     end
   end
 end

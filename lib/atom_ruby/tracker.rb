@@ -11,7 +11,7 @@ module IronSourceAtom
   class Tracker
     @@tracker_lock = Mutex.new
 
-    attr_accessor :is_debug_mode
+    attr_reader :is_debug_mode
     attr_accessor :bulk_size_byte
     attr_accessor :bulk_size
     attr_accessor :task_pool_size
@@ -48,6 +48,11 @@ module IronSourceAtom
       @atom.url = url
     end
 
+    def is_debug_mode=(is_debug_mode)
+      @is_debug_mode = is_debug_mode
+      @atom
+    end
+
     def track(stream, data)
       @@tracker_lock.lock
       if (stream.nil? || stream.length == 0 || data.nil? || data.length == 0)
@@ -69,6 +74,8 @@ module IronSourceAtom
       end
       @@tracker_lock.unlock
 
+      AtomDebugLogger.log("Track event for stream: #{stream} with data: #{data}", @is_debug_mode)
+
       if @accumulate[stream].length >= @bulk_size || _byte_count(@accumulate[stream]) >= @bulk_size_byte
         flush(stream)
       end
@@ -87,6 +94,8 @@ module IronSourceAtom
           @accumulate[stream] = []
         end
       @@tracker_lock.unlock
+
+      AtomDebugLogger.log("Flush event for stream: #{stream}", @is_debug_mode)
 
       _send(stream, data, @retry_timeout, callback) if data != nil && data.length > 0
     end
