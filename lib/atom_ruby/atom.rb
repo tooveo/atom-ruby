@@ -37,6 +37,7 @@ module IronSourceAtom
           raise ArgumentError.new("Param 'data' must be JSON of Object!")
         end
       else
+        # :nocov:
         if data.is_a?(Array) && data[0].is_a?(String)
           data = data.join(',')
           data = '[' + data + ']'
@@ -45,14 +46,17 @@ module IronSourceAtom
         else
           raise StandardError, "Invalid Data - can't be stringified"
         end
+        # :nocov:
       end
 
+      # :nocov:
       event = {
           table: stream,
           data: data,
           bulk: is_bulk,
           auth: Utils.auth(auth, data)
       }.to_json
+      # :nocov:
     end
 
     # writes a single data event into ironSource.atom delivery stream.
@@ -69,8 +73,9 @@ module IronSourceAtom
       raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
 
       event = _get_event_data(stream, data, auth, false)
-      AtomDebugLogger.log("Put event with stream: #{stream} data: #{data}", @is_debug_mode)
       # :nocov:
+      AtomDebugLogger.log("Put event with stream: #{stream} data: #{data}", @is_debug_mode)
+
       http_client = HttpClient.new(@url, event, callback)
       http_client.post
       # :nocov:
@@ -90,9 +95,9 @@ module IronSourceAtom
       raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
 
       event = _get_event_data(stream, data, auth, true)
-
+#     :nocov:
       AtomDebugLogger.log("Put events with stream: #{stream} data: #{data}", @is_debug_mode)
-      # :nocov:
+
       http_client = HttpClient.new(@url, event, callback)
       http_client.post
       # :nocov:
