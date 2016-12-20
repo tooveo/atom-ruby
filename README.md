@@ -13,7 +13,7 @@ Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.
 
 ## Installation
 ```gem
-$ gem install iron_source_atom-1.5.0.gem
+$ gem install iron_source_atom-1.5.1.gem
 ```
 
 You may use SDK in two different ways:
@@ -24,8 +24,6 @@ You may use SDK in two different ways:
 ### Tracker usage
 
 ```ruby
-require 'thread'
-require 'json'
 require 'iron_source_atom'
 
 class TestTracker
@@ -34,31 +32,10 @@ def self.test_multitread
     url = "http://track.atom-data.io/"
     atom_tracker = IronSourceAtom::Tracker.new
     atom_tracker.auth = ""
-    a=0
-    run_example = true
-    (0..5).each do |int|
-      Thread.new do
-        begin
-          while run_example
-            data = {
-                id: a += 1,
-                message: "#{int}Thread_array_data"
-            }.to_json
-            atom_tracker.track(data, "ibtest")
-            puts "send data #{data}"
-            sleep(0.05)
-            if a > 100
-              run_example = false
-            end
-          end
-        end
-      end
-    end
-    sleep 30
-  end
-  
-  test_multitread
-  
+    
+    atom_tracker.track(data, "ibtest")
+    
+    atom_tracker.flush
 end
 ```
 

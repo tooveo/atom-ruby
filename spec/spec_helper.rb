@@ -11,6 +11,7 @@ SimpleCov.start do
   add_filter 'spec'
   add_filter 'example'
   add_filter 'lib/atom_ruby/tracker.rb'
+  add_filter 'lib/atom_ruby/atom_debug_logger.rb'
   add_filter 'lib/atom_ruby/http_client.rb'
 end
 RSpec.configure do |config|
