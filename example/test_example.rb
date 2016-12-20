@@ -1,5 +1,5 @@
 require 'json'
-require 'iron_source_atom'
+require '../lib/iron_source_atom'
 
 class TestExample
   def self.do_test_job
@@ -7,34 +7,27 @@ class TestExample
     auth = ""
     atom = IronSourceAtom::Atom.new(auth)
 
+    atom.url = url
+
     data_string = {
         id: 1,
         message: "hello_from_ruby"
     }.to_json
 
-    response = atom.put_event("sdkdev_sdkdev.public.atomtestkeyone", data_string)
-    puts "Response #{response.code} #{response.message}:
-          #{response.body}"
+    reponse_callback = lambda do |response|
+      begin
+        print "Reponse code: #{response.code}\n"
+        print "Reponse message: #{response.message}\n"
 
-    data1 = {
-        id: 11,
-        message: "first_array_data"
-    }
-    data2 = {
-        id: 12,
-        message: "second_array_data"
-    }
-    data3 = {
-        id: 13,
-        message: "third_array_data"
-    }
+        print "Response body: #{response.body}\n"
+      rescue Exception => ex
+        print ex.message
+      end
+    end
 
-    array_data_string = [data1, data2, data3].to_json
+    atom.put_event("sdkdev_sdkdev.public.g8y3etest2", data_string, "I40iwPPOsG3dfWX30labriCg9HqMfL", reponse_callback)
 
-    response = atom.put_events("ibtest", array_data_string)
-    puts "Response #{response.code} #{response.message}:
-          #{response.body}"
-
+    puts "ni11;"
   end
 
   do_test_job

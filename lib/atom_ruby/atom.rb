@@ -1,30 +1,43 @@
 require_relative 'utils'
 require_relative 'http_client'
 require 'json'
+
 module IronSourceAtom
   class Atom
+    attr_accessor :auth
+    attr_accessor :url
+
     # Creates a new instance of Atom.
     # * +auth+ is the pre shared auth key for your Atom.
-    # * +url+ atom traker endpoint url.
-    def initialize(auth='', url="http://track.atom-data.io/")
-      if auth==nil
-        raise ArgumentError.new("Param 'auth' must not be nil!")
+    # * +url+ atom tracker endpoint url.
+    def initialize(auth = '', url= 'http://track.atom-data.io/')
+      raise ArgumentError.new("Param 'auth' must not be nil!") if auth == nil
+
+      @url = url
+      @auth = auth
+    end
+
+    def _get_event_data(stream, data, auth, is_bulk = false)
+
+      unless data.is_a?(String)
+        if data.is_a?(Array) && data[0].is_a?(String)
+          data = data.join(',')
+          data = '[' + data + ']'
+        elsif data.respond_to? :to_json
+          data = data.to_json
+        else
+          raise StandardError, "Invalid Data - can't be stringified"
+        end
       end
-      @url =url
-      @auth=auth
+
+      event = {
+          table: stream,
+          data: data,
+          bulk: is_bulk,
+          auth: Utils.auth(auth, data)
+      }.to_json
     end
 
-    # :nocov:
-    def auth=(auth)
-      @auth=auth
-    end
-    # :nocov:
-
-    # :nocov:
-    def auth
-      @auth
-    end
-    # :nocov:
     # writes a single data event into ironSource.atom delivery stream.
     # to write multiple data records into a delivery stream, use put_events.
     #
@@ -34,33 +47,14 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_event(stream, data, auth = '')
+    def put_event(stream, data, auth = '', callback = nil)
+      auth = @auth if auth == nil || auth.empty?
+      raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
 
-      if auth==nil || auth.empty?
-        auth = @auth
-      end
+      event = _get_event_data(stream, data, auth, false)
 
-      if stream==nil || stream.empty?
-        raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
-      end
-
-      begin
-        JSON.parse(data)
-      rescue TypeError
-        raise ArgumentError.new("Param 'data' must be not nil!")
-
-      rescue JSON::ParserError
-        raise ArgumentError.new("Param 'data' must be JSON of Object!")
-      end
-
-      event ={
-          table: stream,
-          data: data,
-          bulk: false,
-          auth: Utils.auth(auth, data)
-      }.to_json
-      http_client=HttpClient.new
-      return http_client.post(@url, event)
+      http_client = HttpClient.new(@url, event, callback)
+      http_client.post
     end
 
     # writes a multiple data events into ironSource.atom delivery stream.
@@ -72,35 +66,14 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_events(stream, data, auth = '')
-      if auth==nil || auth.empty?
-        auth = @auth
-      end
+    def put_events(stream, data, auth = '', callback = nil)
+      auth = @auth if auth == nil || auth.empty?
+      raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
 
-      if stream==nil || stream.empty?
-        raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
-      end
+      event = _get_event_data(stream, data, auth, true)
 
-      begin
-        json_data = JSON.parse(data)
-        raise ArgumentError.new("Param 'data' must be JSON of Array!") unless json_data.is_a?(Array)
-
-      rescue TypeError
-        raise ArgumentError.new("Param 'data' must be not nil!")
-
-      rescue JSON::ParserError
-        raise ArgumentError.new("Param 'data' must be JSON of Array!")
-      end
-
-      event ={
-          table: stream,
-          data: data,
-          bulk: true,
-          auth: Utils.auth(auth, data)
-      }.to_json
-      http_client=HttpClient.new
-      response = http_client.post(@url, event)
-      return response
+      http_client = HttpClient.new(@url, event, callback)
+      http_client.post
     end
   end
 end
