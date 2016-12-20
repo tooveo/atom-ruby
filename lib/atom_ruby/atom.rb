@@ -18,8 +18,20 @@ module IronSourceAtom
     end
 
     def _get_event_data(stream, data, auth, is_bulk = false)
+      if data == nil
+        raise ArgumentError.new("Param 'data' must be not nil!")
+      end
 
-      unless data.is_a?(String)
+      if data.is_a?(String)
+        begin
+          json_data = JSON.parse(data)
+          if is_bulk
+            raise ArgumentError.new("Param 'data' must be JSON of Array!") unless json_data.is_a?(Array)
+          end
+        rescue JSON::ParserError
+          raise ArgumentError.new("Param 'data' must be JSON of Object!")
+        end
+      else
         if data.is_a?(Array) && data[0].is_a?(String)
           data = data.join(',')
           data = '[' + data + ']'
