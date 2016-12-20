@@ -8,6 +8,10 @@ class TestExample
     atom = IronSourceAtom::Atom.new(auth)
 
     atom.url = url
+    atom.is_debug_mode = true
+
+    stream = 'ibtest'
+    auth_key = '<YOUR_AUTH_KEY>'
 
     data_string = {
         id: 1,
@@ -25,9 +29,55 @@ class TestExample
       end
     end
 
-    atom.put_event("sdkdev_sdkdev.public.g8y3etest2", data_string, "I40iwPPOsG3dfWX30labriCg9HqMfL", reponse_callback)
+    puts 'Put event test'
+    atom.put_event(stream, data_string, auth_key, reponse_callback)
 
-    puts "ni11;"
+
+    data_string_json = {
+        id: 2,
+        message: 'hello_from_ruby_2'
+    }
+
+    puts 'Put event with json object test'
+    atom.put_event(stream, data_string_json, auth_key, reponse_callback)
+
+    data_str_array_json = [
+        {
+            id: 1,
+            msg: 'test 1'
+        },
+        {
+            id: 2,
+            msg: 'test 2'
+        }
+    ].to_json
+
+    puts 'Put events with string'
+    atom.put_events(stream, data_str_array_json, auth_key, reponse_callback)
+
+    data_array_with_str_json = [
+        "{\"id\": 1, \"msg\": \"test 1\"}",
+        "{\"id\": 2, \"msg\": \"test 2\"}",
+    ]
+
+    puts 'Put events with json object'
+    atom.put_events(stream, data_array_with_str_json, auth_key, reponse_callback)
+
+    data_array_json = [
+        {
+            id: 1,
+            msg: 'test 1'
+        },
+        {
+            id: 2,
+            msg: 'test 2'
+        }
+    ]
+
+    puts 'Put events with json object'
+    atom.put_events(stream, data_array_json, auth_key, reponse_callback)
+
+    puts "From test"
   end
 
   do_test_job

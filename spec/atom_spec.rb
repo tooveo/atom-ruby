@@ -53,13 +53,5 @@ end
     it "raises ArgumentError if param data is ''" do
       expect{ atom.put_events('SomeString', '') }.to raise_error ArgumentError
     end
-
-    it "raises ArgumentError if param data is not valid JSON of Array" do
-      expect{ atom.put_events('SomeString', '{"id":11,"message":"first_array_data"}') }.to raise_error ArgumentError
-    end
-
-    #it "return response with code 400 if stream is invalid" do
-    #  raise unless atom.put_events("SomeString", '[{"id":11,"message":"first_array_data"},{"id":12,"message":"second_array_data"},{"id":13,"message":"third_array_data"}]').code == 400
-    #end
   end
 end

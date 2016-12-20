@@ -28,13 +28,8 @@ module IronSourceAtom
       end
 
       if data.is_a?(String)
-        begin
-          json_data = JSON.parse(data)
-          if is_bulk
-            raise ArgumentError.new("Param 'data' must be JSON of Array!") unless json_data.is_a?(Array)
-          end
-        rescue JSON::ParserError
-          raise ArgumentError.new("Param 'data' must be JSON of Object!")
+        if data == ''
+          raise ArgumentError.new("Param 'data' must be not empty!")
         end
       else
         # :nocov:
@@ -74,7 +69,7 @@ module IronSourceAtom
 
       event = _get_event_data(stream, data, auth, false)
       # :nocov:
-      AtomDebugLogger.log("Put event with stream: #{stream} data: #{data}", @is_debug_mode)
+      AtomDebugLogger.log("Put event with stream: #{stream} data: #{event}", @is_debug_mode)
 
       http_client = HttpClient.new(@url, event, callback)
       http_client.post
@@ -96,7 +91,7 @@ module IronSourceAtom
 
       event = _get_event_data(stream, data, auth, true)
 #     :nocov:
-      AtomDebugLogger.log("Put events with stream: #{stream} data: #{data}", @is_debug_mode)
+      AtomDebugLogger.log("Put events with stream: #{stream} data: #{event}", @is_debug_mode)
 
       http_client = HttpClient.new(@url, event, callback)
       http_client.post
