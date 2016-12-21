@@ -205,22 +205,26 @@ ceiling value for exponential increasing.</p>
       <pre class="lines">
 
 
-6
 7
 8
 9
 10
 11
-12</pre>
+12
+13
+14
+15</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 6</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 7</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span> <span class='lparen'>(</span><span class='id identifier rubyid_min_period'>min_period</span><span class='op'>=</span><span class='float'>0.2</span><span class='comma'>,</span> <span class='id identifier rubyid_max_period'>max_period</span><span class='op'>=</span><span class='int'>600</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_min_period'>min_period</span> <span class='op'>=</span> <span class='float'>0.2</span><span class='comma'>,</span> <span class='id identifier rubyid_max_period'>max_period</span> <span class='op'>=</span> <span class='int'>600</span><span class='rparen'>)</span>
   <span class='ivar'>@retry_count</span> <span class='op'>=</span> <span class='int'>0</span>
+
   <span class='ivar'>@retry_time</span> <span class='op'>=</span> <span class='id identifier rubyid_min_period'>min_period</span>
   <span class='ivar'>@min_period</span> <span class='op'>=</span> <span class='id identifier rubyid_min_period'>min_period</span>
   <span class='ivar'>@max_period</span> <span class='op'>=</span> <span class='id identifier rubyid_max_period'>max_period</span>
+
   <span class='ivar'>@jitter</span> <span class='op'>=</span> <span class='const'>Random</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -262,8 +266,6 @@ from min_period up to max_period</p>
       <pre class="lines">
 
 
-16
-17
 18
 19
 20
@@ -272,21 +274,21 @@ from min_period up to max_period</p>
 23
 24
 25
-26</pre>
+26
+27</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/back_off.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_retry_time'>retry_time</span>
   <span class='kw'>if</span> <span class='ivar'>@retry_time</span> <span class='op'>&lt;</span> <span class='ivar'>@max_period</span>
-    <span class='id identifier rubyid_time'>time</span> <span class='op'>=</span> <span class='ivar'>@jitter</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span> <span class='op'>*</span> <span class='lparen'>(</span><span class='int'>2</span><span class='op'>**</span><span class='ivar'>@retry_count</span> <span class='op'>-</span> <span class='int'>1</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_time'>time</span> <span class='op'>=</span> <span class='ivar'>@jitter</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span> <span class='op'>*</span> <span class='lparen'>(</span><span class='int'>2</span> <span class='op'>**</span> <span class='ivar'>@retry_count</span> <span class='op'>-</span> <span class='int'>1</span><span class='rparen'>)</span>
     <span class='ivar'>@retry_count</span> <span class='op'>+=</span> <span class='int'>1</span>
-    <span class='kw'>return</span> <span class='ivar'>@retry_time</span><span class='op'>+=</span><span class='id identifier rubyid_time'>time</span>
+
+    <span class='ivar'>@retry_time</span> <span class='op'>+=</span> <span class='id identifier rubyid_time'>time</span>
   <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='ivar'>@max_period</span><span class='op'>/</span><span class='int'>2</span> <span class='op'>+</span> <span class='ivar'>@jitter</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span><span class='op'>*</span><span class='ivar'>@max_period</span>
+    <span class='lparen'>(</span><span class='ivar'>@max_period</span> <span class='op'>/</span> <span class='int'>2</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='ivar'>@jitter</span><span class='period'>.</span><span class='id identifier rubyid_rand'>rand</span> <span class='op'>*</span> <span class='ivar'>@max_period</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
-
-
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -298,9 +300,9 @@ from min_period up to max_period</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Aug 18 11:04:56 2016 by
+  Generated on Wed Dec 21 12:48:56 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.1).
+  0.9.5 (ruby-2.3.0).
 </div>
 
     </div>

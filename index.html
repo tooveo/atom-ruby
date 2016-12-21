@@ -59,100 +59,66 @@
 
       <iframe id="search_frame" src="class_list.html"></iframe>
 
-      <div id="content"><div id='filecontents'>
-<h1 id="label-ironSource.atom+SDK+for+Ruby">ironSource.atom SDK for Ruby</h1>
+      <div id="content"><div id='filecontents'><h1>ironSource.atom SDK for Ruby</h1>
 
-<p><a href="LICENSE.txt"><img
-src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square"></a>
-<a href="https://travis-ci.org/ironSource/atom-ruby"><img
-src="https://travis-ci.org/ironSource/atom-ruby.svg?branch=master"></a> <a
-href="https://coveralls.io/github/ironSource/atom-ruby?branch=master"><img
-src="https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=master"></a>
-<a href="https://ironsource.github.io/atom-ruby/"><img
-src="https://img.shields.io/badge/docs-latest-blue.svg"></a></p>
+<p><a href="LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+<a href="https://travis-ci.org/ironSource/atom-ruby"><img src="https://travis-ci.org/ironSource/atom-ruby.svg?branch=master" alt="Build status"></a>
+<a href="https://coveralls.io/github/ironSource/atom-ruby?branch=master"><img src="https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=master" alt="Coverage Status"></a>
+<a href="https://ironsource.github.io/atom-ruby/"><img src="https://img.shields.io/badge/docs-latest-blue.svg" alt="Docs"></a></p>
 
-<p>Atom-Ruby is the official ironSource.atom SDK for the Ruby programming
-language.</p>
-<ul><li>
-<p><a href="https://atom.ironsrc.com/#/signup">Signup</a></p>
-</li><li>
-<p><a href="https://ironsource.github.io/atom-ruby/">Documentation</a></p>
-</li><li>
-<p><a href="#Installation">Installation</a></p>
-</li><li>
-<p><a href="#Tracker-usage">Sending an event</a></p>
-</li></ul>
+<p>Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.</p>
 
-<h2 id="label-Installation">Installation</h2>
+<ul>
+<li><a href="https://atom.ironsrc.com/#/signup">Signup</a></li>
+<li><a href="https://ironsource.github.io/atom-ruby/">Documentation</a></li>
+<li><a href="#Installation">Installation</a></li>
+<li><a href="#Tracker-usage">Sending an event</a></li>
+</ul>
 
-<pre class="code ruby"><code class="ruby">$ gem install iron_source_atom-1.5.0.gem</code></pre>
+<h2>Installation</h2>
+
+<pre class="code gem"><code class="gem">$ gem install iron_source_atom-1.5.1.gem
+</code></pre>
 
 <p>You may use SDK in two different ways:</p>
-<ol><li>
-<p>High level Tracker - contains in-memory storage and tracks events based on
-certain parameters.</p>
-</li><li>
-<p>Low level - contains 2 methods: putEvent() and putEvents() to send 1 event
-or a batch respectively.</p>
-</li></ol>
 
-<h3 id="label-Tracker+usage">Tracker usage</h3>
+<ol>
+<li>High level Tracker - contains in-memory storage and tracks events based on certain parameters.</li>
+<li>Low level - contains 2 methods: putEvent() and putEvents() to send 1 event or a batch respectively.</li>
+</ol>
 
-<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>thread</span><span class='tstring_end'>&#39;</span></span>
-<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
-<span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>iron_source_atom</span><span class='tstring_end'>&#39;</span></span>
+<h3>Tracker usage</h3>
 
-<span class='kw'>class</span> <span class='const'>TestTracker</span>
+<pre class="code ruby"><code class="ruby">require &#39;iron_source_atom&#39;
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_test_multitread'>test_multitread</span>
-    <span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://track.atom-data.io/</span><span class='tstring_end'>&quot;</span></span>
-    <span class='id identifier rubyid_atom_tracker'>atom_tracker</span> <span class='op'>=</span> <span class='const'>IronSourceAtom</span><span class='op'>::</span><span class='const'>Tracker</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-    <span class='id identifier rubyid_atom_tracker'>atom_tracker</span><span class='period'>.</span><span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
-    <span class='id identifier rubyid_a'>a</span><span class='op'>=</span><span class='int'>0</span>
-    <span class='id identifier rubyid_run_example'>run_example</span> <span class='op'>=</span> <span class='kw'>true</span>
-    <span class='lparen'>(</span><span class='int'>0</span><span class='op'>..</span><span class='int'>5</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_int'>int</span><span class='op'>|</span>
-      <span class='const'>Thread</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='kw'>do</span>
-        <span class='kw'>begin</span>
-          <span class='kw'>while</span> <span class='id identifier rubyid_run_example'>run_example</span>
-            <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='lbrace'>{</span>
-                <span class='label'>id:</span> <span class='id identifier rubyid_a'>a</span> <span class='op'>+=</span> <span class='int'>1</span><span class='comma'>,</span>
-                <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_int'>int</span><span class='embexpr_end'>}</span><span class='tstring_content'>Thread_array_data</span><span class='tstring_end'>&quot;</span></span>
-            <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
-            <span class='id identifier rubyid_atom_tracker'>atom_tracker</span><span class='period'>.</span><span class='id identifier rubyid_track'>track</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ibtest</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-            <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>send data </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data'>data</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
-            <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.05</span><span class='rparen'>)</span>
-            <span class='kw'>if</span> <span class='id identifier rubyid_a'>a</span> <span class='op'>&gt;</span> <span class='int'>100</span>
-              <span class='id identifier rubyid_run_example'>run_example</span> <span class='op'>=</span> <span class='kw'>false</span>
-            <span class='kw'>end</span>
-          <span class='kw'>end</span>
-        <span class='kw'>end</span>
-      <span class='kw'>end</span>
-    <span class='kw'>end</span>
-    <span class='id identifier rubyid_sleep'>sleep</span> <span class='int'>30</span>
-  <span class='kw'>end</span>
-  
-  <span class='id identifier rubyid_test_multitread'>test_multitread</span>
-  
-<span class='kw'>end</span>
+class TestTracker
+
+def self.test_multitread
+    url = &quot;http://track.atom-data.io/&quot;
+    atom_tracker = IronSourceAtom::Tracker.new
+    atom_tracker.auth = &quot;&quot;
+
+    atom_tracker.track(data, &quot;ibtest&quot;)
+
+    atom_tracker.flush
+end
 </code></pre>
 
 <p>The Tracker process:</p>
 
 <p>You can use track() method in order to track the events to an Atom Stream.
-The tracker accumulates events and flushes them when it meets one of the
-following conditions:</p>
-<ol><li>
-<p>Flush Interval is reached (default: 10 seconds).</p>
-</li><li>
-<p>Bulk Length is reached (default: 4 events).</p>
-</li><li>
-<p>Maximum Bulk size is reached (default: 64kB).</p>
-</li></ol>
+The tracker accumulates events and flushes them when it meets one of the following conditions:</p>
 
-<p>In case of failure the tracker will preform an exponential backoff with
-jitter. The tracker stores events in a memory storage based on Queue.</p>
+<ol>
+<li>Flush Interval is reached (default: 10 seconds).</li>
+<li>Bulk Length is reached (default: 4 events).</li>
+<li>Maximum Bulk size is reached (default: 64kB).</li>
+</ol>
 
-<h3 id="label-Using+low+level+API+methods">Using low level API methods</h3>
+<p>In case of failure the tracker will preform an exponential backoff with jitter.
+The tracker stores events in a memory storage based on Queue.</p>
+
+<h3>Using low level API methods</h3>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
 <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>iron_source_atom</span><span class='tstring_end'>&#39;</span></span>
@@ -199,17 +165,15 @@ jitter. The tracker stores events in a memory storage based on Queue.</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<h3 id="label-Example">Example</h3>
+<h3>Example</h3>
 
-<p>You can use our <a
-href="https://github.com/ironSource/atom-ruby/tree/feature/ISA-359/example">example</a>
-for sending data to Atom:</p>
+<p>You can use our <a href="https://github.com/ironSource/atom-ruby/tree/feature/ISA-359/example">example</a> for sending data to Atom:</p>
 </div></div>
 
       <div id="footer">
-  Generated on Thu Aug 18 11:04:56 2016 by
+  Generated on Wed Dec 21 12:48:56 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.1).
+  0.9.5 (ruby-2.3.0).
 </div>
 
     </div>

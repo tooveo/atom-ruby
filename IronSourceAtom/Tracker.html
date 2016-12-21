@@ -89,11 +89,6 @@
   
   
   
-  <dl>
-      <dt>Includes:</dt>
-      <dd>Celluloid</dd>
-  </dl>
-  
   
 
   
@@ -106,19 +101,159 @@
   
 </div>
 
-<h2>Defined Under Namespace</h2>
-<p class="children">
-  
+
+  <h2>Constant Summary</h2>
+  <dl class="constants">
     
-  
+      <dt id="tracker_lock-classvariable" class="">@@tracker_lock =
+        
+      </dt>
+      <dd><pre class="code"><span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span></pre></dd>
     
-      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Tracker/Event.html" title="IronSourceAtom::Tracker::Event (class)">Event</a></span>
-    
-  
-</p>
+  </dl>
 
 
 
+
+  <h2>Instance Attribute Summary <small><a href="#" class="summary_toggle">collapse</a></small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#bulk_size-instance_method" title="#bulk_size (instance method)">#<strong>bulk_size</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute bulk_size.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#bulk_size_byte-instance_method" title="#bulk_size_byte (instance method)">#<strong>bulk_size_byte</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute bulk_size_byte.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#flush_interval-instance_method" title="#flush_interval (instance method)">#<strong>flush_interval</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute flush_interval.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#is_debug_mode-instance_method" title="#is_debug_mode (instance method)">#<strong>is_debug_mode</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute is_debug_mode.</p>
+</div></span>
+  
+</li>
+
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#task_pool_size-instance_method" title="#task_pool_size (instance method)">#<strong>task_pool_size</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the value of attribute task_pool_size.</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
 
 
 
@@ -130,6 +265,50 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_byte_count-instance_method" title="#_byte_count (instance method)">#<strong>_byte_count</strong>(data_array)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#_send-instance_method" title="#_send (instance method)">#<strong>_send</strong>(stream, data, timeout, callback)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'></div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -159,7 +338,7 @@ shared auth key.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#bulk_size%3D-instance_method" title="#bulk_size= (instance method)">#<strong>bulk_size=</strong>(bulk_size)  &#x21d2; Object </a>
+      <a href="#flush-instance_method" title="#flush (instance method)">#<strong>flush</strong>(stream, callback = nil)  &#x21d2; Object </a>
     
 
     
@@ -173,9 +352,7 @@ shared auth key.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Sets number of events in bulk.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -183,79 +360,7 @@ shared auth key.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#bulk_size_byte%3D-instance_method" title="#bulk_size_byte= (instance method)">#<strong>bulk_size_byte=</strong>(bulk_size_byte)  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Sets bulk size of events in bytes.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#flush-instance_method" title="#flush (instance method)">#<strong>flush</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Flush all data buffer to server immediately.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#flush_interval%3D-instance_method" title="#flush_interval= (instance method)">#<strong>flush_interval=</strong>(flush_interval)  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Sets the time in seconds for flushing data to Atom.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(url = &quot;http://track.atom-data.io/&quot;)  &#x21d2; Tracker </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(url = &#39;http://track.atom-data.io/&#39;)  &#x21d2; Tracker </a>
     
 
     
@@ -281,7 +386,7 @@ shared auth key.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#is_debug_mode%3D-instance_method" title="#is_debug_mode= (instance method)">#<strong>is_debug_mode=</strong>(id_debug_mode)  &#x21d2; Object </a>
+      <a href="#track-instance_method" title="#track (instance method)">#<strong>track</strong>(stream, data)  &#x21d2; Object </a>
     
 
     
@@ -295,10 +400,7 @@ shared auth key.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Sets pre shared auth key for Atom stream * <code>auth</code> String pre
-shared auth key.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -306,7 +408,7 @@ shared auth key.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#task_pool_size%3D-instance_method" title="#task_pool_size= (instance method)">#<strong>task_pool_size=</strong>(task_pool_size)  &#x21d2; Object </a>
+      <a href="#url%3D-instance_method" title="#url= (instance method)">#<strong>url=</strong>(url)  &#x21d2; Object </a>
     
 
     
@@ -320,33 +422,7 @@ shared auth key.</p>
   
 
   
-    <span class="summary_desc"><div class='inline'>
-<p>Sets the capacity of task queue.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#track-instance_method" title="#track (instance method)">#<strong>track</strong>(data, stream, auth = &#39;&#39;)  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Track data to server.</p>
-</div></span>
+    <span class="summary_desc"><div class='inline'></div></span>
   
 </li>
 
@@ -354,14 +430,13 @@ shared auth key.</p>
     </ul>
   
 
-
-  <div id="constructor_details" class="method_details_list">
+<div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
   
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(url = &quot;http://track.atom-data.io/&quot;)  &#x21d2; <tt><span class='object_link'><a href="" title="IronSourceAtom::Tracker (class)">Tracker</a></span></tt> 
+    #<strong>initialize</strong>(url = &#39;http://track.atom-data.io/&#39;)  &#x21d2; <tt><span class='object_link'><a href="" title="IronSourceAtom::Tracker (class)">Tracker</a></span></tt> 
   
 
   
@@ -388,14 +463,6 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-14
-15
-16
-17
-18
-19
-20
-21
 22
 23
 24
@@ -404,27 +471,37 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
 27
 28
 29
-30</pre>
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 14</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 22</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='op'>=</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>http://track.atom-data.io/</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
-  <span class='ivar'>@bulk_size_byte</span> <span class='op'>=</span> <span class='int'>64</span><span class='op'>*</span><span class='int'>1024</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>http://track.atom-data.io/</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='ivar'>@is_debug_mode</span> <span class='op'>=</span> <span class='kw'>false</span>
+
+  <span class='ivar'>@bulk_size_byte</span> <span class='op'>=</span> <span class='int'>64</span> <span class='op'>*</span> <span class='int'>1024</span>
   <span class='ivar'>@bulk_size</span> <span class='op'>=</span> <span class='int'>4</span>
   <span class='ivar'>@task_pool_size</span> <span class='op'>=</span> <span class='int'>10000</span>
   <span class='ivar'>@flush_interval</span> <span class='op'>=</span> <span class='int'>10</span>
   <span class='ivar'>@task_workers_count</span> <span class='op'>=</span> <span class='int'>10</span>
-  <span class='ivar'>@event_queue</span> <span class='op'>=</span> <span class='const'>Queue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@url</span> <span class='op'>=</span> <span class='id identifier rubyid_url'>url</span>
-  <span class='ivar'>@streams</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@streams_data</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@atom</span> <span class='op'>=</span> <span class='const'>Atom</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-  <span class='ivar'>@flush_now</span> <span class='op'>=</span> <span class='kw'>false</span>
-  <span class='id identifier rubyid_async'>async</span><span class='period'>.</span><span class='id identifier rubyid_event_worker'>event_worker</span>
-  <span class='id identifier rubyid_task_pool'>task_pool</span> <span class='op'>=</span> <span class='const'>EventTaskWorker</span><span class='period'>.</span><span class='id identifier rubyid_pool'>pool</span><span class='lparen'>(</span><span class='label'>size:</span> <span class='ivar'>@task_workers_count</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_task_pool'>task_pool</span><span class='period'>.</span><span class='id identifier rubyid_work_task'>work_task</span><span class='lparen'>(</span><span class='ivar'>@event_queue</span><span class='rparen'>)</span>
 
+  <span class='ivar'>@retry_timeout</span> <span class='op'>=</span> <span class='int'>1</span>
+
+  <span class='ivar'>@url</span> <span class='op'>=</span> <span class='id identifier rubyid_url'>url</span>
+  <span class='ivar'>@atom</span> <span class='op'>=</span> <span class='const'>Atom</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+
+  <span class='ivar'>@accumulate</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+
+  <span class='ivar'>@timers</span> <span class='op'>=</span> <span class='const'>Timers</span><span class='op'>::</span><span class='const'>Group</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -433,13 +510,339 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
   
 </div>
 
+  <div id="instance_attr_details" class="attr_details">
+    <h2>Instance Attribute Details</h2>
+    
+      
+      <span id="bulk_size=-instance_method"></span>
+      <div class="method_details first">
+  <h3 class="signature first" id="bulk_size-instance_method">
+  
+    #<strong>bulk_size</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute bulk_size</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+16
+17
+18</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 16</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_bulk_size'>bulk_size</span>
+  <span class='ivar'>@bulk_size</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="bulk_size_byte=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="bulk_size_byte-instance_method">
+  
+    #<strong>bulk_size_byte</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute bulk_size_byte</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+15
+16
+17</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 15</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_bulk_size_byte'>bulk_size_byte</span>
+  <span class='ivar'>@bulk_size_byte</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="flush_interval=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="flush_interval-instance_method">
+  
+    #<strong>flush_interval</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute flush_interval</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+18
+19
+20</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 18</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_flush_interval'>flush_interval</span>
+  <span class='ivar'>@flush_interval</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="is_debug_mode=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="is_debug_mode-instance_method">
+  
+    #<strong>is_debug_mode</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute is_debug_mode</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+14
+15
+16</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 14</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_is_debug_mode'>is_debug_mode</span>
+  <span class='ivar'>@is_debug_mode</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      
+      <span id="task_pool_size=-instance_method"></span>
+      <div class="method_details ">
+  <h3 class="signature " id="task_pool_size-instance_method">
+  
+    #<strong>task_pool_size</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the value of attribute task_pool_size</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+17
+18
+19</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 17</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_task_pool_size'>task_pool_size</span>
+  <span class='ivar'>@task_pool_size</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
 
   <div id="instance_method_details" class="method_details_list">
     <h2>Instance Method Details</h2>
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="auth=-instance_method">
+  <h3 class="signature first" id="_byte_count-instance_method">
+  
+    #<strong>_byte_count</strong>(data_array)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+125
+126
+127
+128
+129
+130
+131
+132</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 125</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid__byte_count'>_byte_count</span><span class='lparen'>(</span><span class='id identifier rubyid_data_array'>data_array</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_result_size'>result_size</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='kw'>for</span> <span class='id identifier rubyid_data'>data</span> <span class='kw'>in</span> <span class='id identifier rubyid_data_array'>data_array</span>
+    <span class='id identifier rubyid_result_size'>result_size</span> <span class='op'>+=</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_bytesize'>bytesize</span>
+  <span class='kw'>end</span>
+
+  <span class='kw'>return</span> <span class='id identifier rubyid_result_size'>result_size</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="_send-instance_method">
+  
+    #<strong>_send</strong>(stream, data, timeout, callback)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 103</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
+  <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_put_events'>put_events</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_response'>response</span><span class='op'>|</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>&lt;=</span> <span class='op'>-</span><span class='int'>1</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>&gt;=</span> <span class='int'>400</span>
+      <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>from timer: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_timeout'>timeout</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+      <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>&lt;</span> <span class='int'>20</span> <span class='op'>*</span> <span class='int'>60</span>
+        <span class='ivar'>@timers</span><span class='period'>.</span><span class='id identifier rubyid_after'>after</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span> <span class='lbrace'>{</span>
+          <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>*</span> <span class='int'>2</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='int'>1000</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>100</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='float'>1000.0</span>
+
+          <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
+        <span class='rbrace'>}</span>
+
+        <span class='ivar'>@timers</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span>
+        <span class='kw'>return</span>
+      <span class='kw'>else</span>
+        <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPResponse</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='int'>408</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Timeout - No response from server</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+      <span class='kw'>end</span>
+    <span class='kw'>end</span>
+
+    <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+  <span class='kw'>end</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="auth=-instance_method">
   
     #<strong>auth=</strong>(auth)  &#x21d2; <tt>Object</tt> 
   
@@ -467,12 +870,12 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-40
-41
-42</pre>
+43
+44
+45</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 40</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 43</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_auth='>auth=</span><span class='lparen'>(</span><span class='id identifier rubyid_auth'>auth</span><span class='rparen'>)</span>
   <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='id identifier rubyid_auth'>auth</span>
@@ -483,248 +886,33 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
 </div>
     
       <div class="method_details ">
-  <h3 class="signature " id="bulk_size=-instance_method">
-  
-    #<strong>bulk_size=</strong>(bulk_size)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Sets number of events in bulk</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-50
-51
-52</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 50</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_bulk_size='>bulk_size=</span><span class='lparen'>(</span><span class='id identifier rubyid_bulk_size'>bulk_size</span><span class='rparen'>)</span>
-  <span class='ivar'>@bulk_size</span> <span class='op'>=</span> <span class='id identifier rubyid_bulk_size'>bulk_size</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="bulk_size_byte=-instance_method">
-  
-    #<strong>bulk_size_byte=</strong>(bulk_size_byte)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Sets bulk size of events in bytes</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-45
-46
-47</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 45</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_bulk_size_byte='>bulk_size_byte=</span><span class='lparen'>(</span><span class='id identifier rubyid_bulk_size_byte'>bulk_size_byte</span><span class='rparen'>)</span>
-  <span class='ivar'>@bulk_size_byte</span> <span class='op'>=</span> <span class='id identifier rubyid_bulk_size_byte'>bulk_size_byte</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
   <h3 class="signature " id="flush-instance_method">
   
-    #<strong>flush</strong>  &#x21d2; <tt>Object</tt> 
+    #<strong>flush</strong>(stream, callback = nil)  &#x21d2; <tt>Object</tt> 
   
 
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Flush all data buffer to server immediately</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
-190
-191
-192</pre>
+84
+85
+86
+87
+88</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 190</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 84</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_flush'>flush</span>
-  <span class='ivar'>@flush_now</span> <span class='op'>=</span> <span class='kw'>true</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="flush_interval=-instance_method">
-  
-    #<strong>flush_interval=</strong>(flush_interval)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Sets the time in seconds for flushing data to Atom</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-61
-62
-63</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 61</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_flush_interval='>flush_interval=</span><span class='lparen'>(</span><span class='id identifier rubyid_flush_interval'>flush_interval</span><span class='rparen'>)</span>
-  <span class='ivar'>@flush_interval</span> <span class='op'>=</span> <span class='id identifier rubyid_flush_interval'>flush_interval</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="is_debug_mode=-instance_method">
-  
-    #<strong>is_debug_mode=</strong>(id_debug_mode)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Sets pre shared auth key for Atom stream</p>
-<ul><li>
-<p><code>auth</code> String pre shared auth key</p>
-</li></ul>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-34
-35
-36</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 34</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_is_debug_mode='>is_debug_mode=</span><span class='lparen'>(</span><span class='id identifier rubyid_id_debug_mode'>id_debug_mode</span><span class='rparen'>)</span>
-  <span class='ivar'>@is_debug_mode</span> <span class='op'>=</span> <span class='id identifier rubyid_id_debug_mode'>id_debug_mode</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="task_pool_size=-instance_method">
-  
-    #<strong>task_pool_size=</strong>(task_pool_size)  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Sets the capacity of task queue</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-56
-57
-58</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 56</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_task_pool_size='>task_pool_size=</span><span class='lparen'>(</span><span class='id identifier rubyid_task_pool_size'>task_pool_size</span><span class='rparen'>)</span>
-  <span class='ivar'>@task_pool_size</span> <span class='op'>=</span> <span class='id identifier rubyid_task_pool_size'>task_pool_size</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_flush'>flush</span><span class='lparen'>(</span><span class='id identifier rubyid_callback'>callback</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='ivar'>@accumulate</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>|</span>
+    <span class='id identifier rubyid_flush'>flush</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -734,37 +922,33 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <div class="method_details ">
   <h3 class="signature " id="track-instance_method">
   
-    #<strong>track</strong>(data, stream, auth = &#39;&#39;)  &#x21d2; <tt>Object</tt> 
+    #<strong>track</strong>(stream, data)  &#x21d2; <tt>Object</tt> 
   
 
   
 
   
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Track data to server</p>
-<ul><li>
-<p><code>data</code> info for sending</p>
-</li><li>
-<p><code>stream</code> is the Name of the stream</p>
-</li><li>
-<p><code>auth</code> is the pre shared auth key for your Atom. Required. By
-default uses authKey set to Tracker instance</p>
-</li></ul>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
+</h3><table class="source_code">
   <tr>
     <td>
       <pre class="lines">
 
 
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
 71
 72
 73
@@ -776,36 +960,67 @@ default uses authKey set to Tracker instance</p>
 79
 80
 81
-82
-83
-84
-85
-86
-87
-88
-89</pre>
+82</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 71</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 56</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_track'>track</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
-
-  <span class='kw'>if</span> <span class='id identifier rubyid_auth'>auth</span><span class='op'>==</span><span class='kw'>nil</span> <span class='op'>||</span> <span class='id identifier rubyid_auth'>auth</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
-    <span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_auth'>auth</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_track'>track</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+  <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
+  <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_stream'>stream</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>||</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Stream name and data are required parameters</span><span class='tstring_end'>&#39;</span></span>
   <span class='kw'>end</span>
 
-  <span class='kw'>unless</span> <span class='ivar'>@streams_data</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span> <span class='id identifier rubyid_stream'>stream</span>
-    <span class='ivar'>@streams_data</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_auth'>auth</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='ivar'>@accumulate</span><span class='period'>.</span><span class='id identifier rubyid_key?'>key?</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='rparen'>)</span>
+    <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
   <span class='kw'>end</span>
 
-  <span class='kw'>if</span> <span class='ivar'>@streams</span><span class='period'>.</span><span class='id identifier rubyid_has_key?'>has_key?</span> <span class='id identifier rubyid_stream'>stream</span>
-    <span class='ivar'>@streams</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span> <span class='const'>Event</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+  <span class='kw'>unless</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_method_defined?'>method_defined?</span> <span class='symbol'>:to_json</span>
+      <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span><span class='rparen'>)</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Invalid Data - can&#39;t be stringified</span><span class='tstring_end'>&quot;</span></span>
+    <span class='kw'>end</span>
   <span class='kw'>else</span>
-    <span class='id identifier rubyid_events_queue'>events_queue</span> <span class='op'>=</span> <span class='const'>Queue</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
-    <span class='id identifier rubyid_events_queue'>events_queue</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span> <span class='const'>Event</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
-    <span class='ivar'>@streams</span><span class='period'>.</span><span class='id identifier rubyid_store'>store</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_events_queue'>events_queue</span><span class='rparen'>)</span>
+    <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
+  <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
 
+  <span class='const'>AtomDebugLogger</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Track event for stream: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'> with data: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_data'>data</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
+
+  <span class='kw'>if</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;=</span> <span class='ivar'>@bulk_size</span> <span class='op'>||</span> <span class='id identifier rubyid__byte_count'>_byte_count</span><span class='lparen'>(</span><span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='op'>&gt;=</span> <span class='ivar'>@bulk_size_byte</span>
+    <span class='id identifier rubyid_flush'>flush</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="url=-instance_method">
+  
+    #<strong>url=</strong>(url)  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+47
+48
+49</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 47</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_url='>url=</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='rparen'>)</span>
+  <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='id identifier rubyid_url'>url</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -817,9 +1032,9 @@ default uses authKey set to Tracker instance</p>
 </div>
 
       <div id="footer">
-  Generated on Thu Aug 18 11:04:56 2016 by
+  Generated on Wed Dec 21 12:48:56 2016 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.1).
+  0.9.5 (ruby-2.3.0).
 </div>
 
     </div>
