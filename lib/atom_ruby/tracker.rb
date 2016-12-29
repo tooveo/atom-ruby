@@ -83,11 +83,11 @@ module IronSourceAtom
 
     def flush(callback = nil)
       @accumulate.each do |stream, data|
-        flush(stream, callback)
+        flush_with_stream(stream, callback)
       end
     end
 
-    def flush(stream, callback = nil)
+    def flush_with_stream(stream, callback = nil)
       @@tracker_lock.lock
       if @accumulate[stream].length > 0
         data = @accumulate[stream]
