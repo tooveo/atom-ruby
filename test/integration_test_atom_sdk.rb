@@ -1,7 +1,7 @@
 require 'json'
-require '../lib/iron_source_atom'
+require 'iron_source_atom'
 
-puts "Integration test for ruby atom sddddddk!\n\n"
+puts "Integration test for ruby atom sdk!\n\n"
 
 class TestExample
   	def self.do_test_job
