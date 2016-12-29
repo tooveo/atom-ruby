@@ -1,0 +1,1 @@
+ruby ./test/integration_test_atom_sdk.rb

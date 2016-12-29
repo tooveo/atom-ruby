@@ -89,10 +89,10 @@ module IronSourceAtom
 
     def flush(stream, callback = nil)
       @@tracker_lock.lock
-        if @accumulate[stream].length > 0
-          data = @accumulate[stream]
-          @accumulate[stream] = []
-        end
+      if @accumulate[stream].length > 0
+        data = @accumulate[stream]
+        @accumulate[stream] = []
+      end
       @@tracker_lock.unlock
 
       AtomDebugLogger.log("Flush event for stream: #{stream}", @is_debug_mode)
