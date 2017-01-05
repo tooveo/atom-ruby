@@ -30,11 +30,6 @@ describe ".put_event(stream, data)" do
   it "raises ArgumentError if param data is ''" do
     expect{ atom.put_event('SomeString', '') }.to raise_error ArgumentError
   end
-
-  #it "return response with code 400 if stream is invalid" do
-  #  raise unless atom.put_event("SomeString", '{"id":11,"message":"first_array_data"}').code == 400
-  #end
-
 end
 
   describe ".put_events(stream, data)" do

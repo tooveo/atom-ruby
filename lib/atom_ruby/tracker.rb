@@ -9,6 +9,8 @@ require 'timers'
 
 module IronSourceAtom
   class Tracker
+    include Celluloid
+
     @@tracker_lock = Mutex.new
 
     attr_reader :is_debug_mode
@@ -18,13 +20,13 @@ module IronSourceAtom
     attr_accessor :flush_interval
 
     # Creates a new instance of Tracker.
-    # * +url+ atom traker endpoint url. Default is http://track.atom-data.io/
+    # * +url+ atom tracker endpoint url. Default is http://track.atom-data.io/
     def initialize(url = 'http://track.atom-data.io/')
       @is_debug_mode = false
 
       @bulk_size_byte = 64 * 1024
       @bulk_size = 4
-      @task_pool_size = 10000
+      @task_pool_size = 2
       @flush_interval = 10
       @task_workers_count = 10
 
@@ -35,7 +37,16 @@ module IronSourceAtom
 
       @accumulate = Hash.new
 
-      @timers = Timers::Group.new
+      @queue_flush = Hash.new
+      @is_stream_flush = Hash.new
+
+      @timerRetry = Timers::Group.new
+
+      async._timer_flush
+    end
+
+    def finalize()
+      self.terminate
     end
 
     # Sets pre shared auth key for Atom stream
@@ -53,7 +64,7 @@ module IronSourceAtom
       @atom
     end
 
-    def track(stream, data)
+    def track(stream, data, error_callback = nil)
       @@tracker_lock.lock
       if (stream.nil? || stream.length == 0 || data.nil? || data.length == 0)
         raise StandardError, 'Stream name and data are required parameters'
@@ -61,6 +72,14 @@ module IronSourceAtom
 
       unless @accumulate.key?(stream)
         @accumulate[stream] = []
+      end
+
+      if @accumulate[stream].length >= @task_pool_size
+        error_str = "Message store for stream: '#{stream}' has reached its maximum size!";
+        AtomDebugLogger.log(error_str, @is_debug_mode)
+        error_callback.call(error_str) unless error_callback.nil?
+        @@tracker_lock.unlock
+        return
       end
 
       unless data.is_a?(String)
@@ -83,16 +102,27 @@ module IronSourceAtom
 
     def flush(callback = nil)
       @accumulate.each do |stream, data|
-        flush(stream, callback)
+        flush_with_stream(stream, callback)
       end
     end
 
-    def flush(stream, callback = nil)
+    def flush_with_stream(stream, callback = nil)
       @@tracker_lock.lock
       if @accumulate[stream].length > 0
         data = @accumulate[stream]
         @accumulate[stream] = []
+      else
+        @@tracker_lock.unlock
+        return
       end
+
+      if @is_stream_flush[stream]
+        @queue_flush[stream] = true
+        @@tracker_lock.unlock
+        return
+      end
+
+      @is_stream_flush[stream] = true
       @@tracker_lock.unlock
 
       AtomDebugLogger.log("Flush event for stream: #{stream}", @is_debug_mode)
@@ -100,22 +130,37 @@ module IronSourceAtom
       _send(stream, data, @retry_timeout, callback) if data != nil && data.length > 0
     end
 
+    def _timer_flush
+      every(flush_interval) do
+        AtomDebugLogger.log("From flush timer! interval: #{flush_interval}\n", @is_debug_mode)
+
+        flush
+      end
+    end
+
     def _send(stream, data, timeout, callback)
       @atom.put_events(stream, data, nil, lambda do |response|
-        if response.code.to_i <= -1 || response.code.to_i >= 400
+        if response.code.to_i <= -1 || response.code.to_i >= 500
           print "from timer: #{timeout}\n"
           if timeout < 20 * 60
-            @timers.after(timeout) {
+            @timerRetry.after(timeout) {
               timeout = timeout * 2 + (rand(1000) + 100) / 1000.0
 
               _send(stream, data, timeout, callback)
             }
 
-            @timers.wait
+            @timerRetry.wait
             return
           else
             callback.call(Net::HTTPResponse.new(nil, 408, 'Timeout - No response from server')) unless callback.nil?
           end
+        end
+
+        # retry queue mechanism
+        @is_stream_flush[stream] = false
+        if @queue_flush[stream]
+          @queue_flush[stream] = false
+          flush
         end
 
         callback.call(response) unless callback.nil?
