@@ -1,13 +1,13 @@
 require 'json'
-require '../lib/iron_source_atom'
+require 'iron_source_atom'
 
-puts "Integration test for ruby atom sddddddk!\n\n"
+puts "Integration test for ruby atom sdk!\n\n"
 
 class TestExample
   	def self.do_test_job
-  		url = "http://track.atom-data.io/"
-	    auth = ""
-	    stream = "ibtest"
+  		url = 'http://track.atom-data.io/'
+	    auth = ''
+	    stream = 'ibtest'
 
 	    atom_tracker = IronSourceAtom::Tracker.new
   		atom_tracker.auth = auth
@@ -15,11 +15,11 @@ class TestExample
 
 		data = {
 			id: 1,
-			message: "test 42"
+			message: 'test 42'
 		}.to_json
 		atom_tracker.track(stream, data)
 
-		atom_tracker.flush(stream, lambda do |response|
+		atom_tracker.flush(lambda do |response|
 			puts "Test runned successfully!\n Reponse code: #{response.code}\n Response message #{response.message}"
 		end)
   	end

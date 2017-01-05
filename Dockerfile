@@ -6,6 +6,10 @@ WORKDIR /usr/src/app
 
 ENV SDK_VERSION 1.5.1
 
+RUN gem install bundler
+RUN gem install coveralls
+RUN gem install rspec
+
 RUN gem build iron_source_atom.gemspec
 RUN gem install iron_source_atom-$SDK_VERSION.gem
 
