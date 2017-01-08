@@ -1,4 +1,4 @@
-# ironSource.atom SDK for Ruby
+# ironSource.atom SDK for Ruby - Beta Version
 [![License][license-image]][license-url]
 [![Build status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
