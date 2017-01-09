@@ -20,7 +20,7 @@ class TestExample
 		atom_tracker.track(stream, data)
 
 		atom_tracker.flush(lambda do |response|
-			puts "Test runned successfully!\n Reponse code: #{response.code}\n Response message #{response.message}"
+			puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
 		end)
   	end
 

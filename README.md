@@ -1,27 +1,35 @@
 # ironSource.atom SDK for Ruby
+
 [![License][license-image]][license-url]
+[![Docs][docs-image]][docs-url]
 [![Build status][travis-image]][travis-url]
 [![Coverage Status][coveralls-image]][coveralls-url]
-[![Docs][docs-image]][docs-url]
+[![Gem Version][gem-image]][gem-url]
 
-Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.
+atom-ruby is the official [ironSource.atom](http://www.ironsrc.com/data-flow-management) SDK for Ruby.
 
 - [Signup](https://atom.ironsrc.com/#/signup)
 - [Documentation][docs-url]
-- [Installation](#Installation)
-- [Sending an event](#Tracker-usage)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Change Log](#change-log)
+- [Example](#example)
 
 ## Installation
-```gem
-$ gem install iron_source_atom-1.5.1.gem
+
+### Installation using gem
+```bash
+$ gem install iron_source_atom
 ```
+
+## Usage
 
 You may use SDK in two different ways:
 
-1. High level Tracker - contains in-memory storage and tracks events based on certain parameters.
+1. High level "Tracker" - contains in-memory storage and tracks events based on certain parameters.
 2. Low level - contains 2 methods: putEvent() and putEvents() to send 1 event or a batch respectively.
 
-### Tracker usage
+### High Level SDK - "Tracker"
 
 ```ruby
 require 'iron_source_atom'
@@ -45,13 +53,13 @@ You can use track() method in order to track the events to an Atom Stream.
 The tracker accumulates events and flushes them when it meets one of the following conditions:
  
 1. Flush Interval is reached (default: 10 seconds).
-2. Bulk Length is reached (default: 4 events).
-3. Maximum Bulk size is reached (default: 64kB).
+2. Bulk Length is reached (default: 50 events).
+3. Maximum Bulk byte size is reached (default: 64kB).
 
 In case of failure the tracker will preform an exponential backoff with jitter.
 The tracker stores events in a memory storage based on Queue.
 
-### Using low level API methods
+### Low Level (Basic) SDK
 
 ```ruby
 require 'json'
@@ -98,18 +106,34 @@ class TestExample
 
 end
 ```
+## Change Log
 
-### Example
+### v1.2.0
+- Added deque limit on QueueEventStorage(backlog)
+- Updated example
+- Changed defaults on BatchEventPool and QueueEventStorage
+- Changed all pop() from deque to popleft()
 
-You can use our [example][example-url] for sending data to Atom:
+### v1.1.0
+- Added Docs
 
+### v1.0.0
+- Basic features - putEvent & putEvents
 
-[example-url]: https://github.com/ironSource/atom-ruby/tree/feature/ISA-359/example
+## Example
+
+You can use our [example](example) for sending data to Atom:
+
+## License
+[MIT][license-url]
+
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
-[license-url]: LICENSE.txt
+[license-url]: LICENSE
 [travis-image]: https://travis-ci.org/ironSource/atom-ruby.svg?branch=master
 [travis-url]: https://travis-ci.org/ironSource/atom-ruby
 [coveralls-image]: https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/ironSource/atom-ruby?branch=master
 [docs-image]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-url]: https://ironsource.github.io/atom-ruby/
+[gem-image]: https://badge.fury.io/rb/iron_source_atom.svg
+[gem-url]: https://badge.fury.io/rb/iron_source_atom

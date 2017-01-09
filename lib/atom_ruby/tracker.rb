@@ -19,14 +19,14 @@ module IronSourceAtom
     attr_accessor :task_pool_size
     attr_accessor :flush_interval
 
-    # Creates a new instance of Tracker.
+    # Creates a new instance of Atom Tracker.
     # * +url+ atom tracker endpoint url. Default is http://track.atom-data.io/
     def initialize(url = 'http://track.atom-data.io/')
       @is_debug_mode = false
 
       @bulk_size_byte = 64 * 1024
-      @bulk_size = 4
       @task_pool_size = 2
+      @bulk_size = 50
       @flush_interval = 10
       @task_workers_count = 10
 
@@ -49,8 +49,8 @@ module IronSourceAtom
       self.terminate
     end
 
-    # Sets pre shared auth key for Atom stream
-    # * +auth+ String pre shared auth key
+    # Sets pre shared auth key for Atom Stream
+    # * +auth+ Pre shared auth key for your Atom Stream
     def auth=(auth)
       @atom.auth = auth
     end
@@ -64,7 +64,12 @@ module IronSourceAtom
       @atom
     end
 
+    # Track data to Atom
+    # * +stream+ Atom Stream name
+    # * +data+ Data to be sent
+    # * +error_callback+ Called after max retires failed or after client-side error
     def track(stream, data, error_callback = nil)
+
       @@tracker_lock.lock
       if (stream.nil? || stream.length == 0 || data.nil? || data.length == 0)
         raise StandardError, 'Stream name and data are required parameters'
@@ -100,12 +105,17 @@ module IronSourceAtom
       end
     end
 
+    # Flush all Streams to Atom
+    # * +callback+ called with results
     def flush(callback = nil)
       @accumulate.each do |stream, data|
         flush_with_stream(stream, callback)
       end
     end
 
+    # Flush a specific Stream to Atom
+    # * +stream+   Atom Stream name
+    # * +callback+ called with results
     def flush_with_stream(stream, callback = nil)
       @@tracker_lock.lock
       if @accumulate[stream].length > 0
@@ -133,11 +143,16 @@ module IronSourceAtom
     def _timer_flush
       every(flush_interval) do
         AtomDebugLogger.log("From flush timer! interval: #{flush_interval}\n", @is_debug_mode)
-
         flush
       end
     end
 
+
+    # Internal function that uses the "low level sdk" to send data (put_events func)
+    # * +stream+   Atom Stream name
+    # * +data+   Data to be sent
+    # * +timeout+   Max retry time
+    # * +timeout+   callback that will be called when done/error.
     def _send(stream, data, timeout, callback)
       @atom.put_events(stream, data, nil, lambda do |response|
         if response.code.to_i <= -1 || response.code.to_i >= 500

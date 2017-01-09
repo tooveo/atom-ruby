@@ -15,9 +15,7 @@ module IronSourceAtom
                       'x-ironsource-atom-sdk-version' => IronSourceAtom::VERSION}
     end
 
-    # Sends http post to atom url with data in body
-    # * +threads_max_num+ url of ironSourceAtom host
-    # * +data+ body of http post request
+    # Sends HTTP POST to Atom API
     def post
       _request :post
     end
