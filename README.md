@@ -24,7 +24,7 @@ $ gem install iron_source_atom
 
 ## Usage
 
-You may use SDK in two different ways:
+You may use the SDK in two different ways:
 
 1. High level "Tracker" - contains in-memory storage and tracks events based on certain parameters.
 2. Low level - contains 2 methods: putEvent() and putEvents() to send 1 event or a batch respectively.
@@ -39,10 +39,8 @@ class TestTracker
 def self.test_multitread
     url = "http://track.atom-data.io/"
     atom_tracker = IronSourceAtom::Tracker.new
-    atom_tracker.auth = ""
-    
-    atom_tracker.track(data, "ibtest")
-    
+    atom_tracker.auth = "YOUR_PRE_SHARED_AUTH_KEY"
+    atom_tracker.track("stream", "data")
     atom_tracker.flush
 end
 ```
@@ -57,9 +55,13 @@ The tracker accumulates events and flushes them when it meets one of the followi
 3. Maximum Bulk byte size is reached (default: 64kB).
 
 In case of failure the tracker will preform an exponential backoff with jitter.
-The tracker stores events in a memory storage based on Queue.
+The tracker stores events in memory.
 
 ### Low Level (Basic) SDK
+
+The Low Level SDK has 2 methods:  
+- putEvent - Sends a single event to Atom  
+- putEvents - Sends a bulk (batch) of events to Atom.
 
 ```ruby
 require 'json'
@@ -109,13 +111,14 @@ end
 ## Change Log
 
 ### v1.2.0
-- Added deque limit on QueueEventStorage(backlog)
-- Updated example
-- Changed defaults on BatchEventPool and QueueEventStorage
-- Changed all pop() from deque to popleft()
+- Rewrote all async ops to work with celluloid
+- Refactored Tracker
+- Refactored Atom base class
+- Refactored Http Client class
+- Improved Docs
 
 ### v1.1.0
-- Added Docs
+- Added Tracker
 
 ### v1.0.0
 - Basic features - putEvent & putEvents
