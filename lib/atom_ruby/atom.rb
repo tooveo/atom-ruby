@@ -63,7 +63,7 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_event(stream, data, auth = '', callback = nil)
+    def put_event(stream, data, method = 'post', auth = '', callback = nil)
       auth = @auth if auth == nil || auth.empty?
       raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
 
@@ -72,7 +72,11 @@ module IronSourceAtom
       AtomDebugLogger.log("Put event with stream: #{stream} data: #{event}", @is_debug_mode)
 
       http_client = HttpClient.new(@url, event, callback)
-      http_client.post
+      if method == 'post'
+        http_client.post
+      else
+        http_client.get
+      end
       # :nocov:
     end
 
@@ -85,7 +89,7 @@ module IronSourceAtom
     #
     # returns an HTTPResponse object.
     #
-    def put_events(stream, data, auth = '', callback = nil)
+    def put_events(stream, data, method = 'post', auth = '', callback = nil)
       auth = @auth if auth == nil || auth.empty?
       raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
 
@@ -94,7 +98,11 @@ module IronSourceAtom
       AtomDebugLogger.log("Put events with stream: #{stream} data: #{event}", @is_debug_mode)
 
       http_client = HttpClient.new(@url, event, callback)
-      http_client.post
+      if method == 'post'
+        http_client.post
+      else
+        http_client.get
+      end
       # :nocov:
     end
   end

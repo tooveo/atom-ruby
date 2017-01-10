@@ -22,6 +22,10 @@ module IronSourceAtom
       _request :post
     end
 
+    def get
+      _request :get
+    end
+
     def _request(method)
       if @callback
         async._async_callback method
@@ -45,7 +49,10 @@ module IronSourceAtom
             request = Net::HTTP::Post.new(uri.request_uri, @init_header)
             request.body = @data
           when :get
-            request = Net::HTTP::Get.new(uri.request_uri, @init_header)
+            uri_with_data = uri.request_uri + '?data=' + Utils.urlsafe_encode64(@data)
+
+            puts uri_with_data
+            request = Net::HTTP::Get.new(uri_with_data, @init_header)
         end
 
         return http.request(request)

@@ -139,7 +139,7 @@ module IronSourceAtom
     end
 
     def _send(stream, data, timeout, callback)
-      @atom.put_events(stream, data, nil, lambda do |response|
+      @atom.put_events(stream, data, 'post', nil, lambda do |response|
         if response.code.to_i <= -1 || response.code.to_i >= 500
           print "from timer: #{timeout}\n"
           if timeout < 20 * 60

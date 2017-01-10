@@ -30,7 +30,7 @@ class TestExample
     end
 
     puts 'Put event test'
-    atom.put_event(stream, data_string, auth_key, reponse_callback)
+    atom.put_event(stream, data_string, 'get', auth_key, reponse_callback)
 
 
     data_string_json = {
@@ -39,7 +39,7 @@ class TestExample
     }
 
     puts 'Put event with json object test'
-    atom.put_event(stream, data_string_json, auth_key, reponse_callback)
+    atom.put_event(stream, data_string_json, 'get', auth_key, reponse_callback)
 
     data_str_array_json = [
         {
@@ -53,7 +53,7 @@ class TestExample
     ].to_json
 
     puts 'Put events with string'
-    atom.put_events(stream, data_str_array_json, auth_key, reponse_callback)
+    atom.put_events(stream, data_str_array_json, 'get', auth_key, reponse_callback)
 
     data_array_with_str_json = [
         "{\"id\": 1, \"msg\": \"test 1\"}",
@@ -61,7 +61,7 @@ class TestExample
     ]
 
     puts 'Put events with json object'
-    atom.put_events(stream, data_array_with_str_json, auth_key, reponse_callback)
+    atom.put_events(stream, data_array_with_str_json, 'post', auth_key, reponse_callback)
 
     data_array_json = [
         {
@@ -75,7 +75,7 @@ class TestExample
     ]
 
     puts 'Put events with json object'
-    atom.put_events(stream, data_array_json, auth_key, reponse_callback)
+    atom.put_events(stream, data_array_json, 'get', auth_key, reponse_callback)
 
     puts "From test"
   end
