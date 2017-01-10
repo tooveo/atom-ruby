@@ -6,8 +6,8 @@ require 'atom_ruby/config'
 Gem::Specification.new do |spec|
   spec.name          = "iron_source_atom"
   spec.version       = IronSourceAtom::VERSION
-  spec.authors       = ["Kirill Bokhanov"]
-  spec.email         = ["kirill.bokhanov@ironsrc.com"]
+  spec.authors       = ["Atom Core Team"]
+  spec.email         = ["atom-core@ironsrc.com"]
 
   spec.summary       = "This is the official ironSource.atom gem"
   spec.description   = "Use this gem to send events to ironSource.atom data pipeline"

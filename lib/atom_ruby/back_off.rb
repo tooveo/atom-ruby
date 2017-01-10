@@ -1,7 +1,7 @@
 
 module IronSourceAtom
   class BackOff
-    # Creates a new instance of BackOff.
+    # Creates a new instance of BackOff - Exponential back off with jitter
     # * +min_period+ is the minimum back off time in seconds. The start value for exponential increasing.
     # * +max_period+ is the minimum back off time in seconds. The ceiling value for exponential increasing.
     def initialize(min_period = 0.2, max_period = 600)

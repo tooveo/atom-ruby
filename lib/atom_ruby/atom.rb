@@ -10,11 +10,11 @@ module IronSourceAtom
     attr_accessor :url
     attr_accessor :is_debug_mode
 
-    # Creates a new instance of Atom.
-    # * +auth+ is the pre shared auth key for your Atom.
-    # * +url+ atom tracker endpoint url.
+    # Creates a new instance of Atom Base SDK.
+    # * +auth+ Pre shared auth key for your Atom Stream
+    # * +url+ Atom API endpoint url. Default is http://track.atom-data.io/
     def initialize(auth = '', url= 'http://track.atom-data.io/')
-      raise ArgumentError.new("Param 'auth' must not be nil!") if auth == nil
+      raise ArgumentError.new("Param 'auth' must be not nil!") if auth == nil
 
       @is_debug_mode = false
 
@@ -54,12 +54,10 @@ module IronSourceAtom
       # :nocov:
     end
 
-    # writes a single data event into ironSource.atom delivery stream.
-    # to write multiple data records into a delivery stream, use put_events.
-    #
-    # * +stream+ the name of your Atom stream.
-    # * +data+ your data in JSON format.
-    # * +auth+ is the pre shared auth key for your Atom. Required. By default uses authKey set in Atom constructor
+    # Send a single data event into ironSource.atom
+    # * +stream+ Atom Stream name
+    # * +data+ Data in JSON format.
+    # * +auth+ Pre shared auth key for your Stream, by default uses authKey set in Atom constructor
     #
     # returns an HTTPResponse object.
     #
@@ -80,12 +78,11 @@ module IronSourceAtom
       # :nocov:
     end
 
-    # writes a multiple data events into ironSource.atom delivery stream.
-    # to write  single data event into a delivery stream, use put_event.
+    # Send multiple events (bulk/batch) to Atom API
     #
-    # * +stream+ the name of your Atom stream.
+    # * +stream+ Atom Stream name
     # * +data+ your data in JSON format.
-    # * +auth+ is the pre shared auth key for your Atom. Required. By default uses authKey set in Atom constructor
+    # * +auth+ Pre shared auth key for your Stream, by default uses authKey set in Atom constructor
     #
     # returns an HTTPResponse object.
     #

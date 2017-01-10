@@ -3,7 +3,7 @@ require '../lib/iron_source_atom'
 
 class TestExample
   def self.do_test_job
-    url = "http://track.atom-data.io/"
+    url = "https://track.atom-data.io/"
     auth = ""
     atom = IronSourceAtom::Atom.new(auth)
 
