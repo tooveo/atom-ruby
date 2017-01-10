@@ -48,8 +48,6 @@ module IronSourceAtom
             request.body = @data
           when :get
             uri_with_data = uri.request_uri + '?data=' + Utils.urlsafe_encode64(@data)
-
-            puts uri_with_data
             request = Net::HTTP::Get.new(uri_with_data, @init_header)
         end
 
