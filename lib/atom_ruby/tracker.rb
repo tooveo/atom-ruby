@@ -60,7 +60,7 @@ module IronSourceAtom
 
     def is_debug_mode=(is_debug_mode)
       @is_debug_mode = is_debug_mode
-      @atom
+      @atom.is_debug_mode = is_debug_mode
     end
 
     # Track data to Atom
@@ -97,10 +97,10 @@ module IronSourceAtom
       end
       @@tracker_lock.unlock
 
-      AtomDebugLogger.log("Track event for stream: #{stream} with data: #{data}", @is_debug_mode)
+      #AtomDebugLogger.log("Track event for stream: #{stream} with data: #{data}", @is_debug_mode)
 
       if @accumulate[stream].length >= @bulk_size || _byte_count(@accumulate[stream]) >= @bulk_size_byte
-        flush(stream)
+        flush_with_stream(stream)
       end
     end
 
@@ -117,14 +117,6 @@ module IronSourceAtom
     # * +callback+ called with results
     def flush_with_stream(stream, callback = nil)
       @@tracker_lock.lock
-      if @accumulate[stream].length > 0
-        data = @accumulate[stream]
-        @accumulate[stream] = []
-      else
-        @@tracker_lock.unlock
-        return
-      end
-
       if @is_stream_flush[stream]
         @queue_flush[stream] = true
         @@tracker_lock.unlock
@@ -132,6 +124,13 @@ module IronSourceAtom
       end
 
       @is_stream_flush[stream] = true
+      if @accumulate[stream].length > 0
+        data = @accumulate[stream]
+        @accumulate[stream] = []
+      else
+        @@tracker_lock.unlock
+        return
+      end
       @@tracker_lock.unlock
 
       AtomDebugLogger.log("Flush event for stream: #{stream}", @is_debug_mode)
@@ -176,6 +175,8 @@ module IronSourceAtom
           @queue_flush[stream] = false
           flush
         end
+
+        AtomDebugLogger.log("Flush response code: #{response.code}\n response message #{response.message}", @is_debug_mode)
 
         callback.call(response) unless callback.nil?
       end)

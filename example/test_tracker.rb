@@ -6,21 +6,24 @@ class TestTracker
 def self.test_multitread
   url = "http://track.atom-data.io/"
   atom_tracker = IronSourceAtom::Tracker.new
-  atom_tracker.auth = ""
+  atom_tracker.auth = "I40iwPPOsG3dfWX30labriCg9HqMfL"
   atom_tracker.is_debug_mode = true
 
-  for index in 0..100
-        puts "Pu event: #{index}"
-        data = {
-        id: index,
-        message: "data index: #{index}"
-      }.to_json
-      atom_tracker.track(stream, data)
-      end
+  stream = 'sdkdev_sdkdev.public.g8y3etest'
 
-    atom_tracker.flush(lambda do |response|
-      puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
-    end)
+  for index in 0..1400
+    puts "Put event: #{index}"
+    data = {
+      id: index,
+      strings: "data index: #{index}"
+    }.to_json
+    atom_tracker.track(stream, data)
+    sleep(0.01)
+  end
+
+  atom_tracker.flush(lambda do |response|
+    puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
+  end)
 
   data_string = {
       id: 1,
@@ -31,7 +34,6 @@ def self.test_multitread
     print "Error: #{error_str}\n"
   end
 
-  stream = 'sdkdev_sdkdev.public.g8y3etest'
   atom_tracker.track(stream, data_string, error_callback)
   atom_tracker.track(stream, data_string, error_callback)
   atom_tracker.track(stream, data_string, error_callback)

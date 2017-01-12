@@ -17,18 +17,23 @@ class TestExample
 
   		puts "From test: #{event_count}"
 
-  		for index in 0..event_count.to_i
-  			puts "Pu event: #{index}"
-  			data = {
-				id: index,
-				message: "data index: #{index}"
-			}.to_json
-			atom_tracker.track(stream, data)
-  		end
+			atom_tracker.auth = "I40iwPPOsG3dfWX30labriCg9HqMfL"
 
-		atom_tracker.flush(lambda do |response|
-			puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
-		end)
+			stream = 'sdkdev_sdkdev.public.g8y3etest'
+
+			for index in 0..900
+				#puts "Put event: #{index}"
+				data = {
+						id: index,
+						strings: "data index: #{index}"
+				}.to_json
+				atom_tracker.track(stream, data)
+				sleep(0.01)
+			end
+
+			atom_tracker.flush(lambda do |response|
+				puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
+			end)
   	end
 
 	do_test_job
