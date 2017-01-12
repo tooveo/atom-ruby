@@ -21,19 +21,21 @@ class TestExample
 
 			stream = 'sdkdev_sdkdev.public.g8y3etest'
 
-			for index in 0..900
+			for index in 0..event_count.to_i
 				#puts "Put event: #{index}"
 				data = {
 						id: index,
 						strings: "data index: #{index}"
 				}.to_json
 				atom_tracker.track(stream, data)
-				sleep(0.01)
+				sleep(0.03)
 			end
 
 			atom_tracker.flush(lambda do |response|
 				puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
 			end)
+
+			sleep(10)
   	end
 
 	do_test_job
