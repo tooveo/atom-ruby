@@ -14,7 +14,7 @@ def self.test_multitread
       message: "11"
   }.to_json
 
-  error_callback = lambda do |error_str|
+  error_callback = lambda do |error_str, data|
     print "Error: #{error_str}\n"
   end
 

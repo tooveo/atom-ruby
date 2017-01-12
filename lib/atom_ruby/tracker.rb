@@ -16,7 +16,7 @@ module IronSourceAtom
     attr_reader :is_debug_mode
     attr_accessor :bulk_size_byte
     attr_accessor :bulk_size
-    attr_accessor :task_pool_size
+    attr_accessor :backlog_size
     attr_accessor :flush_interval
 
     # Creates a new instance of Atom Tracker.
@@ -25,10 +25,9 @@ module IronSourceAtom
       @is_debug_mode = false
 
       @bulk_size_byte = 64 * 1024
-      @task_pool_size = 2
-      @bulk_size = 50
+      @backlog_size = 500
+      @bulk_size = 64
       @flush_interval = 10
-      @task_workers_count = 10
 
       @retry_timeout = 1
 
@@ -79,10 +78,10 @@ module IronSourceAtom
         @accumulate[stream] = []
       end
 
-      if @accumulate[stream].length >= @task_pool_size
+      if @accumulate[stream].length >= @backlog_size
         error_str = "Message store for stream: '#{stream}' has reached its maximum size!";
         AtomDebugLogger.log(error_str, @is_debug_mode)
-        error_callback.call(error_str) unless error_callback.nil?
+        error_callback.call(error_str, @accumulate[stream]) unless error_callback.nil?
         @@tracker_lock.unlock
         return
       end
