@@ -13,11 +13,18 @@ class TestExample
   		atom_tracker.auth = auth
   		atom_tracker.is_debug_mode = true
 
-		data = {
-			id: 1,
-			message: 'test 42'
-		}.to_json
-		atom_tracker.track(stream, data)
+  		event_count = ARGV[0]
+
+  		puts "From test: #{event_count}"
+
+  		for index in 0..event_count.to_i
+  			puts "Pu event: #{index}"
+  			data = {
+				id: index,
+				message: "data index: #{index}"
+			}.to_json
+			atom_tracker.track(stream, data)
+  		end
 
 		atom_tracker.flush(lambda do |response|
 			puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"

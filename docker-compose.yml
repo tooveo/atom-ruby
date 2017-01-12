@@ -1,0 +1,7 @@
+version: '2'
+services:
+  atom_ruby:
+    build: .
+    command: bash -c "sh ./test/run_integration.sh"
+    environment:
+      EVENT_COUNT: 1000 

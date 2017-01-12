@@ -12,5 +12,3 @@ RUN gem install rspec
 
 RUN gem build iron_source_atom.gemspec
 RUN gem install iron_source_atom-$SDK_VERSION.gem
-
-ENTRYPOINT "./test/run_integration.sh"

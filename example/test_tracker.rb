@@ -9,6 +9,19 @@ def self.test_multitread
   atom_tracker.auth = ""
   atom_tracker.is_debug_mode = true
 
+  for index in 0..100
+        puts "Pu event: #{index}"
+        data = {
+        id: index,
+        message: "data index: #{index}"
+      }.to_json
+      atom_tracker.track(stream, data)
+      end
+
+    atom_tracker.flush(lambda do |response|
+      puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
+    end)
+
   data_string = {
       id: 1,
       message: "11"
