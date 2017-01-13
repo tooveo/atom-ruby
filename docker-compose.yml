@@ -4,4 +4,10 @@ services:
     build: .
     command: bash -c "sh ./test/run_integration.sh"
     environment:
+      STREAM: "ibtest"
+      AUTH: "I40iwPPOsG3dfWX30labriCg9HqMfL"
+      BULK_SIZE: 64
+      BULK_SIZE_BYTE: 65536
+      DATA_TYPES: '{"id": "int", "string": "str"}' # types: int, str, bool
+      DATA_INCREMENT_KEY: "id" 
       EVENT_COUNT: 1000
