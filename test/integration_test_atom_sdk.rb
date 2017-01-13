@@ -15,6 +15,8 @@ class IntegrationTest
   		send_data_types = ARGV[5]
   		data_key_increment = ARGV[6]
 
+  		flush_interval = ARGV[7]
+
   		puts "Args - stream: #{stream}; auth: #{auth}; even_count: #{event_count}; bulk_size: #{bulk_size}; \n bulk_size_byte: #{bulk_size_byte}; send_data_types: #{send_data_types}; data_key_increment: #{data_key_increment}"
 
   		data_types = JSON.parse(send_data_types)
@@ -24,6 +26,7 @@ class IntegrationTest
   		atom_tracker.bulk_size = bulk_size.to_i
   		atom_tracker.bulk_size_byte = bulk_size_byte.to_i
   		atom_tracker.is_debug_mode = true
+  		atom_tracker.flush_interval = flush_interval.to_i
 
   		puts "From test: #{event_count}"
 
