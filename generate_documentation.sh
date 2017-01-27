@@ -1,7 +1,7 @@
 #!/usr/bin/env bash -x
 yardoc
 
-{TARGET_BRANCH}="gh-pages"
+TARGET_BRANCH="gh-pages"
 mkdir ${TARGET_BRANCH}
 cd ${TARGET_BRANCH}
 
