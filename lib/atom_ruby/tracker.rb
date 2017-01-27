@@ -79,7 +79,7 @@ module IronSourceAtom
       end
 
       if @accumulate[stream].length >= @backlog_size
-        error_str = "Message store for stream: '#{stream}' has reached its maximum size!";
+        error_str = "Message store for stream: '#{stream}' has reached its maximum size!"
         AtomDebugLogger.log(error_str, @is_debug_mode)
         error_callback.call(error_str, @accumulate[stream]) unless error_callback.nil?
         @@tracker_lock.unlock
