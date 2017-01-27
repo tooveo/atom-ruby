@@ -20,10 +20,17 @@ class TestExample
 
     reponse_callback = lambda do |response|
       begin
-        print "Reponse code: #{response.code}\n"
-        print "Reponse message: #{response.message}\n"
+        if response.code != nil
+          print "Reponse code: #{response.code}\n"
+        end
 
-        print "Response body: #{response.body}\n"
+        if response.message != nil
+          print "Reponse message: #{response.message}\n"
+        end
+
+        if not response.body.nil?
+          print "Response body: #{response.body}\n"
+        end
       rescue Exception => ex
         print ex.message
       end
