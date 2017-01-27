@@ -1,171 +1,194 @@
-require 'thread'
 require 'json'
 require_relative 'atom'
 require_relative 'back_off'
-require_relative 'event_task_pool'
+require_relative 'atom_debug_logger'
+
+require 'thread'
+
+require 'timers'
+
 module IronSourceAtom
   class Tracker
-    Event = Struct.new(:stream, :data)
+    include Celluloid
 
-    # Creates a new instance of Tracker.
-    # * +auth+ is the pre shared auth key for your Atom. Required.
-    # * +url+ atom traker endpoint url.
-    def initialize(url="http://track.atom-data.io/")
-      @bulk_size_byte = 64*1024
-      @bulk_size = 4
-      @task_workers_count = 20
-      @task_pool_size = 10000
+    @@tracker_lock = Mutex.new
+
+    attr_reader :is_debug_mode
+    attr_accessor :bulk_size_byte
+    attr_accessor :bulk_size
+    attr_accessor :backlog_size
+    attr_accessor :flush_interval
+
+    # Creates a new instance of Atom Tracker.
+    # * +url+ atom tracker endpoint url. Default is http://track.atom-data.io/
+    def initialize(url = 'http://track.atom-data.io/')
+      @is_debug_mode = false
+
+      @bulk_size_byte = 64 * 1024
+      @backlog_size = 500
+      @bulk_size = 64
       @flush_interval = 10
-      @url =url
-      @auth=""
-      @streams = Hash.new
+
+      @retry_timeout = 1
+
+      @url = url
       @atom = Atom.new
-      @flush_now = false
-      @event_worker_thread=Thread.start { event_worker }
-      @event_pool = EventTaskPool.new(@task_workers_count, @task_pool_size)
 
+      @accumulate = Hash.new
+
+      @queue_flush = Hash.new
+      @is_stream_flush = Hash.new
+
+      @timerRetry = Timers::Group.new
+
+      async._timer_flush
     end
 
-    # Sets pre shared auth key for Atom stream
-    # * +auth+ String pre shared auth key
+    def finalize()
+      self.terminate
+    end
+
+    # Sets pre shared auth key for Atom Stream
+    # * +auth+ Pre shared auth key for your Atom Stream
     def auth=(auth)
-      @auth = auth
+      @atom.auth = auth
     end
 
-    # Sets bulk size of events in bytes
-    def bulk_size_byte=(bulk_size_byte)
-      @bulk_size_byte = bulk_size_byte
+    def url=(url)
+      @atom.url = url
     end
 
-    # Sets number of events in bulk
-    def bulk_size=(bulk_size)
-      @bulk_size = bulk_size
+    def is_debug_mode=(is_debug_mode)
+      @is_debug_mode = is_debug_mode
+      @atom.is_debug_mode = is_debug_mode
     end
 
-    # Sets the quantity of workers sending data to Atom
-    def task_workers_count=(task_workers_count)
-      @task_workers_count = task_workers_count
-    end
+    # Track data to Atom
+    # * +stream+ Atom Stream name
+    # * +data+ Data to be sent
+    # * +error_callback+ Called after max retires failed or after client-side error
+    def track(stream, data, error_callback = nil)
 
-    # Sets the capacity of task queue
-    def task_pool_size=(task_pool_size)
-      @task_pool_size = task_pool_size
-    end
+      @@tracker_lock.lock
+      if (stream.nil? || stream.length == 0 || data.nil? || data.length == 0)
+        raise StandardError, 'Stream name and data are required parameters'
+      end
 
-    # Sets the time in seconds for flushing data to Atom
-    def flush_interval=(flush_interval)
-      @flush_interval = flush_interval
-    end
+      unless @accumulate.key?(stream)
+        @accumulate[stream] = []
+      end
 
+      if @accumulate[stream].length >= @backlog_size
+        error_str = "Message store for stream: '#{stream}' has reached its maximum size!"
+        AtomDebugLogger.log(error_str, @is_debug_mode)
+        error_callback.call(error_str, @accumulate[stream]) unless error_callback.nil?
+        @@tracker_lock.unlock
+        return
+      end
 
-    # Track data to server
-    #
-    # * +data+ info for sending
-    # * +stream+ is the Name of the stream
-    def track(data, stream)
-      if @streams.has_key? stream
-        @streams[stream].push Event.new(stream, data)
+      unless data.is_a?(String)
+        if data.method_defined? :to_json
+          @accumulate[stream].push(data.to_json)
+        else
+          raise StandardError, "Invalid Data - can't be stringified"
+        end
       else
-        events_queue = Queue.new
-        events_queue.push Event.new(stream, data)
-        @streams.store(stream, events_queue)
+        @accumulate[stream].push(data)
+      end
+      @@tracker_lock.unlock
+
+      #AtomDebugLogger.log("Track event for stream: #{stream} with data: #{data}", @is_debug_mode)
+
+      if @accumulate[stream].length >= @bulk_size || _byte_count(@accumulate[stream]) >= @bulk_size_byte
+        flush_with_stream(stream)
       end
     end
 
-    private def event_worker
-
-      timer_start_time = Hash.new
-      timer_delta_time = Hash.new
-      events_size = Hash.new
-      events_buffer = Hash.new
-
-      flush_event = lambda do |stream, buffer|
-        buffer_to_flush = Array.new(buffer).to_json
-        buffer.clear
-        events_size[stream] = 0
-        timer_delta_time[stream] = 0;
-        @event_pool.add_task(Proc.new { flush_data(stream, buffer_to_flush) })
-      end
-
-      while true
-        for stream in @streams.keys
-
-          unless timer_start_time.key? stream
-            timer_start_time.store(stream, Time.now)
-          end
-
-          unless timer_delta_time.key? stream
-            timer_delta_time.store(stream, 0)
-          end
-
-          timer_delta_time[stream] += Time.now - timer_start_time[stream]
-          timer_start_time[stream] = Time.now
-
-          if timer_delta_time[stream] >= @flush_interval
-            timer_delta_time[stream] = 0
-
-            if events_buffer[stream].length > 0
-              puts "flushing event by timer #{events_buffer[stream]}"
-              flush_event.call(stream, events_buffer[stream])
-            end
-
-          end
-
-          value = @streams[stream].pop
-          if value==nil
-            sleep(0.1)
-            next
-          end
-
-          unless events_size.key? stream
-            events_size.store(stream, 0)
-          end
-
-          unless events_buffer.key? stream
-            events_buffer.store(stream, Array.new)
-          end
-
-          events_size[stream] += value[:data].bytesize
-          events_buffer[stream].push value[:data]
-
-          if events_size[stream] >= @bulk_size_byte
-            flush_event.call(stream, events_buffer[stream])
-          end
-
-          if events_buffer[stream].length >= @bulk_size
-            flush_event.call(stream, events_buffer[stream])
-          end
-
-          if @flush_now
-            flush_event.call(stream, events_buffer[stream])
-          end
-
-        end
-
-        if @flush_now
-          @flush_now = false
-        end
-      end
-
-    end
-
-
-    private def flush_data(stream, data)
-      @atom.auth = @auth
-      back_off=BackOff.new
-      while true
-        response=@atom.put_events(stream, data)
-        if Integer(response.code) < 500
-          return
-        end
-        sleep back_off.retry_time
+    # Flush all Streams to Atom
+    # * +callback+ called with results
+    def flush(callback = nil)
+      @accumulate.each do |stream, data|
+        flush_with_stream(stream, callback)
       end
     end
 
-    # Flush all data buffer to server immediately
-    def flush
-      @flush_now = true
+    # Flush a specific Stream to Atom
+    # * +stream+   Atom Stream name
+    # * +callback+ called with results
+    def flush_with_stream(stream, callback = nil)
+      @@tracker_lock.lock
+      if @is_stream_flush[stream]
+        @queue_flush[stream] = true
+        @@tracker_lock.unlock
+        return
+      end
+
+      @is_stream_flush[stream] = true
+      if @accumulate[stream].length > 0
+        data = @accumulate[stream]
+        @accumulate[stream] = []
+      else
+        @@tracker_lock.unlock
+        return
+      end
+      @@tracker_lock.unlock
+
+      AtomDebugLogger.log("Flush event for stream: #{stream}", @is_debug_mode)
+
+      _send(stream, data, @retry_timeout, callback) if data != nil && data.length > 0
+    end
+
+    def _timer_flush
+      every(flush_interval) do
+        AtomDebugLogger.log("From flush timer! interval: #{flush_interval}\n", @is_debug_mode)
+        flush
+      end
+    end
+
+
+    # Internal function that uses the "low level sdk" to send data (put_events func)
+    # * +stream+   Atom Stream name
+    # * +data+   Data to be sent
+    # * +timeout+   Max retry time
+    # * +timeout+   callback that will be called when done/error.
+    def _send(stream, data, timeout, callback)
+      @atom.put_events(stream, data, 'post', nil, lambda do |response|
+        if response.code.to_i <= -1 || response.code.to_i >= 500
+          print "from timer: #{timeout}\n"
+          if timeout < 20 * 60
+            @timerRetry.after(timeout) {
+              timeout = timeout * 2 + (rand(1000) + 100) / 1000.0
+
+              _send(stream, data, timeout, callback)
+            }
+
+            @timerRetry.wait
+            return
+          else
+            callback.call(Net::HTTPResponse.new(nil, 408, 'Timeout - No response from server')) unless callback.nil?
+          end
+        end
+
+        # retry queue mechanism
+        @is_stream_flush[stream] = false
+        if @queue_flush[stream]
+          @queue_flush[stream] = false
+          flush
+        end
+
+        AtomDebugLogger.log("Flush response code: #{response.code}\n response message #{response.message}", @is_debug_mode)
+
+        callback.call(response) unless callback.nil?
+      end)
+    end
+
+    def _byte_count(data_array)
+      result_size = 0
+      for data in data_array
+        result_size += data.bytesize
+      end
+
+      return result_size
     end
   end
-
 end

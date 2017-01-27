@@ -6,8 +6,8 @@ require 'atom_ruby/config'
 Gem::Specification.new do |spec|
   spec.name          = "iron_source_atom"
   spec.version       = IronSourceAtom::VERSION
-  spec.authors       = ["Kirill Bokhanov"]
-  spec.email         = ["kirill.bokhanov@ironsrc.com"]
+  spec.authors       = ["Atom Core Team"]
+  spec.email         = ["atom-core@ironsrc.com"]
 
   spec.summary       = "This is the official ironSource.atom gem"
   spec.description   = "Use this gem to send events to ironSource.atom data pipeline"
@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.test_files = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
+  spec.add_dependency "celluloid", "~> 0.17"
   spec.add_development_dependency "bundler", "~> 1.12"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "coveralls", '~> 0'

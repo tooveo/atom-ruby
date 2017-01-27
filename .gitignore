@@ -6,3 +6,4 @@ copydocs.sh
 Gemfile.lock
 coverage
 doc
+.rakeTasks

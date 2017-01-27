@@ -1,0 +1,14 @@
+version: '2'
+services:
+  atom_ruby:
+    build: .
+    command: bash -c "sh ./test/run_integration.sh"
+    environment:
+      STREAM: "YOUR_STREAM_NAME"
+      AUTH: "YOU_AUTH_KEY"
+      BULK_SIZE: 64
+      BULK_SIZE_BYTE: 65536
+      FLUSH_INTERVAL: 10
+      DATA_TYPES: '{"id": "int", "string": "str"}' # types: int, str, bool
+      DATA_INCREMENT_KEY: "id" 
+      EVENT_COUNT: 1000

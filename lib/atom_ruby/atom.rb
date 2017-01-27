@@ -1,90 +1,106 @@
 require_relative 'utils'
 require_relative 'http_client'
+require_relative 'atom_debug_logger'
+
 require 'json'
+
 module IronSourceAtom
   class Atom
-    # Creates a new instance of Atom.
-    # * +auth+ is the pre shared auth key for your Atom. Required.
-    # * +url+ atom traker endpoint url.
-    def initialize(auth="", url="http://track.atom-data.io/")
-      if auth==nil
-        raise ArgumentError.new("Param 'auth' must not be nil!")
+    attr_accessor :auth
+    attr_accessor :url
+    attr_accessor :is_debug_mode
+
+    # Creates a new instance of Atom Base SDK.
+    # * +auth+ Pre shared auth key for your Atom Stream
+    # * +url+ Atom API endpoint url. Default is http://track.atom-data.io/
+    def initialize(auth = '', url= 'http://track.atom-data.io/')
+      raise ArgumentError.new("Param 'auth' must be not nil!") if auth == nil
+
+      @is_debug_mode = false
+
+      @url = url
+      @auth = auth
+    end
+
+    def _get_event_data(stream, data, auth, is_bulk = false)
+      if data == nil
+        raise ArgumentError.new("Param 'data' must be not nil!")
       end
-      @url =url
-      @auth=auth
+
+      if data.is_a?(String)
+        if data == ''
+          raise ArgumentError.new("Param 'data' must be not empty!")
+        end
+      else
+        # :nocov:
+        if data.is_a?(Array) && data[0].is_a?(String)
+          data = data.join(',')
+          data = '[' + data + ']'
+        elsif data.respond_to? :to_json
+          data = data.to_json
+        else
+          raise StandardError, "Invalid Data - can't be stringified"
+        end
+        # :nocov:
+      end
+
+      # :nocov:
+      event = {
+          table: stream,
+          data: data,
+          bulk: is_bulk,
+          auth: Utils.auth(auth, data)
+      }.to_json
+      # :nocov:
     end
 
-    # :nocov:
-    def auth=(auth)
-      @auth=auth
-    end
-    # :nocov:
-
-    # writes a single data event into ironSource.atom delivery stream.
-    # to write multiple data records into a delivery stream, use put_events.
-    #
-    # * +stream+ the name of your Atom stream.
-    # * +data+ your data in JSON format.
+    # Send a single data event into ironSource.atom
+    # * +stream+ Atom Stream name
+    # * +data+ Data in JSON format.
+    # * +auth+ Pre shared auth key for your Stream, by default uses authKey set in Atom constructor
     #
     # returns an HTTPResponse object.
     #
-    def put_event(stream, data)
-      if stream==nil || stream.empty?
-        raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
+    def put_event(stream, data, method = 'post', auth = '', callback = nil)
+      auth = @auth if auth == nil || auth.empty?
+      raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
+
+      event = _get_event_data(stream, data, auth, false)
+      # :nocov:
+      AtomDebugLogger.log("Put event with stream: #{stream} data: #{event}", @is_debug_mode)
+
+      http_client = HttpClient.new(@url, event, callback)
+      if method == 'post'
+        http_client.post
+      else
+        http_client.get
       end
-
-      begin
-        JSON.parse(data)
-      rescue TypeError
-        raise ArgumentError.new("Param 'data' must be not nil!")
-
-      rescue JSON::ParserError
-        raise ArgumentError.new("Param 'data' must be JSON of Object!")
-      end
-
-      event ={
-          table: stream,
-          data: data,
-          bulk: false,
-          auth: Utils.auth(@auth, data)
-      }.to_json;
-      http_client=HttpClient.new
-      return http_client.post(@url, event)
+      # :nocov:
     end
 
-    # writes a multiple data events into ironSource.atom delivery stream.
-    # to write  single data event into a delivery stream, use put_event.
+    # Send multiple events (bulk/batch) to Atom API
     #
-    # * +stream+ the name of your Atom stream.
+    # * +stream+ Atom Stream name
     # * +data+ your data in JSON format.
+    # * +auth+ Pre shared auth key for your Stream, by default uses authKey set in Atom constructor
     #
     # returns an HTTPResponse object.
     #
-    def put_events(stream, data)
-      if stream==nil || stream.empty?
-        raise ArgumentError.new("Param 'stream' must be neither nil nor empty!")
+    def put_events(stream, data, method = 'post', auth = '', callback = nil)
+      auth = @auth if auth == nil || auth.empty?
+      raise ArgumentError.new("Param 'stream' must be neither nil nor empty!") if stream == nil || stream.empty?
+
+      event = _get_event_data(stream, data, auth, true)
+#     :nocov:
+      AtomDebugLogger.log("Put events with stream: #{stream} data: #{event}", @is_debug_mode)
+
+      http_client = HttpClient.new(@url, event, callback)
+      if method == 'post'
+        http_client.post
+      else
+        http_client.get
       end
-
-      begin
-        json_data = JSON.parse(data)
-        raise ArgumentError.new("Param 'data' must be JSON of Array!") unless json_data.is_a?(Array)
-
-      rescue TypeError
-        raise ArgumentError.new("Param 'data' must be not nil!")
-
-      rescue JSON::ParserError
-        raise ArgumentError.new("Param 'data' must be JSON of Array!")
-      end
-
-      event ={
-          table: stream,
-          data: data,
-          bulk: true,
-          auth: Utils.auth(@auth, data)
-      }.to_json;
-      http_client=HttpClient.new
-      response = http_client.post(@url, event)
-      return response
+      # :nocov:
     end
   end
 end
