@@ -54,14 +54,11 @@ def self.test_multitread
 
   atom_tracker.flush_with_stream(stream, reponse_callback)
 
-  print "ssssswwww\n"
   index = 10
   i = 0
   indexExit = 0
   while indexExit < 100
-    print "11111\n"
     sleep(0.2)
-    print "3333\n"
 
     i += 1
     indexExit += 1
