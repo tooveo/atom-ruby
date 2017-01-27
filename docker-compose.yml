@@ -4,8 +4,8 @@ services:
     build: .
     command: bash -c "sh ./test/run_integration.sh"
     environment:
-      STREAM: "ibtest"
-      AUTH: "I40iwPPOsG3dfWX30labriCg9HqMfL"
+      STREAM: "YOUR_STREAM_NAME"
+      AUTH: "YOU_AUTH_KEY"
       BULK_SIZE: 64
       BULK_SIZE_BYTE: 65536
       FLUSH_INTERVAL: 10

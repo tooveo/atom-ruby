@@ -30,8 +30,6 @@ class IntegrationTest
 
   		puts "From test: #{event_count}"
 
-		stream = 'sdkdev_sdkdev.public.g8y3etest'
-
 		prev_data = {}
 		prev_data[data_key_increment] = 0
 
