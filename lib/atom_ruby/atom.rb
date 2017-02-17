@@ -20,6 +20,8 @@ module IronSourceAtom
 
       @url = url
       @auth = auth
+
+      @http_pool_requester = HttpClient.pool(size: 6)
     end
 
     def _get_event_data(stream, data, auth, is_bulk = false)
@@ -69,11 +71,10 @@ module IronSourceAtom
       # :nocov:
       AtomDebugLogger.log("Put event with stream: #{stream} data: #{event}", @is_debug_mode)
 
-      http_client = HttpClient.new(@url, event, callback)
       if method == 'post'
-        http_client.post
+        @http_pool_requester.future(:post, @url, event, callback)
       else
-        http_client.get
+        @http_pool_requester.future(:get, @url, event, callback)
       end
       # :nocov:
     end
@@ -94,11 +95,10 @@ module IronSourceAtom
 #     :nocov:
       AtomDebugLogger.log("Put events with stream: #{stream} data: #{event}", @is_debug_mode)
 
-      http_client = HttpClient.new(@url, event, callback)
       if method == 'post'
-        http_client.post
+        @http_pool_requester.future(:post, @url, event, callback)
       else
-        http_client.get
+        @http_pool_requester.future(:get, @url, event, callback)
       end
       # :nocov:
     end
