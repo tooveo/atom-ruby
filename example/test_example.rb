@@ -10,7 +10,7 @@ class TestExample
     atom.url = url
     atom.is_debug_mode = true
 
-    stream = 'ibtest'
+    stream = '<YOU STREAM NAME>'
     auth_key = '<YOUR_AUTH_KEY>'
 
     data_string = {

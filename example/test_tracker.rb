@@ -6,10 +6,10 @@ class TestTracker
 def self.test_multitread
   url = "http://track.atom-data.io/"
   atom_tracker = IronSourceAtom::Tracker.new
-  atom_tracker.auth = "I40iwPPOsG3dfWX30labriCg9HqMfL"
+  atom_tracker.auth = "YOUR AUTH KEY"
   atom_tracker.is_debug_mode = true
 
-  stream = 'sdkdev_sdkdev.public.g8y3etest'
+  stream = 'YOUR STREAM NAME'
 
   for index in 0..1400
     puts "Put event: #{index}"
@@ -54,14 +54,11 @@ def self.test_multitread
 
   atom_tracker.flush_with_stream(stream, reponse_callback)
 
-  print "ssssswwww\n"
   index = 10
   i = 0
   indexExit = 0
   while indexExit < 100
-    print "11111\n"
     sleep(0.2)
-    print "3333\n"
 
     i += 1
     indexExit += 1

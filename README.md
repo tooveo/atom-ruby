@@ -110,12 +110,13 @@ end
 ```
 ## Change Log
 
-### v1.2.0
+### v1.5.1
 - Rewrote all async ops to work with celluloid
 - Refactored Tracker
 - Refactored Atom base class
 - Refactored Http Client class
 - Improved Docs
+- Added a Dockerfile and docker-compose to run the SDK in a container
 
 ### v1.1.0
 - Added Tracker
@@ -125,7 +126,12 @@ end
 
 ## Example
 
-You can use our [example](example) for sending data to Atom:
+- You can use our [example](example) for sending data to Atom.
+- To run the SDK in a Docker container:  
+    - Get Docker and docker-compose
+    - git clone https://github.com/ironSource/atom-ruby.git
+    - Setup your stream and auth at the docker-compose (passed as env vars)
+    - run: ```docker-compose up ```
 
 ## License
 [MIT][license-url]

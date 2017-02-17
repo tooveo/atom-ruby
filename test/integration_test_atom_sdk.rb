@@ -30,9 +30,7 @@ class IntegrationTest
 
   		puts "From test: #{event_count}"
 
-		  stream = 'sdkdev_sdkdev.public.g8y3etest'
-
-      event_per_sec = 0
+			event_per_sec = 0
       prev_time = Time.now
 
       prev_data = {}
