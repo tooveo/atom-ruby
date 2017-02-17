@@ -14,20 +14,26 @@ module IronSourceAtom
     @@tracker_lock = Mutex.new
 
     attr_reader :is_debug_mode
-    attr_accessor :bulk_size_byte
-    attr_accessor :bulk_size
-    attr_accessor :backlog_size
-    attr_accessor :flush_interval
+    attr_reader :bulk_size_byte
+    attr_reader :bulk_size
+    attr_reader :backlog_size
+    attr_reader :flush_interval
+
+    @@FLUSH_INTERVAL = 10
+    @@BULK_SIZE = 50
+    @@BULK_SIZE_LIMIT = 2000
+    @@BULK_SIZE_BYTE = 128 * 1024
+    @@BULK_SIZE_BYTE_LIMIT = 512 * 1024
 
     # Creates a new instance of Atom Tracker.
     # * +url+ atom tracker endpoint url. Default is http://track.atom-data.io/
     def initialize(url = 'http://track.atom-data.io/')
       @is_debug_mode = false
 
-      @bulk_size_byte = 64 * 1024
+      @bulk_size_byte = @@BULK_SIZE_BYTE
       @backlog_size = 500
-      @bulk_size = 64
-      @flush_interval = 10
+      @bulk_size = @@BULK_SIZE
+      @flush_interval = @@FLUSH_INTERVAL
 
       @retry_timeout = 1
 
@@ -44,7 +50,7 @@ module IronSourceAtom
       async._timer_flush
     end
 
-    def finalize()
+    def finalize
       self.terminate
     end
 
@@ -54,10 +60,47 @@ module IronSourceAtom
       @atom.auth = auth
     end
 
+    # Sets bulk size byte for Atom Tracker events
+    # * +size_byte+ bulk size in bytes
+    def bulk_size_byte=(size_byte)
+      if size_byte < 1 or size_byte > @@BULK_SIZE_BYTE_LIMIT
+        AtomDebugLogger.log('Maximum Bulk byte size is reached (default: 128kB)', @is_debug_mode)
+        @bulk_size_byte = @@BULK_SIZE_BYTE
+      else
+        @bulk_size_byte = size_byte
+      end
+    end
+
+    # Sets bulk size for Atom Tracker events
+    # * +size+ bulk size
+    def bulk_size=(size)
+      if size < 1 or size > @@BULK_SIZE_LIMIT
+        AtomDebugLogger.log('Bulk Length is reached (default: 50 events).', @is_debug_mode)
+        @bulk_size = @@BULK_SIZE
+      else
+        @bulk_size = size
+      end
+    end
+
+    # Sets flush interval Atom Tracker events
+    # * +flush_interval+ flush interval in seconds
+    def flush_interval=(flush_interval)
+      if flush_interval < 0.001
+        AtomDebugLogger.log('Flush Interval is reached (default: 10 seconds).', @is_debug_mode)
+        @flush_interval = @@FLUSH_INTERVAL
+      else
+        @flush_interval = flush_interval
+      end
+    end
+
+    # Sets url for Atom Tracker
+    # * +url+ url for Atom server
     def url=(url)
       @atom.url = url
     end
 
+    # Sets debug mode for Atom Tracker
+    # * +is_debug_mode+ enable debug mode
     def is_debug_mode=(is_debug_mode)
       @is_debug_mode = is_debug_mode
       @atom.is_debug_mode = is_debug_mode
