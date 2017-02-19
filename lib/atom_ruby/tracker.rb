@@ -183,7 +183,7 @@ module IronSourceAtom
 
     def _timer_flush
       every(flush_interval) do
-        AtomDebugLogger.log("From flush timer! interval: #{flush_interval}\n", @is_debug_mode)
+        AtomDebugLogger.log("Flush Interval of: #{flush_interval} reached\n", @is_debug_mode)
         flush
       end
     end

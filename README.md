@@ -52,7 +52,7 @@ The tracker accumulates events and flushes them when it meets one of the followi
  
 1. Flush Interval is reached (default: 10 seconds).
 2. Bulk Length is reached (default: 50 events).
-3. Maximum Bulk byte size is reached (default: 64kB).
+3. Maximum Bulk byte size is reached (default: 128KB).
 
 In case of failure the tracker will preform an exponential backoff with jitter.
 The tracker stores events in memory.
@@ -109,6 +109,10 @@ class TestExample
 end
 ```
 ## Change Log
+
+### v1.5.2
+- Fixed a bug with too many running threads in celluloid
+- Added limits to Bulk Length, Size and Flush Interval
 
 ### v1.5.1
 - Rewrote all async ops to work with celluloid
