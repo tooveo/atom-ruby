@@ -9,7 +9,7 @@ class IntegrationTest
   		stream = ARGV[0]
   		auth = ARGV[1]
   		event_count = ARGV[2]
-  		bulk_size = ARGV[3]
+  		bulk_length = ARGV[3]
   		bulk_size_byte = ARGV[4]
 
   		send_data_types = ARGV[5]
@@ -17,13 +17,13 @@ class IntegrationTest
 
   		flush_interval = ARGV[7]
 
-  		puts "Args - stream: #{stream}; auth: #{auth}; even_count: #{event_count}; bulk_size: #{bulk_size}; \n bulk_size_byte: #{bulk_size_byte}; send_data_types: #{send_data_types}; data_key_increment: #{data_key_increment}"
+  		puts "Args - stream: #{stream}; auth: #{auth}; even_count: #{event_count}; bulk_length: #{bulk_length}; \n bulk_size_byte: #{bulk_size_byte}; send_data_types: #{send_data_types}; data_key_increment: #{data_key_increment}"
 
   		data_types = JSON.parse(send_data_types)
 
 	    atom_tracker = IronSourceAtom::Tracker.new
   		atom_tracker.auth = auth
-  		atom_tracker.bulk_size = bulk_size.to_i
+  		atom_tracker.bulk_length = bulk_length.to_i
   		atom_tracker.bulk_size_byte = bulk_size_byte.to_i
   		atom_tracker.is_debug_mode = true
   		atom_tracker.flush_interval = flush_interval.to_i

@@ -15,13 +15,13 @@ module IronSourceAtom
 
     attr_reader :is_debug_mode
     attr_reader :bulk_size_byte
-    attr_reader :bulk_size
+    attr_reader :bulk_length
     attr_reader :backlog_size
     attr_reader :flush_interval
 
     @@FLUSH_INTERVAL = 10
-    @@BULK_SIZE = 50
-    @@BULK_SIZE_LIMIT = 2000
+    @@BULK_LENGTH = 50
+    @@BULK_LENGTH_LIMIT = 2000
     @@BULK_SIZE_BYTE = 128 * 1024
     @@BULK_SIZE_BYTE_LIMIT = 512 * 1024
 
@@ -32,7 +32,7 @@ module IronSourceAtom
 
       @bulk_size_byte = @@BULK_SIZE_BYTE
       @backlog_size = 500
-      @bulk_size = @@BULK_SIZE
+      @bulk_length = @@BULK_LENGTH
       @flush_interval = @@FLUSH_INTERVAL
 
       @retry_timeout = 1
@@ -60,25 +60,25 @@ module IronSourceAtom
       @atom.auth = auth
     end
 
-    # Sets bulk size byte for Atom Tracker events
-    # * +size_byte+ bulk size in bytes
-    def bulk_size_byte=(size_byte)
-      if size_byte < 1 or size_byte > @@BULK_SIZE_BYTE_LIMIT
-        AtomDebugLogger.log('Maximum Bulk byte size is reached (default: 128kB)', @is_debug_mode)
+    # Set Batch(Bulk) size byte for Atom Tracker events
+    # * +byte_size+ bulk size in bytes
+    def bulk_size_byte=(byte_size)
+      if byte_size < 1 or byte_size > @@BULK_SIZE_BYTE_LIMIT
+        AtomDebugLogger.log("Invalid Bulk Size, must be between 1 to #{@@BULK_SIZE_BYTE_LIMIT} setting to default: #{@@BULK_SIZE_BYTE})", @is_debug_mode)
         @bulk_size_byte = @@BULK_SIZE_BYTE
       else
-        @bulk_size_byte = size_byte
+        @bulk_size_byte = byte_size
       end
     end
 
-    # Sets bulk size for Atom Tracker events
-    # * +size+ bulk size
-    def bulk_size=(size)
-      if size < 1 or size > @@BULK_SIZE_LIMIT
-        AtomDebugLogger.log('Bulk Length is reached (default: 50 events).', @is_debug_mode)
-        @bulk_size = @@BULK_SIZE
+    # Sets bulk length for Atom Tracker events
+    # * +bulk_length+ bulk length
+    def bulk_length=(bulk_length)
+      if bulk_length < 1 or bulk_length > @@BULK_LENGTH_LIMIT
+        AtomDebugLogger.log("Invalid Bulk Length, must be between 1 to #{@@BULK_LENGTH_LIMIT} setting to default: #{@@BULK_LENGTH}", @is_debug_mode)
+        @bulk_length = @@BULK_LENGTH
       else
-        @bulk_size = size
+        @bulk_length = bulk_length
       end
     end
 
@@ -86,7 +86,7 @@ module IronSourceAtom
     # * +flush_interval+ flush interval in seconds
     def flush_interval=(flush_interval)
       if flush_interval < 0.001
-        AtomDebugLogger.log('Flush Interval is reached (default: 10 seconds).', @is_debug_mode)
+        AtomDebugLogger.log("Invalid FlushInterval, must be bigger than 100 ms, setting it to #{@@FLUSH_INTERVAL} seconds", @is_debug_mode)
         @flush_interval = @@FLUSH_INTERVAL
       else
         @flush_interval = flush_interval
@@ -142,7 +142,7 @@ module IronSourceAtom
 
       #AtomDebugLogger.log("Track event for stream: #{stream} with data: #{data}", @is_debug_mode)
 
-      if @accumulate[stream].length >= @bulk_size || _byte_count(@accumulate[stream]) >= @bulk_size_byte
+      if @accumulate[stream].length >= @bulk_length || _byte_count(@accumulate[stream]) >= @bulk_size_byte
         flush_with_stream(stream)
       end
     end
