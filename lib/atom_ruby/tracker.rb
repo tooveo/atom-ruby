@@ -132,13 +132,13 @@ module IronSourceAtom
       if @accumulate[stream].length >= @backlog_size
         if @is_blocking 
           @@tracker_lock.unlock
-          @@tracker_block_lock.lock
-          while @accumulate[stream].length >= @backlog_size
-            sleep(0.05)
-            puts "Flusing...\n"
+          puts 'Lock treads'
+          while (@accumulate[stream].length >= @backlog_size)
+            sleep(0.5)
             flush_with_stream(stream)
           end
-          @@tracker_block_lock.unlock
+
+          @@tracker_lock.lock
         else
           error_str = "Message store for stream: '#{stream}' has reached its maximum size!"
           AtomDebugLogger.log(error_str, @is_debug_mode)
@@ -159,7 +159,7 @@ module IronSourceAtom
       else
         @accumulate[stream].push(data)
       end
-      @@tracker_lock.unlock
+      @@tracker_lock.unlock if @@tracker_lock.locked?
 
       #AtomDebugLogger.log("Track event for stream: #{stream} with data: #{data}", @is_debug_mode)
 
@@ -172,13 +172,12 @@ module IronSourceAtom
     # * +callback+ called with results
     def flush()
       @accumulate.each do |stream, data|
-        flush_with_stream(stream, callback)
+        flush_with_stream(stream)
       end
     end
 
     # Flush a specific Stream to Atom
     # * +stream+   Atom Stream name
-    # * +callback+ called with results
     def flush_with_stream(stream)
       @@tracker_lock.lock
       if @is_stream_flush[stream]
@@ -189,8 +188,15 @@ module IronSourceAtom
 
       @is_stream_flush[stream] = true
       if @accumulate[stream].length > 0
-        data = @accumulate[stream]
-        @accumulate[stream] = []
+
+        if @accumulate[stream].length > @bulk_length
+          data = @accumulate[stream].take(@bulk_length)
+          @accumulate[stream] = @accumulate[stream].drop(@bulk_length)
+          @queue_flush[stream] = true
+        else
+          data = @accumulate[stream]
+          @accumulate[stream] = []
+        end
       else
         @@tracker_lock.unlock
         return
@@ -199,7 +205,7 @@ module IronSourceAtom
 
       AtomDebugLogger.log("Flush event for stream: #{stream}", @is_debug_mode)
 
-      _send(stream, data, @retry_timeout, callback) if data != nil && data.length > 0
+      _send(stream, data, @retry_timeout) if data != nil && data.length > 0
     end
 
     def _timer_flush
@@ -215,16 +221,13 @@ module IronSourceAtom
     # * +timeout+   Max retry time
     def _send(stream, data, timeout)
       @atom.put_events(stream, data, 'post', nil, lambda do |response|
-
-
-        sleep(50)
         if response.code.to_i <= -1 || response.code.to_i >= 500
           print "from timer: #{timeout}\n"
           if timeout < 20 * 60
             @timerRetry.after(timeout) {
               timeout = timeout * 2 + (rand(1000) + 100) / 1000.0
 
-              _send(stream, data, timeout, callback)
+              _send(stream, data, timeout)
             }
 
             @timerRetry.wait
