@@ -1,7 +1,57 @@
 require 'json'
 require 'iron_source_atom'
+require 'thread'
 
 puts "Integration test for ruby atom sdk!\n\n"
+
+class AtomApiThread
+  @@stopped = false
+
+  def initialize(atom_tracker=nil, stream=nil, queue=nil, invalid_queue=nil, keep_alive_sec=0, stall_seconds=0, type='tracker')
+    raise TypeError, ('expected Thread::Queue') unless queue.instance_of? Thread::Queue
+    @atom_tracker = atom_tracker
+    @stream = stream
+    @queue = queue
+    @invalid_queue = invalid_queue
+    @keep_alive_sec = keep_alive_sec
+    @stall_seconds = stall_seconds
+    @type = type
+  end
+  def self.stop
+    @@stopped = true
+  end
+
+  def thread_worker(id)
+    begin
+      original_timer = @keep_alive_sec
+      while not @@stopped do
+        #printf "From Thread\n"
+        if @queue.length <= 0
+          sleep(1)
+        else
+          queue_item = @queue.pop
+          begin
+            # puts queue_item.to_json
+            if @type == :tracker
+              @atom_tracker.track(@stream, queue_item.to_json)
+              #puts "Track: #{@stream} data: #{queue_item}\n"
+
+            end
+          rescue => e
+            puts "track failed: \n"
+            puts e.backtrace
+            @invalid_queue << queue_item.to_json
+          end
+          if @stall_seconds != 0
+            sleep(@stall_seconds)
+          end
+        end
+      end
+    rescue => e
+      puts "something wrong in thread #{id}: #{e.message}"
+    end
+  end
+end
 
 class IntegrationTest
   	def self.do_test
@@ -16,6 +66,9 @@ class IntegrationTest
   		data_key_increment = ARGV[6]
 
   		flush_interval = ARGV[7]
+
+      queue = Queue.new
+      invalid_queue = Queue.new
 
   		puts "Args - stream: #{stream}; auth: #{auth}; even_count: #{event_count}; bulk_length: #{bulk_length}; \n bulk_size_byte: #{bulk_size_byte}; send_data_types: #{send_data_types}; data_key_increment: #{data_key_increment}"
 
@@ -36,6 +89,9 @@ class IntegrationTest
       prev_data = {}
       prev_data[data_key_increment] = 0
 
+      thread_array = Array.new
+      IntegrationTest.build_threads(thread_array, atom_tracker, stream, queue, invalid_queue, 3, 5, 0.01)
+
       for index in 0..event_count.to_i
         #puts "Put event: #{index}"
         data = {}
@@ -52,8 +108,9 @@ class IntegrationTest
           data[key] = data_value
         end
 
-        atom_tracker.track(stream, data.to_json)
-        sleep(0.005)
+        #atom_tracker.track(stream, data.to_json)
+        queue << data
+        sleep(0.001)
 
         event_per_sec += 1
         if Time.now - prev_time >= 1
@@ -63,11 +120,30 @@ class IntegrationTest
         end
       end
 
+      puts "End Testing.\n"
+
+      while queue.length > 0
+        sleep(0.5)
+      end
+
+      puts "Queue empty.\n"
+
+      AtomApiThread.stop
+
       atom_tracker.flush(lambda do |response|
         puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
       end)
 
       sleep(10)
+    end
+
+    def self.build_threads(thread_array, atom_tracker, stream, queue, invalid_queue, threads=1, keep_alive_time=10, thread_stall_time=0)
+      threads.times do |i|
+        print "Build thread #{i}\n"
+        thread = AtomApiThread.new(atom_tracker, stream, queue, invalid_queue, keep_alive_time, thread_stall_time, type=:tracker)
+        thread_array << Thread.new{thread.thread_worker(i)}
+      end
+      puts "built #{thread_array.length} threads"
     end
 
   	def self.generate_data(type, is_autoincrement = false, prev_value = nil)

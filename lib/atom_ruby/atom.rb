@@ -21,7 +21,7 @@ module IronSourceAtom
       @url = url
       @auth = auth
 
-      @http_pool_requester = HttpClient.pool(size: 6)
+      @http_pool_requester = HttpClient.pool(size: 1)
     end
 
     def _get_event_data(stream, data, auth, is_bulk = false)
