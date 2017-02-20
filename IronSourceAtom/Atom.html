@@ -6,7 +6,7 @@
 <title>
   Class: IronSourceAtom::Atom
   
-    &mdash; Documentation by YARD 0.9.5
+    &mdash; Documentation by YARD 0.9.8
   
 </title>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../class_list.html"></iframe>
+      <iframe id="nav" src="../class_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -58,8 +58,6 @@
 </div>
         <div class="clear"></div>
       </div>
-
-      <iframe id="search_frame" src="../class_list.html"></iframe>
 
       <div id="content"><h1>Class: IronSourceAtom::Atom
   
@@ -372,7 +370,7 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
   <span class='ivar'>@url</span> <span class='op'>=</span> <span class='id identifier rubyid_url'>url</span>
   <span class='ivar'>@auth</span> <span class='op'>=</span> <span class='id identifier rubyid_auth'>auth</span>
 
-  <span class='ivar'>@http_pool_requester</span> <span class='op'>=</span> <span class='const'>HttpClient</span><span class='period'>.</span><span class='id identifier rubyid_pool'>pool</span><span class='lparen'>(</span><span class='label'>size:</span> <span class='int'>6</span><span class='rparen'>)</span>
+  <span class='ivar'>@http_pool_requester</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="HttpClient.html" title="IronSourceAtom::HttpClient (class)">HttpClient</a></span></span><span class='period'>.</span><span class='id identifier rubyid_pool'>pool</span><span class='lparen'>(</span><span class='label'>size:</span> <span class='int'>6</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -597,7 +595,7 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <span class='label'>table:</span> <span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span>
       <span class='label'>data:</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span>
       <span class='label'>bulk:</span> <span class='id identifier rubyid_is_bulk'>is_bulk</span><span class='comma'>,</span>
-      <span class='label'>auth:</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id identifier rubyid_auth'>auth</span><span class='lparen'>(</span><span class='id identifier rubyid_auth'>auth</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+      <span class='label'>auth:</span> <span class='const'><span class='object_link'><a href="Utils.html" title="IronSourceAtom::Utils (class)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_auth'><span class='object_link'><a href="Utils.html#auth-class_method" title="IronSourceAtom::Utils.auth (method)">auth</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_auth'>auth</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='rbrace'>}</span><span class='period'>.</span><span class='id identifier rubyid_to_json'>to_json</span>
   <span class='comment'># :nocov:
 </span><span class='kw'>end</span></pre>
@@ -680,7 +678,7 @@ authKey set in Atom constructor</p>
 
   <span class='id identifier rubyid_event'>event</span> <span class='op'>=</span> <span class='id identifier rubyid__get_event_data'>_get_event_data</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_auth'>auth</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='comment'># :nocov:
-</span>  <span class='const'>AtomDebugLogger</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Put event with stream: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'> data: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_event'>event</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
+</span>  <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Put event with stream: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'> data: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_event'>event</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>post</span><span class='tstring_end'>&#39;</span></span>
     <span class='ivar'>@http_pool_requester</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span><span class='lparen'>(</span><span class='symbol'>:post</span><span class='comma'>,</span> <span class='ivar'>@url</span><span class='comma'>,</span> <span class='id identifier rubyid_event'>event</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
@@ -768,7 +766,7 @@ authKey set in Atom constructor</p>
 
   <span class='id identifier rubyid_event'>event</span> <span class='op'>=</span> <span class='id identifier rubyid__get_event_data'>_get_event_data</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_auth'>auth</span><span class='comma'>,</span> <span class='kw'>true</span><span class='rparen'>)</span>
 <span class='comment'>#     :nocov:
-</span>  <span class='const'>AtomDebugLogger</span><span class='period'>.</span><span class='id identifier rubyid_log'>log</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Put events with stream: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'> data: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_event'>event</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
+</span>  <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Put events with stream: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'> data: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_event'>event</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
 
   <span class='kw'>if</span> <span class='id identifier rubyid_method'>method</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>post</span><span class='tstring_end'>&#39;</span></span>
     <span class='ivar'>@http_pool_requester</span><span class='period'>.</span><span class='id identifier rubyid_future'>future</span><span class='lparen'>(</span><span class='symbol'>:post</span><span class='comma'>,</span> <span class='ivar'>@url</span><span class='comma'>,</span> <span class='id identifier rubyid_event'>event</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
@@ -787,9 +785,9 @@ authKey set in Atom constructor</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Feb 20 12:40:26 2017 by
+  Generated on Mon Feb 20 12:41:35 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.0).
+  0.9.8 (ruby-2.0.0).
 </div>
 
     </div>

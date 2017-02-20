@@ -6,7 +6,7 @@
 <title>
   Class: IronSourceAtom::HttpClient
   
-    &mdash; Documentation by YARD 0.9.5
+    &mdash; Documentation by YARD 0.9.8
   
 </title>
 
@@ -28,7 +28,7 @@
   </head>
   <body>
     <div class="nav_wrap">
-      <iframe id="nav" src="../class_list.html"></iframe>
+      <iframe id="nav" src="../class_list.html?1"></iframe>
       <div id="resizer"></div>
     </div>
 
@@ -58,8 +58,6 @@
 </div>
         <div class="clear"></div>
       </div>
-
-      <iframe id="search_frame" src="../class_list.html"></iframe>
 
       <div id="content"><h1>Class: IronSourceAtom::HttpClient
   
@@ -282,7 +280,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span>
   <span class='ivar'>@init_header</span> <span class='op'>=</span> <span class='lbrace'>{</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Content-Type</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>application/json</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
                   <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>x-ironsource-atom-sdk-type</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>atom-ruby</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
-                  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>x-ironsource-atom-sdk-version</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'>IronSourceAtom</span><span class='op'>::</span><span class='const'>VERSION</span><span class='rbrace'>}</span>
+                  <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>x-ironsource-atom-sdk-version</span><span class='tstring_end'>&#39;</span></span> <span class='op'>=&gt;</span> <span class='const'><span class='object_link'><a href="../IronSourceAtom.html" title="IronSourceAtom (module)">IronSourceAtom</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="../IronSourceAtom.html#VERSION-constant" title="IronSourceAtom::VERSION (constant)">VERSION</a></span></span><span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -350,7 +348,7 @@
         <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='op'>::</span><span class='const'>Post</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_request_uri'>request_uri</span><span class='comma'>,</span> <span class='ivar'>@init_header</span><span class='rparen'>)</span>
         <span class='id identifier rubyid_request'>request</span><span class='period'>.</span><span class='id identifier rubyid_body'>body</span> <span class='op'>=</span> <span class='id identifier rubyid_data'>data</span>
       <span class='kw'>when</span> <span class='symbol'>:get</span>
-        <span class='id identifier rubyid_uri_with_data'>uri_with_data</span> <span class='op'>=</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_request_uri'>request_uri</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>?data=</span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='const'>Utils</span><span class='period'>.</span><span class='id identifier rubyid_urlsafe_encode64'>urlsafe_encode64</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_uri_with_data'>uri_with_data</span> <span class='op'>=</span> <span class='id identifier rubyid_uri'>uri</span><span class='period'>.</span><span class='id identifier rubyid_request_uri'>request_uri</span> <span class='op'>+</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>?data=</span><span class='tstring_end'>&#39;</span></span> <span class='op'>+</span> <span class='const'><span class='object_link'><a href="Utils.html" title="IronSourceAtom::Utils (class)">Utils</a></span></span><span class='period'>.</span><span class='id identifier rubyid_urlsafe_encode64'><span class='object_link'><a href="Utils.html#urlsafe_encode64-class_method" title="IronSourceAtom::Utils.urlsafe_encode64 (method)">urlsafe_encode64</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
         <span class='id identifier rubyid_request'>request</span> <span class='op'>=</span> <span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTP</span><span class='op'>::</span><span class='const'>Get</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_uri_with_data'>uri_with_data</span><span class='comma'>,</span> <span class='ivar'>@init_header</span><span class='rparen'>)</span>
     <span class='kw'>end</span>
 
@@ -482,9 +480,9 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Feb 20 12:40:27 2017 by
+  Generated on Mon Feb 20 12:41:35 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.5 (ruby-2.3.0).
+  0.9.8 (ruby-2.0.0).
 </div>
 
     </div>
