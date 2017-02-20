@@ -5,9 +5,15 @@ require '../lib/iron_source_atom'
 class TestTracker
 def self.test_multitread
   url = "http://track.atom-data.io/"
-  atom_tracker = IronSourceAtom::Tracker.new
+
+  error_callback = lambda do |error_str, stream, data|
+    print "Error: #{error_str}; stream: #{stream}\n"
+  end
+
+  atom_tracker = IronSourceAtom::Tracker.new(url, error_callback)
   atom_tracker.auth = "YOUR AUTH KEY"
   atom_tracker.is_debug_mode = true
+  atom_tracker.backlog_size = 100
 
   stream = 'YOUR STREAM NAME'
 
@@ -30,14 +36,10 @@ def self.test_multitread
       message: "11"
   }.to_json
 
-  error_callback = lambda do |error_str, data|
-    print "Error: #{error_str}\n"
-  end
-
-  atom_tracker.track(stream, data_string, error_callback)
-  atom_tracker.track(stream, data_string, error_callback)
-  atom_tracker.track(stream, data_string, error_callback)
-  atom_tracker.track(stream, data_string, error_callback)
+  atom_tracker.track(stream, data_string)
+  atom_tracker.track(stream, data_string)
+  atom_tracker.track(stream, data_string)
+  atom_tracker.track(stream, data_string)
 
   print "adssdsads\n"
 
