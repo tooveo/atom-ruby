@@ -40,7 +40,13 @@ def self.test_multitread
     url = "http://track.atom-data.io/"
     atom_tracker = IronSourceAtom::Tracker.new
     atom_tracker.auth = "YOUR_PRE_SHARED_AUTH_KEY"
-    atom_tracker.track("stream", "data")
+
+    error_callback = lambda do |error_str, data|
+        print "Error: #{error_str}\n"
+        print "Data: #{data}"
+    end
+
+    atom_tracker.track("stream", "data", error_callback)
     atom_tracker.flush
 end
 ```
@@ -55,6 +61,8 @@ The tracker accumulates events and flushes them when it meets one of the followi
 3. Maximum Bulk byte size is reached (default: 128KB).
 
 In case of failure the tracker will preform an exponential backoff with jitter.
+In case when in method 'track' backlog reached its maximum size - 'error_callback' will be called 
+(it will get error string and all data for current stream).
 The tracker stores events in memory.
 
 ### Low Level (Basic) SDK
