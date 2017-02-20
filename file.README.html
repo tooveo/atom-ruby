@@ -61,33 +61,40 @@
 
       <div id="content"><div id='filecontents'><h1>ironSource.atom SDK for Ruby</h1>
 
-<p><a href="LICENSE.txt"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+<p><a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+<a href="https://ironsource.github.io/atom-ruby/"><img src="https://img.shields.io/badge/docs-latest-blue.svg" alt="Docs"></a>
 <a href="https://travis-ci.org/ironSource/atom-ruby"><img src="https://travis-ci.org/ironSource/atom-ruby.svg?branch=master" alt="Build status"></a>
 <a href="https://coveralls.io/github/ironSource/atom-ruby?branch=master"><img src="https://coveralls.io/repos/github/ironSource/atom-ruby/badge.svg?branch=master" alt="Coverage Status"></a>
-<a href="https://ironsource.github.io/atom-ruby/"><img src="https://img.shields.io/badge/docs-latest-blue.svg" alt="Docs"></a></p>
+<a href="https://badge.fury.io/rb/iron_source_atom"><img src="https://badge.fury.io/rb/iron_source_atom.svg" alt="Gem Version"></a></p>
 
-<p>Atom-Ruby is the official ironSource.atom SDK for the Ruby programming language.</p>
+<p>atom-ruby is the official <a href="http://www.ironsrc.com/data-flow-management">ironSource.atom</a> SDK for Ruby.</p>
 
 <ul>
 <li><a href="https://atom.ironsrc.com/#/signup">Signup</a></li>
 <li><a href="https://ironsource.github.io/atom-ruby/">Documentation</a></li>
-<li><a href="#Installation">Installation</a></li>
-<li><a href="#Tracker-usage">Sending an event</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#change-log">Change Log</a></li>
+<li><a href="#example">Example</a></li>
 </ul>
 
 <h2>Installation</h2>
 
-<pre class="code gem"><code class="gem">$ gem install iron_source_atom-1.5.1.gem
+<h3>Installation using gem</h3>
+
+<pre class="code bash"><code class="bash">$ gem install iron_source_atom
 </code></pre>
 
-<p>You may use SDK in two different ways:</p>
+<h2>Usage</h2>
+
+<p>You may use the SDK in two different ways:</p>
 
 <ol>
-<li>High level Tracker - contains in-memory storage and tracks events based on certain parameters.</li>
+<li>High level &quot;Tracker&quot; - contains in-memory storage and tracks events based on certain parameters.</li>
 <li>Low level - contains 2 methods: putEvent() and putEvents() to send 1 event or a batch respectively.</li>
 </ol>
 
-<h3>Tracker usage</h3>
+<h3>High Level SDK - &quot;Tracker&quot;</h3>
 
 <pre class="code ruby"><code class="ruby">require &#39;iron_source_atom&#39;
 
@@ -96,10 +103,8 @@ class TestTracker
 def self.test_multitread
     url = &quot;http://track.atom-data.io/&quot;
     atom_tracker = IronSourceAtom::Tracker.new
-    atom_tracker.auth = &quot;&quot;
-
-    atom_tracker.track(data, &quot;ibtest&quot;)
-
+    atom_tracker.auth = &quot;YOUR_PRE_SHARED_AUTH_KEY&quot;
+    atom_tracker.track(&quot;stream&quot;, &quot;data&quot;)
     atom_tracker.flush
 end
 </code></pre>
@@ -111,14 +116,21 @@ The tracker accumulates events and flushes them when it meets one of the followi
 
 <ol>
 <li>Flush Interval is reached (default: 10 seconds).</li>
-<li>Bulk Length is reached (default: 4 events).</li>
-<li>Maximum Bulk size is reached (default: 64kB).</li>
+<li>Bulk Length is reached (default: 50 events).</li>
+<li>Maximum Bulk byte size is reached (default: 64kB).</li>
 </ol>
 
 <p>In case of failure the tracker will preform an exponential backoff with jitter.
-The tracker stores events in a memory storage based on Queue.</p>
+The tracker stores events in memory.</p>
 
-<h3>Using low level API methods</h3>
+<h3>Low Level (Basic) SDK</h3>
+
+<p>The Low Level SDK has 2 methods:  </p>
+
+<ul>
+<li>putEvent - Sends a single event to Atom<br></li>
+<li>putEvents - Sends a bulk (batch) of events to Atom.</li>
+</ul>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>json</span><span class='tstring_end'>&#39;</span></span>
 <span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>iron_source_atom</span><span class='tstring_end'>&#39;</span></span>
@@ -165,13 +177,52 @@ The tracker stores events in a memory storage based on Queue.</p>
 <span class='kw'>end</span>
 </code></pre>
 
-<h3>Example</h3>
+<h2>Change Log</h2>
 
-<p>You can use our <a href="https://github.com/ironSource/atom-ruby/tree/feature/ISA-359/example">example</a> for sending data to Atom:</p>
+<h3>v1.5.1</h3>
+
+<ul>
+<li>Rewrote all async ops to work with celluloid</li>
+<li>Refactored Tracker</li>
+<li>Refactored Atom base class</li>
+<li>Refactored Http Client class</li>
+<li>Improved Docs</li>
+<li>Added a Dockerfile and docker-compose to run the SDK in a container</li>
+</ul>
+
+<h3>v1.1.0</h3>
+
+<ul>
+<li>Added Tracker</li>
+</ul>
+
+<h3>v1.0.0</h3>
+
+<ul>
+<li>Basic features - putEvent &amp; putEvents</li>
+</ul>
+
+<h2>Example</h2>
+
+<ul>
+<li>You can use our <a href="example">example</a> for sending data to Atom.</li>
+<li>To run the SDK in a Docker container:<br>
+
+<ul>
+<li>Get Docker and docker-compose</li>
+<li>git clone <a href="https://github.com/ironSource/atom-ruby.git">https://github.com/ironSource/atom-ruby.git</a></li>
+<li>Setup your stream and auth at the docker-compose (passed as env vars)</li>
+<li>run: <code>docker-compose up</code></li>
+</ul></li>
+</ul>
+
+<h2>License</h2>
+
+<p><a href="LICENSE">MIT</a></p>
 </div></div>
 
       <div id="footer">
-  Generated on Wed Dec 21 12:55:50 2016 by
+  Generated on Mon Feb 20 12:40:26 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.5 (ruby-2.3.0).
 </div>
