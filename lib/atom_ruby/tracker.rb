@@ -27,7 +27,9 @@ module IronSourceAtom
     @@BULK_SIZE_BYTE_LIMIT = 512 * 1024
 
     # Creates a new instance of Atom Tracker.
-    # * +url+ atom tracker endpoint url. Default is http://track.atom-data.io/
+    # * +url+ Atom tracker endpoint url. Default is http://track.atom-data.io/
+    # * +error_callback+ Optional, callback to be called when there is an error at the tracker
+    # * +is_blocking+ Optional, should the tracker block, default true.
     def initialize(url = 'http://track.atom-data.io/', error_callback = nil, is_blocking = true)
       @is_debug_mode = false
 
@@ -45,6 +47,7 @@ module IronSourceAtom
 
       @queue_flush = Hash.new
       @is_stream_flush = Hash.new
+      @error_callback = error_callback
 
       @timerRetry = Timers::Group.new
       @is_blocking = is_blocking
@@ -132,7 +135,6 @@ module IronSourceAtom
       if @accumulate[stream].length >= @backlog_size
         if @is_blocking 
           @@tracker_lock.unlock
-          puts 'Lock treads'
           while (@accumulate[stream].length >= @backlog_size)
             sleep(0.5)
             flush_with_stream(stream)

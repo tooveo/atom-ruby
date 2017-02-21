@@ -43,7 +43,11 @@ def self.test_multitread
         print "Error: #{error_str}\n"
         print "Data: #{data}"
     end
-
+    
+    # Creates a new instance of Atom Tracker.
+    # * +url+ Atom tracker endpoint url. Default is http://track.atom-data.io/
+    # * +error_callback+ Optional, callback to be called when there is an error at the tracker
+    # * +is_blocking+ Optional, should the tracker block, default true.
     atom_tracker = IronSourceAtom::Tracker.new(url, error_callback, is_blocking=false)
     atom_tracker.auth = "YOUR_PRE_SHARED_AUTH_KEY"
 
@@ -62,9 +66,19 @@ The tracker accumulates events and flushes them when it meets one of the followi
 3. Maximum Bulk byte size is reached (default: 128KB).
 
 In case of failure the tracker will preform an exponential backoff with jitter.
+The tracker stores events in memory.
+
+Note:  
+By default the tracker is blocking if the backlog is full. You can change it by setting is_blocking=false  
+1. If the tracker is blocking -> tracker.track() will wait until there is space at the backlog  
+2. If the tracker is not blocking -> tracker.track() will call the on_error callback if the backlog is full.
+
+
+### Tracker onError
+
 Case of failure the error_callback function will be called, which by default just logs the error to console
 If you want to handle the error otherwise just overwrite the function (see example above).
-The tracker stores events in memory.
+
 
 ### Low Level (Basic) SDK
 
@@ -122,7 +136,9 @@ end
 ### v1.5.2
 - Fixed a bug with too many running threads in celluloid
 - Added limits to Bulk Length, Size and Flush Interval
-- Changed integration test using to use multiple threads
+- Changed integration test to use multiple threads
+- More verbose error handling
+- The tracker is now blocking by default
 
 
 ### v1.5.1
