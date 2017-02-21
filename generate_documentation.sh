@@ -1,7 +1,7 @@
 #!/usr/bin/env bash -x
 yard
 
-TARGET_BRANCH="gh-pages"
+export TARGET_BRANCH="gh-pages"
 mkdir ${TARGET_BRANCH}
 cd ${TARGET_BRANCH}
 

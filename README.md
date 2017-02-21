@@ -62,8 +62,8 @@ The tracker accumulates events and flushes them when it meets one of the followi
 3. Maximum Bulk byte size is reached (default: 128KB).
 
 In case of failure the tracker will preform an exponential backoff with jitter.
-In case when in method 'track' backlog reached its maximum size - 'error_callback' will be called 
-(it will get error string and all data for current stream).
+Case of failure the error_callback function will be called, which by default just logs the error to console
+If you want to handle the error otherwise just overwrite the function (see example above).
 The tracker stores events in memory.
 
 ### Low Level (Basic) SDK
@@ -122,6 +122,8 @@ end
 ### v1.5.2
 - Fixed a bug with too many running threads in celluloid
 - Added limits to Bulk Length, Size and Flush Interval
+- Changed integration test using to use multiple threads
+
 
 ### v1.5.1
 - Rewrote all async ops to work with celluloid
