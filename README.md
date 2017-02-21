@@ -38,15 +38,16 @@ class TestTracker
 
 def self.test_multitread
     url = "http://track.atom-data.io/"
-    atom_tracker = IronSourceAtom::Tracker.new
-    atom_tracker.auth = "YOUR_PRE_SHARED_AUTH_KEY"
 
-    error_callback = lambda do |error_str, data|
+    error_callback = lambda do |error_str, stream, data|
         print "Error: #{error_str}\n"
         print "Data: #{data}"
     end
 
-    atom_tracker.track("stream", "data", error_callback)
+    atom_tracker = IronSourceAtom::Tracker.new(url, error_callback, is_blocking=false)
+    atom_tracker.auth = "YOUR_PRE_SHARED_AUTH_KEY"
+
+    atom_tracker.track("stream", "data")
     atom_tracker.flush
 end
 ```

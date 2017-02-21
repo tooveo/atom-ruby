@@ -142,7 +142,7 @@ module IronSourceAtom
         else
           error_str = "Message store for stream: '#{stream}' has reached its maximum size!"
           AtomDebugLogger.log(error_str, @is_debug_mode)
-          @error_callback.call(error_str, @accumulate[stream]) unless @error_callback.nil?
+          @error_callback.call(error_str, stream, @accumulate[stream]) unless @error_callback.nil?
           @accumulate[stream] = []
           @@tracker_lock.unlock
 
@@ -245,6 +245,12 @@ module IronSourceAtom
         if @queue_flush[stream]
           @queue_flush[stream] = false
           flush
+        end
+
+        if response.code.to_i != 200
+            error_str = response.message
+            AtomDebugLogger.log(error_str, @is_debug_mode)
+            @error_callback.call(error_str, stream, data) unless @error_callback.nil?
         end
 
         AtomDebugLogger.log("Flush response code: #{response.code}\n response message #{response.message}", @is_debug_mode)
