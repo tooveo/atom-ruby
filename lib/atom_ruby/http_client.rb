@@ -1,5 +1,4 @@
 require 'net/http'
-require 'celluloid'
 require "celluloid/current"
 require "celluloid/extras/rehasher"
 require 'celluloid/pool'

@@ -171,8 +171,7 @@ module IronSourceAtom
     end
 
     # Flush all Streams to Atom
-    # * +callback+ called with results
-    def flush()
+    def flush
       @accumulate.each do |stream, data|
         flush_with_stream(stream)
       end
@@ -255,7 +254,7 @@ module IronSourceAtom
             @error_callback.call(error_str, stream, data) unless @error_callback.nil?
         end
 
-        AtomDebugLogger.log("Flush response code: #{response.code}\n response message #{response.message}", @is_debug_mode)
+        AtomDebugLogger.log("Flush response code: #{response.code} - response message #{response.message}", @is_debug_mode)
       end)
     end
 

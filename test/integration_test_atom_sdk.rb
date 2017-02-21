@@ -132,9 +132,7 @@ class IntegrationTest
 
       AtomApiThread.stop
 
-      atom_tracker.flush(lambda do |response|
-        puts "Test ran successfully!\n Response code: #{response.code}\n Response message #{response.message}"
-      end)
+      atom_tracker.flush
     end
 
     def self.build_threads(thread_array, atom_tracker, stream, queue, invalid_queue, threads=1, keep_alive_time=10, thread_stall_time=0)
