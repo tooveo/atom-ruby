@@ -61,8 +61,7 @@
 <h1 id="label-ironSource.atom+SDK+for+Ruby">ironSource.atom SDK for Ruby</h1>
 
 <p><a
-href="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square">{License</a>]
-<a
+href="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square"><a
 href="https://img.shields.io/badge/docs-latest-blue.svg">{Docs</a>/]
 <a
 href="https://travis-ci.org/ironSource/atom-ruby.svg?branch=master">{Build
@@ -109,25 +108,7 @@ or a batch respectively.</p>
 
 <h3 id="label-High+Level+SDK+-+%22Tracker%22">High Level SDK - “Tracker”</h3>
 
-<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;iron_source_atom&#39;</span>
-
-<span class="ruby-keyword">class</span> <span class="ruby-constant">TestTracker</span>
-
-<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_multitread</span>
-    <span class="ruby-identifier">url</span> = <span class="ruby-string">&quot;http://track.atom-data.io/&quot;</span>
-    <span class="ruby-identifier">atom_tracker</span> = <span class="ruby-constant">IronSourceAtom</span><span class="ruby-operator">::</span><span class="ruby-constant">Tracker</span>.<span class="ruby-identifier">new</span>
-    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">auth</span> = <span class="ruby-string">&quot;YOUR_PRE_SHARED_AUTH_KEY&quot;</span>
-    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">track</span>(<span class="ruby-string">&quot;stream&quot;</span>, <span class="ruby-string">&quot;data&quot;</span>)
-    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">flush</span>
-<span class="ruby-keyword">end</span>
-</pre>
-
-<p>The Tracker process:</p>
-
-<p>You can use track() method in order to track the events to an Atom
-Stream.
-The tracker accumulates events and flushes them when it meets one
-of the following conditions:</p>
+<p>The Tracker is used for sending events to Atom based on several conditions:</p>
 <ol><li>
 <p>Flush Interval is reached (default: 10 seconds).</p>
 </li><li>
@@ -136,9 +117,69 @@ of the following conditions:</p>
 <p>Maximum Bulk byte size is reached (default: 128KB).</p>
 </li></ol>
 
+<pre class="ruby"><span class="ruby-identifier">require</span> <span class="ruby-string">&#39;iron_source_atom&#39;</span>
+
+<span class="ruby-keyword">class</span> <span class="ruby-constant">TestTracker</span>
+
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">test_multitread</span>
+    <span class="ruby-identifier">url</span> = <span class="ruby-string">&#39;http://track.atom-data.io/&#39;</span>
+
+    <span class="ruby-identifier">error_callback</span> = <span class="ruby-identifier">lambda</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">error_str</span>, <span class="ruby-identifier">stream</span>, <span class="ruby-identifier">data</span><span class="ruby-operator">|</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;Error: #{error_str\n&quot;</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;Data: #data&quot;</span>
+        <span class="ruby-identifier">print</span> <span class="ruby-node">&quot;Stream: #stream&quot;</span>
+    <span class="ruby-keyword">end</span>
+    
+    <span class="ruby-comment"># Creates a new instance of Atom Tracker.</span>
+    <span class="ruby-comment"># * +url+ Atom tracker endpoint url. Default is http://track.atom-data.io/</span>
+    <span class="ruby-comment"># * +error_callback+ Optional, callback to be called when there is an error at the tracker</span>
+    <span class="ruby-comment"># * +is_blocking+ Optional, should the tracker block, default true.</span>
+    <span class="ruby-identifier">atom_tracker</span> = <span class="ruby-constant">IronSourceAtom</span><span class="ruby-operator">::</span><span class="ruby-constant">Tracker</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">url</span>, <span class="ruby-identifier">error_callback</span>, <span class="ruby-identifier">is_blocking</span>=<span class="ruby-keyword">false</span>)
+    <span class="ruby-comment"># Change auth key</span>
+    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">auth</span> = <span class="ruby-string">&quot;YOUR_PRE_SHARED_AUTH_KEY&quot;</span>
+    <span class="ruby-comment"># Track to stream</span>
+    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">track</span>(<span class="ruby-string">&quot;stream&quot;</span>, <span class="ruby-string">&quot;data&quot;</span>)
+    <span class="ruby-comment"># Force Flush all</span>
+    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">flush</span>
+    <span class="ruby-comment"># Force Flush one stream</span>
+    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">flush_with_stream</span>(<span class="ruby-string">&quot;stream&quot;</span>)
+    <span class="ruby-comment"># Enable debug printing:</span>
+    <span class="ruby-identifier">atom_tracker</span>.<span class="ruby-identifier">is_debug_mode</span> = <span class="ruby-keyword">true</span>
+<span class="ruby-keyword">end</span>
+</pre>
+
+<p>In order to change tracker flush
+conditions:<br>
+&lt;code&gt;ruby
+atom_tracker.bulk_length = 100 # Each
+bulk(batch) length
+atom_tracker.bulk_size_byte = 64*1024 # Each bulk
+(batch) size in bytes 
+atom_tracker.flush_interval = 10 # Flush interval in
+seconds
+&lt;/code&gt;</p>
+
 <p>In case of failure the tracker will preform an exponential backoff with
 jitter.
 The tracker stores events in memory.</p>
+
+<h3 id="label-Tracker+flow+control">Tracker flow control</h3>
+
+<p><strong>Note:</strong><br>
+By default the tracker is blocking if the
+backlog is full. You can change it by setting is_blocking=false<br>
+1. If
+the tracker is blocking -&gt; tracker.track() will wait until there is
+space at the backlog<br>
+2. If the tracker is not blocking -&gt;
+tracker.track() will call the on_error callback if the backlog is full.</p>
+
+<h3 id="label-Tracker+onError">Tracker onError</h3>
+
+<p>Case of failure the error_callback function will be called, which by
+default just logs the error to console
+If you want to handle the error
+otherwise just overwrite the function (see example above).</p>
 
 <h3 id="label-Low+Level+%28Basic%29+SDK">Low Level (Basic) SDK</h3>
 
@@ -163,8 +204,8 @@ Atom<br>
     }.<span class="ruby-identifier">to_json</span>
 
     <span class="ruby-identifier">response</span> = <span class="ruby-identifier">atom</span>.<span class="ruby-identifier">put_event</span>(<span class="ruby-string">&quot;ibtest&quot;</span>, <span class="ruby-identifier">data_string</span>)
-    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Response #{response.code} #{response.message}:
-          #{response.body}&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Response #responseresponse.code #responseresponse.message:
+          #responseresponse.body&quot;</span>
 
     <span class="ruby-identifier">data1</span> = {
         <span class="ruby-identifier">id</span><span class="ruby-operator">:</span> <span class="ruby-value">11</span>,
@@ -182,8 +223,8 @@ Atom<br>
     <span class="ruby-identifier">array_data_string</span> = [<span class="ruby-identifier">data1</span>, <span class="ruby-identifier">data2</span>, <span class="ruby-identifier">data3</span>].<span class="ruby-identifier">to_json</span>
 
     <span class="ruby-identifier">response</span> = <span class="ruby-identifier">atom</span>.<span class="ruby-identifier">put_events</span>(<span class="ruby-string">&quot;ibtest&quot;</span>, <span class="ruby-identifier">array_data_string</span>)
-    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Response #{response.code} #{response.message}:
-          #{response.body}&quot;</span>
+    <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Response #responseresponse.code #responseresponse.message:
+          #responseresponse.body&quot;</span>
 
   <span class="ruby-keyword">end</span>
 
@@ -199,6 +240,12 @@ Atom<br>
 <p>Fixed a bug with too many running threads in celluloid</p>
 </li><li>
 <p>Added limits to Bulk Length, Size and Flush Interval</p>
+</li><li>
+<p>Changed integration test to use multiple threads</p>
+</li><li>
+<p>More verbose error handling</p>
+</li><li>
+<p>The tracker is now blocking by default</p>
 </li></ul>
 
 <h3 id="label-v1.5.1">v1.5.1</h3>
@@ -250,7 +297,7 @@ href="https://github.com/ironSource/atom-ruby.git">github.com/ironSource/atom-ru
 </div></div>
 
       <div id="footer">
-  Generated on Mon Feb 20 12:41:35 2017 by
+  Generated on Wed Feb 22 17:19:03 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.0.0).
 </div>

@@ -113,6 +113,11 @@
       </dt>
       <dd><pre class="code"><span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span></pre></dd>
     
+      <dt id="tracker_block_lock-classvariable" class="">@@tracker_block_lock =
+        
+      </dt>
+      <dd><pre class="code"><span class='const'>Mutex</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span></pre></dd>
+    
       <dt id="FLUSH_INTERVAL-classvariable" class="">@@FLUSH_INTERVAL =
         
       </dt>
@@ -157,8 +162,6 @@
   
   
   
-    
-      <span class="note title readonly">readonly</span>
     
     
   
@@ -321,7 +324,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#_send-instance_method" title="#_send (instance method)">#<strong>_send</strong>(stream, data, timeout, callback)  &#x21d2; Object </a>
+      <a href="#_send-instance_method" title="#_send (instance method)">#<strong>_send</strong>(stream, data, timeout)  &#x21d2; Object </a>
     
 
     
@@ -338,8 +341,7 @@
     <span class="summary_desc"><div class='inline'>
 <p>Internal function that uses the “low level sdk” to send data (put_events
 func) * <code>stream</code>   Atom Stream name * <code>data</code>   Data
-to be sent * <code>timeout</code>   Max retry time * <code>timeout</code>  
-callback that will be called when done/error.</p>
+to be sent * <code>timeout</code>   Max retry time.</p>
 </div></span>
   
 </li>
@@ -417,7 +419,7 @@ auth key for your Atom Stream.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#flush-instance_method" title="#flush (instance method)">#<strong>flush</strong>(callback = nil)  &#x21d2; Object </a>
+      <a href="#flush-instance_method" title="#flush (instance method)">#<strong>flush</strong>  &#x21d2; Object </a>
     
 
     
@@ -432,7 +434,7 @@ auth key for your Atom Stream.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Flush all Streams to Atom * <code>callback</code> called with results.</p>
+<p>Flush all Streams to Atom.</p>
 </div></span>
   
 </li>
@@ -441,7 +443,7 @@ auth key for your Atom Stream.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#flush_with_stream-instance_method" title="#flush_with_stream (instance method)">#<strong>flush_with_stream</strong>(stream, callback = nil)  &#x21d2; Object </a>
+      <a href="#flush_with_stream-instance_method" title="#flush_with_stream (instance method)">#<strong>flush_with_stream</strong>(stream)  &#x21d2; Object </a>
     
 
     
@@ -456,8 +458,7 @@ auth key for your Atom Stream.</p>
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Flush a specific Stream to Atom * <code>stream</code>   Atom Stream name *
-<code>callback</code> called with results.</p>
+<p>Flush a specific Stream to Atom * <code>stream</code>   Atom Stream name.</p>
 </div></span>
   
 </li>
@@ -466,7 +467,7 @@ auth key for your Atom Stream.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(url = &#39;http://track.atom-data.io/&#39;)  &#x21d2; Tracker </a>
+      <a href="#initialize-instance_method" title="#initialize (instance method)">#<strong>initialize</strong>(url = &#39;http://track.atom-data.io/&#39;, error_callback = nil, is_blocking = true)  &#x21d2; Tracker </a>
     
 
     
@@ -492,7 +493,7 @@ auth key for your Atom Stream.</p>
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#track-instance_method" title="#track (instance method)">#<strong>track</strong>(stream, data, error_callback = nil)  &#x21d2; Object </a>
+      <a href="#track-instance_method" title="#track (instance method)">#<strong>track</strong>(stream, data)  &#x21d2; Object </a>
     
 
     
@@ -549,7 +550,7 @@ after max retires failed or after client-side error.</p>
     <div class="method_details first">
   <h3 class="signature first" id="initialize-instance_method">
   
-    #<strong>initialize</strong>(url = &#39;http://track.atom-data.io/&#39;)  &#x21d2; <tt><span class='object_link'><a href="" title="IronSourceAtom::Tracker (class)">Tracker</a></span></tt> 
+    #<strong>initialize</strong>(url = &#39;http://track.atom-data.io/&#39;, error_callback = nil, is_blocking = true)  &#x21d2; <tt><span class='object_link'><a href="" title="IronSourceAtom::Tracker (class)">Tracker</a></span></tt> 
   
 
   
@@ -560,8 +561,13 @@ after max retires failed or after client-side error.</p>
     
 <p>Creates a new instance of Atom Tracker.</p>
 <ul><li>
-<p><code>url</code> atom tracker endpoint url. Default is <a
+<p><code>url</code> Atom tracker endpoint url. Default is <a
 href="http://track.atom-data.io">track.atom-data.io</a>/</p>
+</li><li>
+<p><code>error_callback</code> Optional, callback to be called when there is
+an error at the tracker</p>
+</li><li>
+<p><code>is_blocking</code> Optional, should the tracker block, default true.</p>
 </li></ul>
 
 
@@ -576,9 +582,6 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-30
-31
-32
 33
 34
 35
@@ -597,16 +600,27 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
 48
 49
 50
-51</pre>
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 30</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 33</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>http://track.atom-data.io/</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>http://track.atom-data.io/</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_error_callback'>error_callback</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_is_blocking'>is_blocking</span> <span class='op'>=</span> <span class='kw'>true</span><span class='rparen'>)</span>
   <span class='ivar'>@is_debug_mode</span> <span class='op'>=</span> <span class='kw'>false</span>
 
   <span class='ivar'>@bulk_size_byte</span> <span class='op'>=</span> <span class='cvar'>@@BULK_SIZE_BYTE</span>
-  <span class='ivar'>@backlog_size</span> <span class='op'>=</span> <span class='int'>500</span>
+  <span class='ivar'>@backlog_size</span> <span class='op'>=</span> <span class='int'>2000</span>
   <span class='ivar'>@bulk_length</span> <span class='op'>=</span> <span class='cvar'>@@BULK_LENGTH</span>
   <span class='ivar'>@flush_interval</span> <span class='op'>=</span> <span class='cvar'>@@FLUSH_INTERVAL</span>
 
@@ -614,13 +628,21 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
 
   <span class='ivar'>@url</span> <span class='op'>=</span> <span class='id identifier rubyid_url'>url</span>
   <span class='ivar'>@atom</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Atom.html" title="IronSourceAtom::Atom (class)">Atom</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'><span class='object_link'><a href="Atom.html#initialize-instance_method" title="IronSourceAtom::Atom#initialize (method)">new</a></span></span>
+  <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='ivar'>@url</span>
 
   <span class='ivar'>@accumulate</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
 
   <span class='ivar'>@queue_flush</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
   <span class='ivar'>@is_stream_flush</span> <span class='op'>=</span> <span class='const'>Hash</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
 
+  <span class='comment'># Default error callback func
+</span>  <span class='id identifier rubyid_default_error_callback'>default_error_callback</span> <span class='op'>=</span> <span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>|</span>
+    <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Error Callback: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_error_str'>error_str</span><span class='embexpr_end'>}</span><span class='tstring_content'>; stream: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+  <span class='ivar'>@error_callback</span> <span class='op'>=</span> <span class='id identifier rubyid_error_callback'>error_callback</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>?</span> <span class='id identifier rubyid_default_error_callback'>default_error_callback</span> <span class='op'>:</span> <span class='id identifier rubyid_error_callback'>error_callback</span>
+
   <span class='ivar'>@timerRetry</span> <span class='op'>=</span> <span class='const'>Timers</span><span class='op'>::</span><span class='const'>Group</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+  <span class='ivar'>@is_blocking</span> <span class='op'>=</span> <span class='id identifier rubyid_is_blocking'>is_blocking</span>
 
   <span class='id identifier rubyid_async'>async</span><span class='period'>.</span><span class='id identifier rubyid__timer_flush'>_timer_flush</span>
 <span class='kw'>end</span></pre>
@@ -635,11 +657,11 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
     <h2>Instance Attribute Details</h2>
     
       
-      <span id=""></span>
+      <span id="backlog_size=-instance_method"></span>
       <div class="method_details first">
   <h3 class="signature first" id="backlog_size-instance_method">
   
-    #<strong>backlog_size</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
+    #<strong>backlog_size</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -662,12 +684,12 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-19
 20
-21</pre>
+21
+22</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_backlog_size'>backlog_size</span>
   <span class='ivar'>@backlog_size</span>
@@ -705,12 +727,12 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-18
 19
-20</pre>
+20
+21</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 18</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 19</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bulk_length'>bulk_length</span>
   <span class='ivar'>@bulk_length</span>
@@ -748,12 +770,12 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-17
 18
-19</pre>
+19
+20</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 17</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 18</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_bulk_size_byte'>bulk_size_byte</span>
   <span class='ivar'>@bulk_size_byte</span>
@@ -791,12 +813,12 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-20
 21
-22</pre>
+22
+23</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 20</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 21</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_flush_interval'>flush_interval</span>
   <span class='ivar'>@flush_interval</span>
@@ -834,12 +856,12 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-16
 17
-18</pre>
+18
+19</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 16</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 17</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_is_debug_mode'>is_debug_mode</span>
   <span class='ivar'>@is_debug_mode</span>
@@ -871,17 +893,17 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <pre class="lines">
 
 
-228
-229
-230
-231
-232
-233
-234
-235</pre>
+266
+267
+268
+269
+270
+271
+272
+273</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 228</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 266</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid__byte_count'>_byte_count</span><span class='lparen'>(</span><span class='id identifier rubyid_data_array'>data_array</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_result_size'>result_size</span> <span class='op'>=</span> <span class='int'>0</span>
@@ -899,7 +921,7 @@ href="http://track.atom-data.io">track.atom-data.io</a>/</p>
       <div class="method_details ">
   <h3 class="signature " id="_send-instance_method">
   
-    #<strong>_send</strong>(stream, data, timeout, callback)  &#x21d2; <tt>Object</tt> 
+    #<strong>_send</strong>(stream, data, timeout)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -916,8 +938,6 @@ func)</p>
 <p><code>data</code>   Data to be sent</p>
 </li><li>
 <p><code>timeout</code>   Max retry time</p>
-</li><li>
-<p><code>timeout</code>   callback that will be called when done/error.</p>
 </li></ul>
 
 
@@ -932,55 +952,64 @@ func)</p>
       <pre class="lines">
 
 
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226</pre>
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 197</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 229</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
   <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_put_events'>put_events</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>post</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='id identifier rubyid_lambda'>lambda</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_response'>response</span><span class='op'>|</span>
     <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>&lt;=</span> <span class='op'>-</span><span class='int'>1</span> <span class='op'>||</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>&gt;=</span> <span class='int'>500</span>
-      <span class='id identifier rubyid_print'>print</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>from timer: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_timeout'>timeout</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+      <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Retry timer: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_timeout'>timeout</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
       <span class='kw'>if</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>&lt;</span> <span class='int'>20</span> <span class='op'>*</span> <span class='int'>60</span>
         <span class='ivar'>@timerRetry</span><span class='period'>.</span><span class='id identifier rubyid_after'>after</span><span class='lparen'>(</span><span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span> <span class='lbrace'>{</span>
           <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>=</span> <span class='id identifier rubyid_timeout'>timeout</span> <span class='op'>*</span> <span class='int'>2</span> <span class='op'>+</span> <span class='lparen'>(</span><span class='id identifier rubyid_rand'>rand</span><span class='lparen'>(</span><span class='int'>1000</span><span class='rparen'>)</span> <span class='op'>+</span> <span class='int'>100</span><span class='rparen'>)</span> <span class='op'>/</span> <span class='float'>1000.0</span>
 
-          <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
+          <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_timeout'>timeout</span><span class='rparen'>)</span>
         <span class='rbrace'>}</span>
 
         <span class='ivar'>@timerRetry</span><span class='period'>.</span><span class='id identifier rubyid_wait'>wait</span>
         <span class='kw'>return</span>
       <span class='kw'>else</span>
-        <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='const'>Net</span><span class='op'>::</span><span class='const'>HTTPResponse</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='kw'>nil</span><span class='comma'>,</span> <span class='int'>408</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Timeout - No response from server</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+        <span class='id identifier rubyid_error_str'>error_str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Timeout - No response from server</span><span class='tstring_end'>&#39;</span></span>
+        <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
+        <span class='ivar'>@error_callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+        <span class='kw'>return</span>
       <span class='kw'>end</span>
     <span class='kw'>end</span>
 
@@ -991,9 +1020,12 @@ func)</p>
       <span class='id identifier rubyid_flush'>flush</span>
     <span class='kw'>end</span>
 
-    <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Flush response code: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_content'>\n response message </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
+    <span class='kw'>if</span> <span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>!=</span> <span class='int'>200</span>
+        <span class='id identifier rubyid_error_str'>error_str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_content'> - </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span>
+        <span class='ivar'>@error_callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
+    <span class='kw'>end</span>
 
-    <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_response'>response</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_callback'>callback</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
+    <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Flush response code: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_code'>code</span><span class='embexpr_end'>}</span><span class='tstring_content'> - response message </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_response'>response</span><span class='period'>.</span><span class='id identifier rubyid_message'>message</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
   <span class='kw'>end</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1016,15 +1048,15 @@ func)</p>
       <pre class="lines">
 
 
-184
-185
-186
-187
-188
-189</pre>
+218
+219
+220
+221
+222
+223</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 184</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 218</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid__timer_flush'>_timer_flush</span>
   <span class='id identifier rubyid_every'>every</span><span class='lparen'>(</span><span class='id identifier rubyid_flush_interval'>flush_interval</span><span class='rparen'>)</span> <span class='kw'>do</span>
@@ -1066,12 +1098,12 @@ func)</p>
       <pre class="lines">
 
 
-59
-60
-61</pre>
+70
+71
+72</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 59</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 70</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_auth='>auth=</span><span class='lparen'>(</span><span class='id identifier rubyid_auth'>auth</span><span class='rparen'>)</span>
   <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_auth'>auth</span> <span class='op'>=</span> <span class='id identifier rubyid_auth'>auth</span>
@@ -1096,12 +1128,12 @@ func)</p>
       <pre class="lines">
 
 
-53
-54
-55</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_finalize'>finalize</span>
   <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_terminate'>terminate</span>
@@ -1114,7 +1146,7 @@ func)</p>
       <div class="method_details ">
   <h3 class="signature " id="flush-instance_method">
   
-    #<strong>flush</strong>(callback = nil)  &#x21d2; <tt>Object</tt> 
+    #<strong>flush</strong>  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1124,9 +1156,6 @@ func)</p>
   <div class="discussion">
     
 <p>Flush all Streams to Atom</p>
-<ul><li>
-<p><code>callback</code> called with results</p>
-</li></ul>
 
 
   </div>
@@ -1140,18 +1169,18 @@ func)</p>
       <pre class="lines">
 
 
-152
-153
-154
-155
-156</pre>
+180
+181
+182
+183
+184</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 180</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_flush'>flush</span><span class='lparen'>(</span><span class='id identifier rubyid_callback'>callback</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_flush'>flush</span>
   <span class='ivar'>@accumulate</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='op'>|</span>
-    <span class='id identifier rubyid_flush_with_stream'>flush_with_stream</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_flush_with_stream'>flush_with_stream</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1162,7 +1191,7 @@ func)</p>
       <div class="method_details ">
   <h3 class="signature " id="flush_with_stream-instance_method">
   
-    #<strong>flush_with_stream</strong>(stream, callback = nil)  &#x21d2; <tt>Object</tt> 
+    #<strong>flush_with_stream</strong>(stream)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1174,8 +1203,6 @@ func)</p>
 <p>Flush a specific Stream to Atom</p>
 <ul><li>
 <p><code>stream</code>   Atom Stream name</p>
-</li><li>
-<p><code>callback</code> called with results</p>
 </li></ul>
 
 
@@ -1190,33 +1217,40 @@ func)</p>
       <pre class="lines">
 
 
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182</pre>
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 161</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 188</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_flush_with_stream'>flush_with_stream</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+<span class='kw'>def</span> <span class='id identifier rubyid_flush_with_stream'>flush_with_stream</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='rparen'>)</span>
   <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
   <span class='kw'>if</span> <span class='ivar'>@is_stream_flush</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span>
     <span class='ivar'>@queue_flush</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
@@ -1226,8 +1260,15 @@ func)</p>
 
   <span class='ivar'>@is_stream_flush</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
   <span class='kw'>if</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
-    <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span>
-    <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+
+    <span class='kw'>if</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='ivar'>@bulk_length</span>
+      <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_take'>take</span><span class='lparen'>(</span><span class='ivar'>@bulk_length</span><span class='rparen'>)</span>
+      <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_drop'>drop</span><span class='lparen'>(</span><span class='ivar'>@bulk_length</span><span class='rparen'>)</span>
+      <span class='ivar'>@queue_flush</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='kw'>true</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_data'>data</span> <span class='op'>=</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span>
+      <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+    <span class='kw'>end</span>
   <span class='kw'>else</span>
     <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
     <span class='kw'>return</span>
@@ -1236,7 +1277,7 @@ func)</p>
 
   <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Flush event for stream: </span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
 
-  <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='ivar'>@retry_timeout</span><span class='comma'>,</span> <span class='id identifier rubyid_callback'>callback</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
+  <span class='id identifier rubyid__send'>_send</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='ivar'>@retry_timeout</span><span class='rparen'>)</span> <span class='kw'>if</span> <span class='id identifier rubyid_data'>data</span> <span class='op'>!=</span> <span class='kw'>nil</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;</span> <span class='int'>0</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1246,7 +1287,7 @@ func)</p>
       <div class="method_details ">
   <h3 class="signature " id="track-instance_method">
   
-    #<strong>track</strong>(stream, data, error_callback = nil)  &#x21d2; <tt>Object</tt> 
+    #<strong>track</strong>(stream, data)  &#x21d2; <tt>Object</tt> 
   
 
   
@@ -1277,24 +1318,6 @@ client-side error</p>
       <pre class="lines">
 
 
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
 131
 132
 133
@@ -1312,13 +1335,41 @@ client-side error</p>
 145
 146
 147
-148</pre>
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 113</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 131</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_track'>track</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='comma'>,</span> <span class='id identifier rubyid_error_callback'>error_callback</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
-
+<span class='kw'>def</span> <span class='id identifier rubyid_track'>track</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
   <span class='kw'>if</span> <span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_stream'>stream</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span> <span class='op'>||</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>==</span> <span class='int'>0</span><span class='rparen'>)</span>
     <span class='id identifier rubyid_raise'>raise</span> <span class='const'>StandardError</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Stream name and data are required parameters</span><span class='tstring_end'>&#39;</span></span>
@@ -1329,11 +1380,23 @@ client-side error</p>
   <span class='kw'>end</span>
 
   <span class='kw'>if</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;=</span> <span class='ivar'>@backlog_size</span>
-    <span class='id identifier rubyid_error_str'>error_str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Message store for stream: &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39; has reached its maximum size!</span><span class='tstring_end'>&quot;</span></span>
-    <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
-    <span class='id identifier rubyid_error_callback'>error_callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='rparen'>)</span> <span class='kw'>unless</span> <span class='id identifier rubyid_error_callback'>error_callback</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-    <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
-    <span class='kw'>return</span>
+    <span class='kw'>if</span> <span class='ivar'>@is_blocking</span> 
+      <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+      <span class='kw'>while</span> <span class='lparen'>(</span><span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_length'>length</span> <span class='op'>&gt;=</span> <span class='ivar'>@backlog_size</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_sleep'>sleep</span><span class='lparen'>(</span><span class='float'>0.5</span><span class='rparen'>)</span>
+        <span class='id identifier rubyid_flush_with_stream'>flush_with_stream</span><span class='lparen'>(</span><span class='id identifier rubyid_stream'>stream</span><span class='rparen'>)</span>
+      <span class='kw'>end</span>
+
+      <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_lock'>lock</span>
+    <span class='kw'>else</span>
+      <span class='id identifier rubyid_error_str'>error_str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Message store for stream: &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_stream'>stream</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39; has reached its maximum size!</span><span class='tstring_end'>&quot;</span></span>
+      <span class='const'><span class='object_link'><a href="../AtomDebugLogger.html" title="AtomDebugLogger (class)">AtomDebugLogger</a></span></span><span class='period'>.</span><span class='id identifier rubyid_log'><span class='object_link'><a href="../AtomDebugLogger.html#log-class_method" title="AtomDebugLogger.log (method)">log</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='ivar'>@is_debug_mode</span><span class='rparen'>)</span>
+      <span class='ivar'>@error_callback</span><span class='period'>.</span><span class='id identifier rubyid_call'>call</span><span class='lparen'>(</span><span class='id identifier rubyid_error_str'>error_str</span><span class='comma'>,</span> <span class='id identifier rubyid_stream'>stream</span><span class='comma'>,</span> <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='rparen'>)</span>
+      <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='lbracket'>[</span><span class='rbracket'>]</span>
+      <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+
+      <span class='kw'>return</span>
+    <span class='kw'>end</span>
   <span class='kw'>end</span>
 
   <span class='kw'>unless</span> <span class='id identifier rubyid_data'>data</span><span class='period'>.</span><span class='id identifier rubyid_is_a?'>is_a?</span><span class='lparen'>(</span><span class='const'>String</span><span class='rparen'>)</span>
@@ -1345,7 +1408,7 @@ client-side error</p>
   <span class='kw'>else</span>
     <span class='ivar'>@accumulate</span><span class='lbracket'>[</span><span class='id identifier rubyid_stream'>stream</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_push'>push</span><span class='lparen'>(</span><span class='id identifier rubyid_data'>data</span><span class='rparen'>)</span>
   <span class='kw'>end</span>
-  <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span>
+  <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_unlock'>unlock</span> <span class='kw'>if</span> <span class='cvar'>@@tracker_lock</span><span class='period'>.</span><span class='id identifier rubyid_locked?'>locked?</span>
 
   <span class='comment'>#AtomDebugLogger.log(&quot;Track event for stream: #{stream} with data: #{data}&quot;, @is_debug_mode)
 </span>
@@ -1387,12 +1450,12 @@ client-side error</p>
       <pre class="lines">
 
 
-98
-99
-100</pre>
+116
+117
+118</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 98</span>
+      <pre class="code"><span class="info file"># File 'lib/atom_ruby/tracker.rb', line 116</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_url='>url=</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='rparen'>)</span>
   <span class='ivar'>@atom</span><span class='period'>.</span><span class='id identifier rubyid_url'>url</span> <span class='op'>=</span> <span class='id identifier rubyid_url'>url</span>
@@ -1407,7 +1470,7 @@ client-side error</p>
 </div>
 
       <div id="footer">
-  Generated on Mon Feb 20 12:41:35 2017 by
+  Generated on Wed Feb 22 17:19:04 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.8 (ruby-2.0.0).
 </div>
