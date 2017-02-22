@@ -34,7 +34,7 @@ module IronSourceAtom
       @is_debug_mode = false
 
       @bulk_size_byte = @@BULK_SIZE_BYTE
-      @backlog_size = 500
+      @backlog_size = 2000
       @bulk_length = @@BULK_LENGTH
       @flush_interval = @@FLUSH_INTERVAL
 
@@ -47,7 +47,12 @@ module IronSourceAtom
 
       @queue_flush = Hash.new
       @is_stream_flush = Hash.new
-      @error_callback = error_callback
+
+      # Default error callback func
+      default_error_callback = lambda do |error_str, stream, data|
+        print "Error Callback: #{error_str}; stream: #{stream}\n"
+      end
+      @error_callback = error_callback.nil? ? default_error_callback : error_callback
 
       @timerRetry = Timers::Group.new
       @is_blocking = is_blocking
@@ -144,7 +149,7 @@ module IronSourceAtom
         else
           error_str = "Message store for stream: '#{stream}' has reached its maximum size!"
           AtomDebugLogger.log(error_str, @is_debug_mode)
-          @error_callback.call(error_str, stream, @accumulate[stream]) unless @error_callback.nil?
+          @error_callback.call(error_str, stream, @accumulate[stream])
           @accumulate[stream] = []
           @@tracker_lock.unlock
 
@@ -236,7 +241,7 @@ module IronSourceAtom
           else
             error_str = 'Timeout - No response from server'
             AtomDebugLogger.log(error_str, @is_debug_mode)
-            @error_callback.call(error_str, stream, data) unless @error_callback.nil?
+            @error_callback.call(error_str, stream, data)
             return
           end
         end
@@ -251,7 +256,7 @@ module IronSourceAtom
         if response.code.to_i != 200
             error_str = response.message
             AtomDebugLogger.log(error_str, @is_debug_mode)
-            @error_callback.call(error_str, stream, data) unless @error_callback.nil?
+            @error_callback.call(error_str, stream, data)
         end
 
         AtomDebugLogger.log("Flush response code: #{response.code} - response message #{response.message}", @is_debug_mode)

@@ -6,11 +6,12 @@ class TestTracker
 def self.test_multitrhead
   url = "http://track.atom-data.io/"
 
-  error_callback = lambda do |error_str, stream, data|
-    print "Error: #{error_str}; stream: #{stream}\n"
-  end
+  # Example of error callback
+  # error_callback = lambda do |error_str, stream, data|
+  #   print "Error Callback: #{error_str}; stream: #{stream}\n"
+  # end
 
-  atom_tracker = IronSourceAtom::Tracker.new(url, error_callback, is_blocking=false)
+  atom_tracker = IronSourceAtom::Tracker.new(url, nil, is_blocking=true)
   atom_tracker.auth = "YOUR AUTH KEY"
   atom_tracker.is_debug_mode = true
   atom_tracker.backlog_size = 100

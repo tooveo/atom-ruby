@@ -31,17 +31,24 @@ You may use the SDK in two different ways:
 
 ### High Level SDK - "Tracker"
 
+The Tracker is used for sending events to Atom based on several conditions:
+ 
+1. Flush Interval is reached (default: 10 seconds).
+2. Bulk Length is reached (default: 50 events).
+3. Maximum Bulk byte size is reached (default: 128KB).
+  
 ```ruby
 require 'iron_source_atom'
 
 class TestTracker
 
 def self.test_multitread
-    url = "http://track.atom-data.io/"
+    url = 'http://track.atom-data.io/'
 
     error_callback = lambda do |error_str, stream, data|
         print "Error: #{error_str}\n"
         print "Data: #{data}"
+        print "Stream: #{stream}"
     end
     
     # Creates a new instance of Atom Tracker.
@@ -49,36 +56,40 @@ def self.test_multitread
     # * +error_callback+ Optional, callback to be called when there is an error at the tracker
     # * +is_blocking+ Optional, should the tracker block, default true.
     atom_tracker = IronSourceAtom::Tracker.new(url, error_callback, is_blocking=false)
+    # Change auth key
     atom_tracker.auth = "YOUR_PRE_SHARED_AUTH_KEY"
-
+    # Track to stream
     atom_tracker.track("stream", "data")
+    # Force Flush all
     atom_tracker.flush
+    # Force Flush one stream
+    atom_tracker.flush_with_stream("stream")
+    # Enable debug printing:
+    atom_tracker.is_debug_mode = true
 end
 ```
 
-The Tracker process:
-
-You can use track() method in order to track the events to an Atom Stream.
-The tracker accumulates events and flushes them when it meets one of the following conditions:
- 
-1. Flush Interval is reached (default: 10 seconds).
-2. Bulk Length is reached (default: 50 events).
-3. Maximum Bulk byte size is reached (default: 128KB).
+In order to change tracker flush conditions:  
+```ruby
+atom_tracker.bulk_length = 100 # Each bulk(batch) length
+atom_tracker.bulk_size_byte = 64*1024 # Each bulk (batch) size in bytes 
+atom_tracker.flush_interval = 10 # Flush interval in seconds
+```
 
 In case of failure the tracker will preform an exponential backoff with jitter.
 The tracker stores events in memory.
 
-Note:  
+### Tracker flow control
+
+**Note:**  
 By default the tracker is blocking if the backlog is full. You can change it by setting is_blocking=false  
 1. If the tracker is blocking -> tracker.track() will wait until there is space at the backlog  
 2. If the tracker is not blocking -> tracker.track() will call the on_error callback if the backlog is full.
-
 
 ### Tracker onError
 
 Case of failure the error_callback function will be called, which by default just logs the error to console
 If you want to handle the error otherwise just overwrite the function (see example above).
-
 
 ### Low Level (Basic) SDK
 
