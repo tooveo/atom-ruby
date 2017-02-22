@@ -15,6 +15,9 @@ def self.test_multitrhead
   atom_tracker.auth = "YOUR AUTH KEY"
   atom_tracker.is_debug_mode = true
   atom_tracker.backlog_size = 100
+  atom_tracker.bulk_length=10000000
+  atom_tracker.bulk_size_byte=513*1024
+  atom_tracker.flush_interval=5
 
   stream = 'YOUR STREAM NAME'
 

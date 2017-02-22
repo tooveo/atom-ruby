@@ -74,7 +74,7 @@ module IronSourceAtom
     # * +byte_size+ bulk size in bytes
     def bulk_size_byte=(byte_size)
       if byte_size < 1 or byte_size > @@BULK_SIZE_BYTE_LIMIT
-        AtomDebugLogger.log("Invalid Bulk Size, must be between 1 to #{@@BULK_SIZE_BYTE_LIMIT} setting to default: #{@@BULK_SIZE_BYTE})", @is_debug_mode)
+        AtomDebugLogger.log("Invalid Bulk Size, must be between 1 to #{@@BULK_SIZE_BYTE_LIMIT/1024}KB setting to default: #{@@BULK_SIZE_BYTE/1024}KB)", @is_debug_mode)
         @bulk_size_byte = @@BULK_SIZE_BYTE
       else
         @bulk_size_byte = byte_size
