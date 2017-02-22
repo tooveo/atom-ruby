@@ -4,7 +4,8 @@ require '../lib/iron_source_atom'
 
 class TestTracker
 def self.test_multitrhead
-  url = "http://track.atom-data.io/"
+  url = 'http://track.atom-data.io/'
+  # url = 'http://127.0.0.1:3000/'
 
   # Example of error callback
   # error_callback = lambda do |error_str, stream, data|
@@ -50,7 +51,7 @@ def self.test_multitrhead
   i = 0
   index_exit = 0
   while index_exit < 100
-    sleep(0.2)
+    # sleep(0.2)
 
     i += 1
     index_exit += 1
@@ -62,6 +63,7 @@ def self.test_multitrhead
     end
   end
 
+  sleep(10)
   atom_tracker.finalize
 end
 

@@ -42,6 +42,7 @@ module IronSourceAtom
 
       @url = url
       @atom = Atom.new
+      @atom.url = @url
 
       @accumulate = Hash.new
 
@@ -228,7 +229,7 @@ module IronSourceAtom
     def _send(stream, data, timeout)
       @atom.put_events(stream, data, 'post', nil, lambda do |response|
         if response.code.to_i <= -1 || response.code.to_i >= 500
-          print "from timer: #{timeout}\n"
+          AtomDebugLogger.log("Retry timer: #{timeout}", @is_debug_mode)
           if timeout < 20 * 60
             @timerRetry.after(timeout) {
               timeout = timeout * 2 + (rand(1000) + 100) / 1000.0
@@ -254,8 +255,7 @@ module IronSourceAtom
         end
 
         if response.code.to_i != 200
-            error_str = response.message
-            AtomDebugLogger.log(error_str, @is_debug_mode)
+            error_str = "#{response.message} - #{response.code}"
             @error_callback.call(error_str, stream, data)
         end
 
