@@ -4,7 +4,7 @@ RUN mkdir /usr/src/app
 ADD . /usr/src/app
 WORKDIR /usr/src/app
 
-ENV SDK_VERSION 1.5.1
+ENV SDK_VERSION 1.5.2
 
 RUN gem install bundler
 RUN gem install coveralls
